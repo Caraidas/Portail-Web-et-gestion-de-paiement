@@ -18,46 +18,30 @@ GROUP BY NumSiren;
 
 --N siren | Raison sociale | N° Remise | Date traitement | Nbre transactions | Devise (EUR) | Montant total | Sens + ou - --
 
---test1--
+--création des vues de prétraitement des informations"
+CREATE VIEW TableMontantPositif AS 
+SELECT SUM(Montant) montant,NumRemise 
+FROM B_Transaction NATURAL JOIN B_Remise 
+WHERE sens = "+" GROUP BY B_Remise.NumRemise;
+CREATE VIEW TableMontantNegatif AS 
+SELECT SUM(Montant) montant,NumRemise 
+FROM B_Transaction NATURAL JOIN B_Remise 
+WHERE sens = "-" GROUP BY B_Remise.NumRemise;
+
+--Commande de selection--
 SELECT B_Client.NumSiren,
        B_Client.RaisonSociale,
        B_Client.Devise,
        B_Remise.NumRemise,
        B_Remise.DateTraitement,
        COUNT(B_Transaction.NumAutorisation) AS 'Nombre de transaction' , 
-       MontantsTablePositif.montant - MontantsTableNegatif.montant AS 'Montant Total',
-       '+' AS 'Sens'
-FROM B_Remise,
-     B_Client,
-     B_Transaction,
-     (SELECT SUM(Montant) montant,NumRemise FROM B_Transaction NATURAL JOIN B_Remise WHERE sens = "+" GROUP BY B_Remise.NumRemise)
-     AS MontantsTablePositif,
-     (SELECT SUM(Montant) montant,NumRemise FROM B_Transaction NATURAL JOIN B_Remise WHERE sens = "-" GROUP BY B_Remise.NumRemise)
-     AS MontantsTableNegatif
-WHERE B_Client.NumSiren LIKE B_Remise.NumSiren
-  AND B_Remise.NumRemise LIKE B_Transaction.NumRemise
-  AND MontantsTablePositif.NumRemise LIKE B_Remise.NumRemise
-  AND MontantsTableNegatif.NumRemise LIKE B_Remise.NumRemise
-GROUP BY B_Remise.NumRemise;
-
---autre facon de lier--
-FROM 
-     B_Client NATURAL JOIN B_Remise NATURAL JOIN B_Transaction NATURAL JOIN ((SELECT SUM(Montant) montant,NumRemise FROM B_Transaction NATURAL JOIN B_Remise WHERE sens = "+" GROUP BY B_Remise.NumRemise)
-     AS MontantsTablePositif) NATURAL JOIN ((SELECT SUM(Montant) montant,NumRemise FROM B_Transaction NATURAL JOIN B_Remise WHERE sens = "-" GROUP BY B_Remise.NumRemise)
-     AS MontantsTableNegatif)
-
-
---test2--
-SELECT B_Client.NumSiren,
-       B_Client.RaisonSociale,
-       B_Client.Devise,
-       B_Remise.NumRemise,
-       B_Remise.DateTraitement,
-       COUNT(B_Transaction.NumAutorisation) AS 'Nombre de transaction' , 
-       SUM(IF B_Transaction.Sens = '+' SELECT B_Transaction.Montant; ELSE SELECT -(B_Transaction.Montant)) AS 'montant total';
-       '+' AS 'Sens'
-FROM 
-     B_Client NATURAL JOIN B_Remise NATURAL JOIN B_Transaction
+       ABS(TableMontantPositif.montant - TableMontantNegatif.montant) AS 'Montant Total',
+       CHAR(44 - SIGN(TableMontantPositif.montant - TableMontantNegatif.montant)) AS 'sens'
+FROM B_Remise
+     LEFT JOIN B_Client ON B_Remise.NumSiren = B_Client.NumSiren
+     LEFT JOIN B_Transaction ON B_Transaction.NumRemise = B_Remise.NumRemise
+     LEFT JOIN TableMontantPositif ON TableMontantPositif.NumRemise = B_Remise.NumRemise
+     LEFT JOIN TableMontantNegatif ON TableMontantNegatif.NumRemise = B_Remise.NumRemise
 GROUP BY B_Remise.NumRemise;
 
 
