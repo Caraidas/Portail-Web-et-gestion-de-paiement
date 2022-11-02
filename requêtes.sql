@@ -44,5 +44,19 @@ FROM B_Remise
      LEFT JOIN TableMontantNegatif ON TableMontantNegatif.NumRemise = B_Remise.NumRemise
 GROUP BY B_Remise.NumRemise;
 
+--- Détail ---
+SELECT B_Client.NumSiren,
+       B_Transaction.DateVente,
+       B_Transaction.NumCarte,
+       B_Transaction.Reseau,
+       B_Transaction.Montant,
+       B_Transaction.Sens
+FROM B_Client
+     NATURAL JOIN B_Remise
+     NATURAL JOIN B_Transaction
+WHERE B_Client.NumSiren = 'XXX';
+
+
+
 
 
