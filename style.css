@@ -109,3 +109,51 @@ td {
   text-shadow: -1px -1px 1px rgba(0, 0, 0, 0.1);
 }
 
+
+.mytabs {
+  display: flex;
+  flex-wrap: wrap;
+  max-width: 1500px;
+  margin: 50px auto;
+  padding: 25px;
+}
+.mytabs input[type="radio"] {
+  display: none;
+}
+.mytabs label {
+  padding: 25px;
+  background: #DCDCDC;
+  font-weight: bold;
+}
+
+.label-first{
+  border-radius: 20px 0px 0px 0px;
+}
+
+.label-last{
+  border-radius: 0px 20px 0px 0px;
+}
+
+.mytabs .tab {
+  width: 100%;
+  padding: 80px 50px 80px 50px;
+  background: #EEEEEE;
+  order: 1;
+  display: none;
+}
+.mytabs .tab h2 {
+  font-size: 3em;
+}
+
+.mytabs input[type='radio']:checked + label + .tab {
+  display: block;
+}
+
+.mytabs input[type="radio"]:checked + label {
+  background: #EEEEEE;
+  text-decoration: underline 5px #3A6DD0 ;
+  text-underline-offset: 5px;
+}
+
+
+
