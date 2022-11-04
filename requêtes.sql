@@ -18,7 +18,7 @@ GROUP BY NumSiren;
 
 --N siren | Raison sociale | N° Remise | Date traitement | Nbre transactions | Devise (EUR) | Montant total | Sens + ou - --
 
---création des vues de prétraitement des informations"
+--création des vues de prétraitement des informations
 CREATE VIEW TableMontantPositif AS 
 SELECT SUM(Montant) montant,NumRemise 
 FROM B_Transaction NATURAL JOIN B_Remise 
@@ -54,9 +54,9 @@ SELECT B_Client.NumSiren,
 FROM B_Client
      NATURAL JOIN B_Remise
      NATURAL JOIN B_Transaction
-WHERE B_Client.NumSiren = 'XXX';
+WHERE B_Remise.NumRemise = 'XXX'
 
 
 
-
-
+-- N Siren | Date vente | Date remise | N Carte | Réseau | N dossier impayé | Devise | Montant  | Libellé impayé --
+SELECT B_CLient.NumSiren
