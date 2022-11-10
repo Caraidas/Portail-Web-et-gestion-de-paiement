@@ -1,3 +1,4 @@
+<?php require_once 'Class/Database.php';?>
 <html lang="en">
 <head>
 	<meta charset="utf-8" />
@@ -7,7 +8,7 @@
 </head>
 
 <body> 
-
+    <?php include_once 'header.html'; ?>
     <div class="mytabs">
         <input type="radio" name="mytabs" id="tab-tresorerie" checked="checked">
         <label class="label-first" for="tab-tresorerie">Trésorerie</label>
@@ -24,49 +25,33 @@
                 </thead>
 
                 <tbody class="table-hover">
-                    <!-- DEBUT DE LA BOUCLE -->
-                    <tr>
-                        <td >362 521 879</td>
-                        <td >Renault SAS</td>
-                        <td >16</td>
-                        <td >EUR</td>
-                        <td> 100.0</td>
-                    </tr>
-                    <tr>
-                    <td >357 521 879</td>
-                        <td >Laura Leroy SA</td>
-                        <td >4</td>
-                        <td >DOL</td>
-                        <td >102.50</td>
-                    </tr>
-                    <tr>
-                    <td >682 521 879</td>
-                        <td >Cloud KICKS</td>
-                        <td >25</td>
-                        <td >EUR</td>
-                        <td >54.20</td>
-                    </tr>
-                    <tr>
-                        <td >124 521 879</td>
-                        <td >Patrick Legrand SA</td>
-                        <td >2</td>
-                        <td >EUR</td>
-                        <td >150.0</td>
-                    </tr>
-                    <tr>
-                        <td >242 521 879</td>
-                        <td >FlashDesign SARL</td>
-                        <td >254</td>
-                        <td >EUR</td>
-                        <td >50 000.0</td>
-                    </tr>
-                    <tr>
-                        <td >942 521 879</td>
-                        <td >Pokemon SARL</td>
-                        <td >14</td>
-                        <td >DIR</td>
-                        <td >10.0</td>
-                    </tr>
+                <?php
+                   /* $db = new Database();
+                    $select_qry = $db->getPDO()->prepare("SELECT B_Client.NumSiren,
+                                                                 RaisonSociale,
+                                                                 B_Client.Devise,
+                                                                 COUNT(B_Transaction.Montant) AS 'nombre de transactions',
+                                                                 SUM(B_Transaction.Montant) AS 'Montant total'
+                                                        FROM B_Remise,
+                                                            B_Client,
+                                                            B_Transaction
+                                                        WHERE B_Client.NumSiren LIKE B_Remise.NumSiren
+                                                        AND B_Remise.NumRemise LIKE B_Transaction.NumRemise
+                                                        AND B_Client.NumSiren = 615888425
+                                                        GROUP BY NumSiren;") or die('Error: Could not execute mysql query MAIN');
+
+                    if($select_qry->rowCount() > 0){
+                        while($row = $select_qry->fetch(PDO::FETCH_ASSOC)){
+                            echo " <tr>
+                                        <td>".$row['NumSiren']."</td>
+                                        <td>".$row['RaisonSociale']."</td>
+                                        <td>".$row['nombre de transactions']."</td>
+                                        <td>".$row['Devise']."</td>
+                                        <td>".$row['Montant total']."</td>
+                                   </tr>";
+                        }
+                    }else echo "Pas de résultats pour cet utilisateur";*/
+                ?>
                     
                 </tbody>
             </table>
@@ -91,16 +76,7 @@
     </div>
     
    
-  
+    
 
   </body>
-<?php
-
-
-
-
-
-
-
-
-?>
+</html>

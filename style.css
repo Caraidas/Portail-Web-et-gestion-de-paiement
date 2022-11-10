@@ -13,10 +13,17 @@
        url('fonts/montserrat-v25-latin-regular.svg#Montserrat') format('svg'); /* Legacy iOS */
 }
 
+*{
+  left: 0;
+}
+
 body {
   font-family: Montserrat;
   font-size: 16px;
 }
+
+
+
 
 div.table-title {
   display: block;
@@ -49,11 +56,12 @@ div.table-title {
   padding:5px;
   width: 100%;
   box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+  border-radius: 20px 20px 0px 0px;
+  overflow-x:scroll;
 }
 
 thead{
   background: linear-gradient(91.25deg, #3A6DD0 0%, #8A73E2 100%);
-  border-radius: 20px 20px 0px 0px;
 }
 
 th {
@@ -115,7 +123,6 @@ td {
   flex-wrap: wrap;
   max-width: 1500px;
   margin: 50px auto;
-  padding: 25px;
 }
 .mytabs input[type="radio"] {
   display: none;
