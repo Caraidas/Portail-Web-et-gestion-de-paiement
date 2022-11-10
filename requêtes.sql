@@ -11,7 +11,6 @@ FROM B_Remise,
      B_Transaction
 WHERE B_Client.NumSiren LIKE B_Remise.NumSiren
   AND B_Remise.NumRemise LIKE B_Transaction.NumRemise
-  --AND B_Transaction.Sens LIKE '+' Pour moi avoir la tresorerie à besoin de tout types de transaction pour être accurate
   AND B_Transaction.DateVente = CURDATE() --CURDATE pour avoir la date du jour au format aaaa:mm:jj--
 --AND B_Client.NumSiren = "XXX"--
 GROUP BY NumSiren;
@@ -42,6 +41,7 @@ FROM B_Remise
      LEFT JOIN B_Transaction ON B_Transaction.NumRemise = B_Remise.NumRemise
      LEFT JOIN TableMontantPositif ON TableMontantPositif.NumRemise = B_Remise.NumRemise
      LEFT JOIN TableMontantNegatif ON TableMontantNegatif.NumRemise = B_Remise.NumRemise
+--WHERE B_Client.NumSiren = "XXX"--
 GROUP BY B_Remise.NumRemise;
 
 --- Détail ---
@@ -59,4 +59,16 @@ WHERE B_Remise.NumRemise = 'XXX'
 
 
 -- N Siren | Date vente | Date remise | N Carte | Réseau | N dossier impayé | Devise | Montant  | Libellé impayé --
-SELECT B_CLient.NumSiren
+SELECT B_Client.NumSiren,
+       B_Remise.DateTraitement 'Date Remise',
+       B_Transaction.NumCarte,
+       B_Transaction.Reseau,
+       B_Transaction.NumImpaye 'Numero de dossier impaye',  
+       B_Transaction.Devise,
+       B_Transaction.Montant,
+       B_Transaction.LibelleImpaye
+FROM B_Client 
+     NATURAL JOIN B_Remise
+     NATURAL JOIN B_Transaction
+WHERE B_Transaction.NumImpaye IS NOT NULL;
+--AND B_Client.NumSiren = "XXX"--
