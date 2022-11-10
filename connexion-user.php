@@ -1,13 +1,11 @@
 <?php
 if (isset($_GET["error"]) && $_GET["error"]=='1'){
-    echo '<div class="alert alert-danger" role="alert" style="width:100%;">
-                Login incorrect
-              </div>';
+    echo 'Login incorrect';
 }
 
 ?>
 
-<form id="Form" method="POST" action="php/clientconnect.php">
+<form id="Form" method="POST" action="connexion-verif.php">
     <!-- Name input-->
 
 
