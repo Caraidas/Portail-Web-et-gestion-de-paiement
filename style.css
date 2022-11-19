@@ -15,6 +15,7 @@
 
 *{
   left: 0;
+  outline: solid red 1px;
 }
 
 body {
@@ -22,37 +23,22 @@ body {
   font-size: 16px;
 }
 
-
-
-
-div.table-title {
+table {
   display: block;
-  margin: auto;
-  max-width: 600px;
-  padding:5px;
-  width: 100%;
-}
-
-.table-title h3 {
-   color: #000000;
-   font-size: 30px;
-   font-weight: 400;
-   font-style:normal;
-   font-family: Montserrat;
-   text-shadow: -1px -1px 1px rgba(0, 0, 0, 0.1);
-   text-transform:uppercase;
+  overflow-x: auto;
+  white-space: nowrap;
 }
 
 
 /*** Table Styles **/
 
 .table-fill {
-  background: white;
+  background: transparent;
   border-radius:3px;
   border-collapse: collapse;
-  height: 320px;
+  height: auto;
   margin: auto;
-  max-width: 600px;
+  max-width: 1300px;
   padding:5px;
   width: 100%;
   box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
@@ -62,14 +48,14 @@ div.table-title {
 
 thead{
   background: linear-gradient(91.25deg, #3A6DD0 0%, #8A73E2 100%);
+  width: 100%;
 }
 
 th {
   color:#D5DDE5;
   font-size:18px;
   font-weight: 400;
-  padding: 24px 70px 24px 70px;
-  white-space: nowrap;
+  padding: 24px 0px 24px 0px;
 }
 
 th:first-child {
@@ -119,15 +105,17 @@ td {
 
 
 .mytabs {
+  position: relative;
   display: flex;
   flex-wrap: wrap;
   max-width: 1500px;
   margin: 50px auto;
+  padding-left:5%
 }
 .mytabs input[type="radio"] {
   display: none;
 }
-.mytabs label {
+.mytabs .label-style {
   padding: 25px;
   background: #DCDCDC;
   font-weight: bold;
@@ -142,7 +130,7 @@ td {
 }
 
 .mytabs .tab {
-  width: 100%;
+  width: 90%;
   padding: 80px 50px 80px 50px;
   background: #EEEEEE;
   order: 1;
@@ -152,15 +140,64 @@ td {
   font-size: 3em;
 }
 
-.mytabs input[type='radio']:checked + label + .tab {
+.mytabs input[type='radio']:checked + .label-style + .tab {
   display: block;
 }
 
-.mytabs input[type="radio"]:checked + label {
+.mytabs input[type="radio"]:checked + .label-style {
   background: #EEEEEE;
   text-decoration: underline 5px #3A6DD0 ;
   text-underline-offset: 5px;
 }
+
+.fixedContainer {
+  font-size: 17px;
+  position: absolute;
+  justify-content: space-between;
+  left: 40%;
+  padding:30px 20px 0px 20px;
+  top: auto;
+  transform: translateZ(0);
+}
+
+.fixedContainer form{
+  display:flex;
+}
+.fixedContainer form label{
+ padding-right: 10px;
+}
+
+.fixedContainer form input[type="radio"]{
+  -webkit-appearance: radio;
+  display: block;
+}
+
+input[name="type"] {
+	accent-color: linear-gradient(91.25deg, #3A6DD0 0%, #8A73E2 100%);
+}
+
+.btn{
+  background-color: linear-gradient(91.25deg, #3A6DD0 0%, #8A73E2 100%) !important;
+  border-radius:15px
+}
+
+caption {
+  display: block;
+  border: 3px solid red;
+}
+.features {
+  display: block;
+  border: 3px solid #ccc;
+}
+.header {
+  display: block;
+  border: 1px solid black;
+}
+/* .hide {
+  display: none;
+} */
+
+
 
 
 

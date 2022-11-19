@@ -6,7 +6,8 @@ $cnx = Database::getPDO();
 $req = SQLData::getTresorerie($cnx);
 $result = $req->fetchAll();
 
-Export::export_tresorerie_to_csv_xls($result,1);
+$type = $_POST['type'];
+Export::export_tresorerie_to_csv_xls($result,$type);
 
 class Export{
     public static function export_tresorerie_to_csv_xls($requestResult,$fileType){ // Prend en paramètre le resultat de la requete après le fetchAll et le type de fichier vers lequel on exporte : 0 pour csv et 1 pour xls

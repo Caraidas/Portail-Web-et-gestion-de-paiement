@@ -62,10 +62,11 @@ class SQLData
         //création de la syntax de la requette
         $query = "
         SELECT B_Client.NumSiren,
-               B_Remise.DateTraitement 'Date Remise',
+               B_Remise.DateTraitement AS DateRemise,
+               B_Transaction.DateVente AS DateVente,
                B_Transaction.NumCarte,
                B_Transaction.Reseau,
-               B_Transaction.NumImpaye 'Numero de dossier impaye',  
+               B_Transaction.NumImpaye AS NumeroDossier,  
                B_Transaction.Devise,
                B_Transaction.Montant,
                B_Transaction.LibelleImpaye
