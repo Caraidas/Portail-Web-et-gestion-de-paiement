@@ -34,7 +34,7 @@ class Database{
   }
 
   public static function getRole($id, $psw, $conn){
-        $result = $conn->prepare("SELECT * FROM B_Login WHERE id LIKE :id AND MotDePasse LIKE :psw");
+        $result = $conn->prepare("SELECT * FROM B_Login WHERE Login LIKE :id AND MotDePasse LIKE :psw");
         $result->bindParam('id',$id,PDO::PARAM_INT);
         $result->bindParam('psw',md5($psw),PDO::PARAM_STR);
         $result->execute();
