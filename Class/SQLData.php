@@ -1,6 +1,6 @@
 <?php
 
-include_once 'Database';
+include_once 'Database.php';
 
 class SQLData
 {
@@ -17,11 +17,11 @@ class SQLData
 
         //création de la syntaxe de la requette
         $query = "
-        SELECT B_Client.NumSiren,
-               RaisonSociale,
-               B_Client.Devise,
-               COUNT(B_Transaction.Montant) AS 'nombre de transactions',
-               SUM(B_Transaction.Montant) AS 'Montant total'
+        SELECT B_Client.NumSiren AS 'Siren',
+               RaisonSociale AS 'RaisonSociale',
+               B_Client.Devise AS 'Devise',
+               COUNT(B_Transaction.Montant) AS 'NombreTransactions',
+               SUM(B_Transaction.Montant) AS 'MontantTotal'
         FROM B_Remise,
              B_Client,
              B_Transaction
@@ -35,7 +35,7 @@ class SQLData
         if(!$id === null){
             $query.=" AND B_Client.NumSiren = :id";
         }
-        $query.=" GROUP BY NumSiren;";
+        $query.=" GROUP BY Siren;";
 
         //securisation de la requette
         $query = $db->prepare($query);
@@ -46,7 +46,7 @@ class SQLData
             $query->bindParam('id',$id,PDO::PARAM_INT);
         }
 
-        $query->exec();
+        $query->execute();
         return $query;
     }
 
@@ -85,21 +85,20 @@ class SQLData
             $query->bindParam('id',$id,PDO::PARAM_INT);
         }
 
-        $query->exec();
+        $query->execute();
         return $query;
     }
 
     public static function getRemise($db, $siren = null, $raison = null, $dateDebut = null, $dateFin = null){
         $numWhere = 0;
-        $req = "
-            SELECT B_Client.NumSiren,
-                B_Client.RaisonSociale,
-                B_Client.Devise,
-                B_Remise.NumRemise,
-                B_Remise.DateTraitement,
-                COUNT(B_Transaction.NumAutorisation) AS 'Nombre de transaction' , 
-                ABS(TableMontantPositif.montant - TableMontantNegatif.montant) AS 'Montant Total',
-                CHAR(44 - SIGN(TableMontantPositif.montant - TableMontantNegatif.montant)) AS 'sens'
+        $req = "SELECT B_Client.NumSiren AS 'Siren',
+                B_Client.RaisonSociale AS 'RaisonSociale',
+                B_Client.Devise AS 'Devise',
+                B_Remise.NumRemise AS 'NumeroRemise',
+                B_Remise.DateTraitement AS 'DateTraitement',
+                COUNT(B_Transaction.NumAutorisation) AS 'Nombretransaction' , 
+                ABS(TableMontantPositif.montant - TableMontantNegatif.montant) AS 'MontantTotal',
+                CHAR(44 - SIGN(TableMontantPositif.montant - TableMontantNegatif.montant)) AS 'Sens'
             FROM B_Remise
                 LEFT JOIN B_Client ON B_Remise.NumSiren = B_Client.NumSiren
                 LEFT JOIN B_Transaction ON B_Transaction.NumRemise = B_Remise.NumRemise
@@ -146,7 +145,7 @@ class SQLData
 
         $req.=" GROUP BY B_Remise.NumRemise";
 
-        $query = prepare($req);
+        $query = $db->prepare($req);
         if (!($raison===null )){
             $query->bindParam(":raison",$raison,PDO::PARAM_STR);
         }
@@ -160,23 +159,23 @@ class SQLData
             $query->bindParam(":dateFin",$dateFin,PDO::PARAM_STR);
         }
 
-        $query->exec();
+        $query->execute();
         return $query;
     }
 
-    public static function getDetails($cnx, $remise){
-        $req = "SELECT B_Client.NumSiren,
-            B_Transaction.DateVente,
-            B_Transaction.NumCarte,
-            B_Transaction.Reseau,
-            B_Transaction.Montant,
-            B_Transaction.Sens
+    public static function getDetails($db, $remise){
+        $req = "SELECT B_Client.NumSiren AS 'Siren',
+            B_Transaction.DateVente AS 'DateVente',
+            B_Transaction.NumCarte AS 'NumeroCarte',
+            B_Transaction.Reseau AS 'Reseau',
+            B_Transaction.Montant AS 'Montant',
+            B_Transaction.Sens AS 'Sens'
             FROM B_Client
             NATURAL JOIN B_Remise
             NATURAL JOIN B_Transaction
             WHERE B_Remise.NumRemise = :remise";
 
-            $query=prepare($req);
+            $query= $db->prepare($req);
             $query->bindParam(":remise",$remise,PDO::PARAM_INT);
             $query->exec();
             return $query;
