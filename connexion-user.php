@@ -23,7 +23,7 @@ if (isset($_POST['id']) && isset($_POST['psw'])){
 
 ?>
 
-<form id="Form" method="POST" action="connexion-verif.php">
+<form id="Form" method="POST" action="">
     <!-- Name input-->
 
 
