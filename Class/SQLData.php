@@ -182,6 +182,32 @@ class SQLData
             return $query;
     }
 
+    public static function getClients($db, $role){
+        if ($role == 'Admin'){
+
+            $req = "SELECT NumSiren AS 'Siren',
+                    RaisonSociale AS 'Raison',
+                    Devise AS 'Devise',
+                    NumeroCarte AS 'NumCarte',
+                    Login AS 'Login'  FROM B_Client";
+            $query= $db->prepare($req);
+            $query->exec();
+
+            return $query;
+        }
+    }
+
+    public static function deleteUser($db, $Siren, $Login){
+        $req1 = "DELETE FROM B_Client WHERE NumSiren LIKE :Siren";
+        $req2 = "DELETE FROM B_Login WHERE Login LIKE :Login";
+        $query= $db->prepare($req1);
+        $query->bindParam(":Siren",$Siren,PDO::PARAM_STR);
+        $query->exec();
+        $query= $db->prepare($req2);
+        $query->bindParam(":Login",$Login,PDO::PARAM_STR);
+        $query->exec();
+    }
+
 
 
 }
