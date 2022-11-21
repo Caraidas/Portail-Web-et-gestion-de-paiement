@@ -1,7 +1,7 @@
 <?php
 session_start();
  require_once 'Class/Database.php';
-    require_once 'Class/SQLData.php'
+ require_once 'Class/SQLData.php'
 ?>
 
 <html lang="en">
@@ -24,7 +24,7 @@ session_start();
 }
 </style>
 <body> 
-    <?php include_once 'header.html'; ?>
+    <?php include_once 'header.php'; ?>
     <div class="mytabs">
         <input type="radio" name="mytabs" id="tab-tresorerie" checked="checked">
         <label class="label-first label-style" for="tab-tresorerie">Trésorerie</label>

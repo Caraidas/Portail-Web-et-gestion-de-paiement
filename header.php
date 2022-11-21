@@ -1,3 +1,13 @@
+<?php
+session_start();
+if (isset($_SESSION["id"])) {
+    $id = $_SESSION["id"];
+} else {
+    header("Location : login.php");
+}
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -35,10 +45,14 @@
     </style>
 </head>
 <body>
-    
-    <div class="menu">
-        <div>FROG Bank</div>
-        <a href="#">IDRISSI Nidal</a>
-    </div>
+<?php
+    echo "
+        <div class='menu'>
+            <div>FROG Bank</div>
+            <a href='#'>$id</a>
+        </div>
+    ";
+    ?>
+
 </body>
 </html>

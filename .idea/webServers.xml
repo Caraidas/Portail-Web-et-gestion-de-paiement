@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="WebServers">
+    <option name="servers">
+      <webServer id="052b0c83-fcb1-472f-823f-e7c958e23f02" name="projet" url="http://etudiant.u-pem.fr">
+        <fileTransfer rootFolder="/mnt/traban_home/3binf2/nidal.idrissi" host="etudiant.u-pem.fr" port="21">
+          <advancedOptions>
+            <advancedOptions dataProtectionLevel="Private" passiveMode="true" shareSSLContext="true" />
+          </advancedOptions>
+        </fileTransfer>
+      </webServer>
+    </option>
+  </component>
+</project>

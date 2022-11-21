@@ -40,14 +40,13 @@ body {
 
 h1 {
     background: var(--gradient);
+    background-clip: text;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
-    font-size: 70px;
+    font-size: 100px;
 }
 
-.frog {
-    
-}
+/* .frog {}*/
 
 .container {
     display: flex;
@@ -158,5 +157,26 @@ label {
 @keyframes hover-submit{
     to {
         box-shadow: rgba(50, 50, 93, 0.25) 0px 13px 27px -5px, rgba(0, 0, 0, 0.3) 0px 8px 16px -8px
+    }
+}
+
+@media (max-width: 425px) {
+    h1 {
+        font-size: 50px;
+    }
+
+    .warning > p {
+        font-size: 0.75rem;
+    }
+
+    .input {
+        height: 30px;
+        font-size: 20px;
+    }
+}
+
+@media (max-width: 600px) {
+    h1 {
+        font-size: 80px;
     }
 }
