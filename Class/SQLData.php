@@ -2,18 +2,21 @@
 
 include_once 'Database.php';
 
+/**
+ *CLasse utilsé pour extraires les informations de la base de donnée Mysql
+ */
 class SQLData
 {
 
-    /*
+    /**
      * Renvoie la liste des tresoreries sous forme de PDOStatment
      *
-     * $db : la connexion à la base de donnée
-     * (optionnel) $id : l'id de l'entreprise à étudier
-     * (optionnel) $date : la date que l'on veut verifier
-     *
+     * @param $db : la connexion à la base de donnée
+     * @param $date : l'id de l'entreprise à étudier (optionnel)
+     * @param $id : la date que l'on veut verifier (optionnel)
+     * @return mixed
      */
-    public static function getTresorerie($db,$date=null,$id=null){
+    public static function getTresorerie($db, $date=null, $id=null){
 
         //création de la syntaxe de la requette
         $query = "
@@ -50,12 +53,12 @@ class SQLData
         return $query;
     }
 
-    /*
+    /**
      * Renvoie la liste des impayé sous forme de PDOStatment
      *
-     * $db : la connexion à la base de donnée
-     * (optionnel) $id : l'id de l'entreprise à étudier
-     *
+     * @param $db : la connexion à la base de donnée
+     * @param $id : l'id de l'entreprise à étudier (optionnel)
+     * @return mixed
      */
     public static function getImpaye($db,$id=null){
 
@@ -90,7 +93,16 @@ class SQLData
         return $query;
     }
 
-    //permet d'avoir la remise par clients
+    /**
+     * Permet d'avoir la remise par clients
+     *
+     * @param $db : la connexion a la base de donnée
+     * @param $siren : le numéro de siren de l'entreprise (optionnel)
+     * @param $raison : la raison sociale de l'entreprise (optionnel)
+     * @param $dateDebut : la date de début de la recherche (optionnel)
+     * @param $dateFin : la date de fin de la recherche (optionnel)
+     * @return mixed
+     */
     public static function getRemise($db, $siren = null, $raison = null, $dateDebut = null, $dateFin = null){
         $numWhere = 0;
         $req = "SELECT B_Client.NumSiren AS 'Siren',
@@ -165,7 +177,13 @@ class SQLData
         return $query;
     }
 
-    // permet d'avoir les informations d'un client
+    /**
+     * Permet d'avoir les détails sur une remise d'un client
+     *
+     * @param $db :  la connexion a la base de donnée
+     * @param $remise : la remise à examiné
+     * @return mixed
+     */
     public static function getDetails($db, $remise){
         $req = "SELECT B_Client.NumSiren AS 'Siren',
             B_Transaction.DateVente AS 'DateVente',
@@ -184,7 +202,13 @@ class SQLData
             return $query;
     }
 
-    // permet d'afficher toutes les informations des clients de la base de donnée
+    /**
+     * Permet d'afficher toutes les informations des clients de la base de donnée
+     *
+     * @param $db : la connexion a la base de donnée
+     * @param $role : le rôle du client actuellement connecté
+     * @return mixed|void
+     */
     public static function getClients($db, $role){
         if ($role == 'Admin'){
 
@@ -198,11 +222,15 @@ class SQLData
         }
     }
 
-    // permet de supprimer un utilisateur de la base de donnée
+    /**
+     * Permet de supprimer un utilisateur de la base de donnée
+     *
+     * @param $db : la connexion a la base de donnée
+     * @param $Login : le Login de la personne à supprimer
+     * @return void
+     */
     public static function deleteUser($db, $Siren, $Login){
-        $req1 = "DELETE FROM B_Client WHERE NumSiren LIKE ".$Siren;
         $req2 = "DELETE FROM B_Login WHERE Login LIKE ".$Login;
-        $db->query($req1);
         $db->query($req2);
     }
 }

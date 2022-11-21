@@ -9,8 +9,20 @@ $result = $req->fetchAll();
 $type = $_POST['type'];
 Export::export_tresorerie_to_csv_xls($result,$type);
 
+
+/**
+ * Classe qui s'occupe de faire les différentes exportations des tableaux
+ */
 class Export{
-    public static function export_tresorerie_to_csv_xls($requestResult,$fileType){ // Prend en paramètre le resultat de la requete après le fetchAll et le type de fichier vers lequel on exporte : 0 pour csv et 1 pour xls
+
+    /**
+     * Fonction qui génère les différents fichiers d'exportations pour le tableau de trésorerie.
+     *
+     * @param $requestResult : le PDOStatment contenant les informations nécéssaires
+     * @param $fileType : le type de fichiers de retour voulu (CSV,xls..)
+     * @return void
+     */
+    public static function export_tresorerie_to_csv_xls($requestResult, $fileType){ // Prend en paramètre le resultat de la requete après le fetchAll et le type de fichier vers lequel on exporte : 0 pour csv et 1 pour xls
         if($fileType==0){
             $fileName = ".csv";
             $contentType = "text/csv";
@@ -35,7 +47,14 @@ class Export{
         exit;
     }
 
-    public static function export_remise_to_csv_xls($requestResult,$fileType){ // Prend en paramètre le resultat de la requete après le fetchAll et le type de fichier vers lequel on exporte : 0 pour csv et 1 pour xls
+    /**
+     * Fonction qui génère les différents fichiers d'exportations pour le tableau de remise.
+     *
+     * @param $requestResult : le PDOStatment contenant les informations nécéssaires
+     * @param $fileType : le type de fichiers de retour voulu (CSV,xls..)
+     * @return void
+     */
+    public static function export_remise_to_csv_xls($requestResult, $fileType){ // Prend en paramètre le resultat de la requete après le fetchAll et le type de fichier vers lequel on exporte : 0 pour csv et 1 pour xls
         if($fileType==0){
             $fileName = ".csv";
             $contentType = "text/csv";
@@ -60,7 +79,14 @@ class Export{
         exit;
     }
 
-    public static function export_remise_details_to_csv_xls($requestResult,$fileType){ // Prend en paramètre le resultat de la requete après le fetchAll et le type de fichier vers lequel on exporte : 0 pour csv et 1 pour xls
+    /**
+     * Fonction qui génère les différents fichiers d'exportations pour le tableau des détails des remises.
+     *
+     * @param $requestResult : le PDOStatment contenant les informations nécéssaires
+     * @param $fileType : le type de fichiers de retour voulu (CSV,xls..)
+     * @return void
+     */
+    public static function export_remise_details_to_csv_xls($requestResult, $fileType){ // Prend en paramètre le resultat de la requete après le fetchAll et le type de fichier vers lequel on exporte : 0 pour csv et 1 pour xls
         if($fileType==0){
             $fileName = ".csv";
             $contentType = "text/csv";

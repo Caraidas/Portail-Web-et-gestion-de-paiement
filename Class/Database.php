@@ -1,8 +1,16 @@
 <?php
 
+/**
+ *Gère la connexion à la base de donnée et diverses informations relatives cette-dernière
+ */
 class Database{
 
-  public static function getPDO(){
+    /**
+     * Fonction qui génère l'objet PDO
+     *
+     * @return PDO|null
+     */
+    public static function getPDO(){
       $db_host='mysql:host=sqletud.u-pem.fr;';
       $db_user = 'lucas.leveque';
       $db_pass ='Lucas_2003';
@@ -26,14 +34,15 @@ class Database{
     return $pdo;
   }
 
-
-  public function query($statement){
-    $quer = $this->getPDO()->query($statement);
-    $data = $quer->fetchAll(PDO::FETCH_OBJ);
-    return $data;
-  }
-
-  public static function getRole($id, $psw, $conn){
+    /**
+     * Fonctions qui récupère le role d'un utilisateur
+     *
+     * @param $id : l'id de l'utilisateur
+     * @param $psw : son mot de passe
+     * @param $conn : la connexion à la base de donnée
+     * @return mixed
+     */
+    public static function getRole($id, $psw, $conn){
         $result = $conn->prepare("SELECT * FROM B_Login WHERE Login LIKE :id AND MotDePasse LIKE :psw");
         $result->bindParam('id',$id,PDO::PARAM_INT);
         $result->bindParam('psw',md5($psw),PDO::PARAM_STR);
@@ -44,8 +53,6 @@ class Database{
         }
         return false;
   }
-
-    
 }
 
 ?>
