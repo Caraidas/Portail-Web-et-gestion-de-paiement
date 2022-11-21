@@ -76,13 +76,13 @@ class SQLData
         WHERE B_Transaction.NumImpaye IS NOT NULL;
         ";
 
-        if(! $id === null){
+        if( $id !== null){
             $query.=" AND B_Client.NumSiren = :id";
         }
 
         //securisation de la requette
         $query = $db->prepare($query);
-        if(! $id === null){
+        if( $id !== null){
             $query->bindParam('id',$id,PDO::PARAM_INT);
         }
 
@@ -108,7 +108,7 @@ class SQLData
                 LEFT JOIN TableMontantNegatif ON TableMontantNegatif.NumRemise = B_Remise.NumRemise
             ";
 
-        if (!($siren===null)){
+        if ($siren!==null){
             if ($numWhere ==0){
                 $req.=" WHERE";
             }else{
@@ -117,7 +117,7 @@ class SQLData
             $numWhere++;
             $req.=" B_Client.NumSiren = :siren";
         }
-        if (! $raison ===null){
+        if ( $raison !==null){
             if ($numWhere ==0){
                 $req.=" WHERE";
             }else{
@@ -126,7 +126,7 @@ class SQLData
             $numWhere++;
             $req.=" B_Client.RaisonSociale = :raison";
         }
-        if (!($dateDebut === null)){
+        if ($dateDebut !== null){
             if ($numWhere ==0){
                 $req.=" WHERE";
             }else{
@@ -135,7 +135,7 @@ class SQLData
             $numWhere++;
             $req.= " B_Remise.DateTraitement >= :dateDebut";
         }
-        if (!($dateFin === null)){
+        if ($dateFin !== null){
             if ($numWhere ==0){
                 $req.=" WHERE";
             }else{
@@ -148,16 +148,16 @@ class SQLData
         $req.=" GROUP BY B_Remise.NumRemise";
 
         $query = $db->prepare($req);
-        if (!($raison===null )){
+        if ($raison!==null ){
             $query->bindParam(":raison",$raison,PDO::PARAM_STR);
         }
-        if (!($siren===null )){
+        if ($siren!==null){
             $query->bindParam(":siren",$siren,PDO::PARAM_INT);
         }
-        if (!($raison===null )){
+        if ($raison!==null){
             $query->bindParam(":dateDebut",$dateDebut,PDO::PARAM_STR);
         }
-        if (!($raison===null )){
+        if ($raison!==null){
             $query->bindParam(":dateFin",$dateFin,PDO::PARAM_STR);
         }
 
@@ -205,7 +205,4 @@ class SQLData
         $db->query($req1);
         $db->query($req2);
     }
-
-
-
 }
