@@ -12,6 +12,7 @@ if (isset($_POST['id']) && isset($_POST['psw'])){
         $_SESSION['id'] = $_POST['id'];
         $_SESSION['psw'] = $_POST['psw'];
         $_SESSION['role'] = $role;
+        $_SESSION['warning-display'] = "style='display: none'";
 
         header('Location: page.php');
 
