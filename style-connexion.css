@@ -1,0 +1,162 @@
+*,
+*::before,
+*::after {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    --gradient : linear-gradient(45deg, rgba(58,109,208,1) 0%, rgba(138,115,226,1) 100%);
+    --bleu : #3F5071
+}
+
+@import url(https://fonts.googleapis.com/css?family=Roboto:400,500,700,300,100);
+
+/* montserrat-regular - latin */
+@font-face {
+    font-family: 'Montserrat';
+    font-style: normal;
+    font-weight: 400;
+    src: url('/fonts/montserrat-v25-latin-regular.eot');
+    /* IE9 Compat Modes */
+    src: local(''),
+        url('fonts/montserrat-v25-latin-regular.eot?#iefix') format('embedded-opentype'),
+        /* IE6-IE8 */
+        url('fonts/montserrat-v25-latin-regular.woff2') format('woff2'),
+        /* Super Modern Browsers */
+        url('fonts/montserrat-v25-latin-regular.woff') format('woff'),
+        /* Modern Browsers */
+        url('fonts/montserrat-v25-latin-regular.ttf') format('truetype'),
+        /* Safari, Android, iOS */
+        url('fonts/montserrat-v25-latin-regular.svg#Montserrat') format('svg');
+    /* Legacy iOS */
+}
+
+body {
+    font-family: Montserrat;
+    font-size: 16px;  
+}
+
+h1 {
+    background: var(--gradient);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    font-size: 70px;
+}
+
+.frog {
+    
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100vh;
+}
+
+.exclam {
+    transform: rotate(-15deg);
+    background: var(--gradient);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.exclam::after {
+    content: "!";
+    font-size: 45px;
+    font-weight: bold;
+    transform: rotate(-90deg);
+    -webkit-transform: rotate(-90deg);
+    -moz-transform: rotate(-90deg);
+    -o-transform: rotate(-90deg);
+    -ms-transform: rotate(-90deg);
+}
+
+.warning {
+    display: flex;
+    align-items: center;
+    width: 80%;
+    height: 75px;
+    max-width: 600px;
+    background-color: #D9D9D9;
+    border-radius: 17px;
+    padding: 10px 30px 10px 30px;
+    gap: 30px;
+    margin: 20px 0px 5px 0px;
+    color: var(--bleu);
+}
+
+.warning > p {
+    max-width: 400px;
+}
+
+/* Les champs */
+
+form {
+    width: 70%;
+    max-width: 500px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    padding-top: 20px;
+    align-items: center;
+}
+
+form > div {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+}
+
+label {
+    font-size: 25px;
+    background: var(--gradient);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    width: fit-content;
+    padding-left: 15px;
+}
+
+.input {
+    border-radius: 500px;
+    border: 2px solid var(--bleu);
+    height: 50px;
+    font-size: 25px;
+    padding: 10px 20px 10px 20px;
+    color: var(--bleu);
+}
+
+.submit {
+    color: white;
+    font-size: 25px;
+    width: 200px;
+    padding: 10px 5px 10px 5px;
+    margin: 20px;
+    border-radius: 500px;
+    background: var(--gradient);
+    border: none;
+}
+
+.submit:hover {
+    animation : hover-submit 0.25s ease-in forwards;
+}
+
+.input:focus {
+    background: #ebedf2;
+}
+
+.submit:hover {
+    cursor: pointer;
+}
+
+@keyframes hover-submit{
+    to {
+        box-shadow: rgba(50, 50, 93, 0.25) 0px 13px 27px -5px, rgba(0, 0, 0, 0.3) 0px 8px 16px -8px
+    }
+}
