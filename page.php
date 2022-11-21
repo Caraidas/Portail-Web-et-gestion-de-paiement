@@ -1,4 +1,6 @@
-<?php require_once 'Class/Database.php';
+<?php
+session_start();
+ require_once 'Class/Database.php';
     require_once 'Class/SQLData.php'
 ?>
 
@@ -27,6 +29,11 @@
         <input type="radio" name="mytabs" id="tab-tresorerie" checked="checked">
         <label class="label-first label-style" for="tab-tresorerie">Trésorerie</label>
         <div class="tab">
+        <form action="page.php" method="get">
+            <label for="date">Annonces du:</label>
+            <input type="date" id="date" name="date">
+            <input type="submit">
+        </form>
         <table class="table-fill">
                 <thead>
                     <tr>
@@ -40,11 +47,18 @@
                 <tbody class="table-hover">
                 <?php
                    $db = Database::getPDO();
-
-                   $tresorerie = SQLData::getTresorerie($db);
+                   if(isset($_GET['date'])){
+                    if($_GET['date']!=''){
+                        $d = $_GET['date'];//aaaa-mm-jj
+                        $tresorerie = SQLData::getTresorerie($db,$date=$d);
+                    }else $tresorerie = SQLData::getTresorerie($db); 
+                   }else {
+                        $tresorerie = SQLData::getTresorerie($db); 
+                        echo "non";
+                   }
 
                     if($tresorerie->rowCount() > 0){
-                        while($row = $tresorerie->fetch(PDO::FETCH_ASSOC)){
+                        while($row = $tresorerie->fetch(PDO::FETCH_ASSOC)){ 
                             echo " <tr>
                                         <td>".$row['Siren']."</td>
                                         <td>".$row['RaisonSociale']."</td>

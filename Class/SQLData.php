@@ -29,20 +29,20 @@ class SQLData
           AND B_Remise.NumRemise LIKE B_Transaction.NumRemise
         ";
 
-        if(!$date === null){
+        if($date !== null){
             $query.=" AND B_Transaction.DateVente = :date";
         }
-        if(!$id === null){
+        if($id !== null){
             $query.=" AND B_Client.NumSiren = :id";
         }
         $query.=" GROUP BY Siren;";
 
         //securisation de la requette
         $query = $db->prepare($query);
-        if(!$date === null){
+        if($date !== null){
             $query->bindParam('date',$date,PDO::PARAM_STR);
         }
-        if(!$id === null){
+        if($id !== null){
             $query->bindParam('id',$id,PDO::PARAM_INT);
         }
 
