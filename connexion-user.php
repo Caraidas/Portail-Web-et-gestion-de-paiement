@@ -6,11 +6,11 @@ if (isset($_POST['id']) && isset($_POST['psw'])){
 
     $db = Database::getPDO();
     $role = "";
+
+    //récupération du role de l'utilisateur, s'il existe enregistre son id ainsi que son role
     if (($role = Database::getRole($_POST['id'], $_POST['psw'], $db))){// si le client existe
 
-        // A VIRER C'EST PAS SECUR
         $_SESSION['id'] = $_POST['id'];
-        $_SESSION['psw'] = $_POST['psw'];
         $_SESSION['role'] = $role;
 
         header('Location: myaccount.php');

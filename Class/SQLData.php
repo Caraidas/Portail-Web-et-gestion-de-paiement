@@ -90,6 +90,7 @@ class SQLData
         return $query;
     }
 
+    //permet d'avoir la remise par clients
     public static function getRemise($db, $siren = null, $raison = null, $dateDebut = null, $dateFin = null){
         $numWhere = 0;
         $req = "SELECT B_Client.NumSiren AS 'Siren',
@@ -164,6 +165,7 @@ class SQLData
         return $query;
     }
 
+    // permet d'avoir les informations d'un client
     public static function getDetails($db, $remise){
         $req = "SELECT B_Client.NumSiren AS 'Siren',
             B_Transaction.DateVente AS 'DateVente',
@@ -182,6 +184,7 @@ class SQLData
             return $query;
     }
 
+    // permet d'afficher toutes les informations des clients de la base de donnée
     public static function getClients($db, $role){
         if ($role == 'Admin'){
 
@@ -195,6 +198,7 @@ class SQLData
         }
     }
 
+    // permet de supprimer un utilisateur de la base de donnée
     public static function deleteUser($db, $Siren, $Login){
         $req1 = "DELETE FROM B_Client WHERE NumSiren LIKE ".$Siren;
         $req2 = "DELETE FROM B_Login WHERE Login LIKE ".$Login;
