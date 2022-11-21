@@ -190,22 +190,16 @@ class SQLData
                     Devise AS 'Devise',
                     NumeroCarte AS 'NumCarte',
                     Login AS 'Login'  FROM B_Client";
-            $query= $db->prepare($req);
-            $query->exec();
 
-            return $query;
+            return $db->query($req);
         }
     }
 
     public static function deleteUser($db, $Siren, $Login){
-        $req1 = "DELETE FROM B_Client WHERE NumSiren LIKE :Siren";
-        $req2 = "DELETE FROM B_Login WHERE Login LIKE :Login";
-        $query= $db->prepare($req1);
-        $query->bindParam(":Siren",$Siren,PDO::PARAM_STR);
-        $query->exec();
-        $query= $db->prepare($req2);
-        $query->bindParam(":Login",$Login,PDO::PARAM_STR);
-        $query->exec();
+        $req1 = "DELETE FROM B_Client WHERE NumSiren LIKE ".$Siren;
+        $req2 = "DELETE FROM B_Login WHERE Login LIKE ".$Login;
+        $db->query($req1);
+        $db->query($req2);
     }
 
 
