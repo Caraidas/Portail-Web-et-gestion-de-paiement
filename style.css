@@ -197,6 +197,17 @@ caption {
   display: none;
 } */
 
+.title-order{
+  display:flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content:end;
+}
+.arrow{
+  cursor: pointer;
+}
+
+
 
 
 

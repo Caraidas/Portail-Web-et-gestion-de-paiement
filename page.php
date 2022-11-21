@@ -24,7 +24,7 @@ session_start();
 }
 </style>
 <body> 
-    <?php include_once 'header.php'; ?>
+    
     <div class="mytabs">
         <input type="radio" name="mytabs" id="tab-tresorerie" checked="checked">
         <label class="label-first label-style" for="tab-tresorerie">Trésorerie</label>
@@ -37,11 +37,31 @@ session_start();
         <table class="table-fill">
                 <thead>
                     <tr>
-                        <th>N°SIREN</th>
+                        <th>
+                            <div class="title-order">
+                                <p>N°SIREN<p>
+                                <form method="get" action="page.php" id="arrow-form-siren">
+                                    <input type="hidden" name="order-siren" id="order" value="ASC">
+                                    <button type="submit" style="background-color:transparent; border: 0px">
+                                        <img style="margin-top:11px" class="arrow" id="imgClickAndChangeSIREN"  src="images\\fleche-vers-le-haut.png">    
+                                    </button>
+                                </form>
+                            </div>
+                        </th>
                         <th>Raison sociale</th>
                         <th>Nombre de transactions</th>
                         <th>Devise</th>
-                        <th>Montant total</th>
+                        <th>
+                            <div class="title-order">
+                                <p>Montant total<p>
+                                <form method="get" action="page.php" id="arrow-form-montant">
+                                    <input type="hidden" name="order-montant" id="order" value="ASC">
+                                    <button type="submit" style="background-color:transparent; border: 0px">
+                                        <img style="margin-top:11px" class="arrow" id="imgClickAndChangeMONTANT"  src="images\\fleche-vers-le-haut.png">    
+                                    </button>
+                                </form>
+                            </div>
+                        </th>
                     </tr>
                 </thead>
                 <tbody class="table-hover">
@@ -54,10 +74,10 @@ session_start();
                     }else $tresorerie = SQLData::getTresorerie($db); 
                    }else {
                         $tresorerie = SQLData::getTresorerie($db); 
-                        echo "non";
                    }
 
                     if($tresorerie->rowCount() > 0){
+                        echo "".$tresorerie->rowCount()." résultats trouvés";
                         while($row = $tresorerie->fetch(PDO::FETCH_ASSOC)){ 
                             echo " <tr>
                                         <td>".$row['Siren']."</td>
@@ -97,6 +117,7 @@ session_start();
                    $tresorerie = SQLData::getRemise($db);
 
                     if($tresorerie->rowCount() > 0){
+                        echo "".$tresorerie->rowCount()." résultats trouvés";
                         while($row = $tresorerie->fetch(PDO::FETCH_ASSOC)){
                             echo " <tr>
                                         <td>".$row['Siren']."</td>
@@ -140,6 +161,7 @@ session_start();
                    $tresorerie = SQLData::getImpaye($db);
 
                     if($tresorerie->rowCount() > 0){
+                        echo "".$tresorerie->rowCount()." résultats trouvés";
                         while($row = $tresorerie->fetch(PDO::FETCH_ASSOC)){
                             echo " <tr>
                                         <td>".$row['NumSiren']."</td>
@@ -170,8 +192,7 @@ session_start();
         </form>
     </div>
 </div>
-   
-    
+
 <div class="center hideform">
     <button id="close" style="float: right;">X</button>
     <form action="/action_page.php">
@@ -184,21 +205,56 @@ session_start();
         <input type="submit" value="Submit">
     </form>
 </div>
+
 <button id="show">Show form</button>
   </body>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.1/jquery.min.js" integrity="sha512-aVKKRRi/Q/YV+4mjoKBsE4x3H+BkegoM/em46NNlCqNTmUYADjBbeNefNxYV7giUp0VxICtqdrbqU7iVaeZNXA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-
-        <script>
-        $(document).ready(function() {
-            $('#show').on('click', function () {
-                $('.center').show();
-                $(this).hide();
-            })
-
-            $('#close').on('click', function () {
-                $('.center').hide();
-                $('#show').show();
-            })
+  <script>
+        $('#arrow-form-siren').submit(function () {
+            changeImage('siren');
+            return false;
         });
+
+        $('#arrow-form-montant').submit(function () {
+            changeImage('montant');
+            return false;
+        });
+        
+
+        function changeImage(str) {
+            if(str == 'siren'){
+                if (document.getElementById("imgClickAndChangeSIREN").src == "https://etudiant.u-pem.fr/~laura.leroy/projet_tran/images//fleche-vers-le-haut.png"){
+                document.getElementById("order").value = "DESC";
+                document.getElementById("imgClickAndChangeSIREN").src = "https://etudiant.u-pem.fr/~laura.leroy/projet_tran/images//fleche-vers-le-bas.png";
+                } 
+                else {
+                    document.getElementById("order").value = "ASC";
+                    document.getElementById("imgClickAndChangeSIREN").src = "https://etudiant.u-pem.fr/~laura.leroy/projet_tran/images//fleche-vers-le-haut.png";
+                }
+            }else{
+                if (document.getElementById("imgClickAndChangeMONTANT").src == "https://etudiant.u-pem.fr/~laura.leroy/projet_tran/images//fleche-vers-le-haut.png"){
+                document.getElementById("order").value = "DESC";
+                document.getElementById("imgClickAndChangeMONTANT").src = "https://etudiant.u-pem.fr/~laura.leroy/projet_tran/images//fleche-vers-le-bas.png";
+                } 
+                else {
+                    document.getElementById("order").value = "ASC";
+                    document.getElementById("imgClickAndChangeMONTANT").src = "https://etudiant.u-pem.fr/~laura.leroy/projet_tran/images//fleche-vers-le-haut.png";
+                }
+            }
+        }
+</script>
+
+<script>
+    $(document).ready(function() {
+        $('#show').on('click', function () {
+            $('.center').show();
+            $(this).hide();
+        })
+
+        $('#close').on('click', function () {
+            $('.center').hide();
+            $('#show').show();
+        })
+    });
 </script>
 </html>
