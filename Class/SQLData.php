@@ -233,4 +233,45 @@ class SQLData
         $req2 = "DELETE FROM B_Login WHERE Login LIKE ".$Login;
         $db->query($req2);
     }
+
+    /**
+     * Renvoie l'historique de la tresorerie sous forme de tableau
+     *
+     * @param $db : la connexion à la base de donnée
+     * @param $id : l'id du compte dont on veut l'historique
+     * @return mixed
+     */
+    public static function getTresorerieHistorique($db, $id){
+
+        //création de la syntaxe de la requette
+        $query = "SELECT
+               SUM(B_Transaction.Montant) AS 'Montant',
+               B_Remise.DateTraitement AS 'Date'
+        FROM B_Remise,
+             B_Client,
+             B_Transaction
+        WHERE B_Client.NumSiren LIKE B_Remise.NumSiren
+          AND B_Remise.NumRemise LIKE B_Transaction.NumRemise
+        ";
+
+        if($id !== null){
+            $query.=" AND B_Client.NumSiren = :id";
+        }
+        $query.=" GROUP BY B_Remise.NumRemise;";
+
+        //securisation de la requette
+        $query = $db->prepare($query);
+        if($id !== null){
+            $query->bindParam('id',$id,PDO::PARAM_INT);
+        }
+        echo "BONSOIR";
+        $query->execute();
+        $table = [];
+        $somme = 0;
+        while($row = $query->fetch(PDO::FETCH_ASSOC)){ 
+            $somme += $row['Montant'];
+            array_push($table,[$row['Date'],$somme]);
+        }
+        return $table;
+    }
 }
