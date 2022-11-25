@@ -236,7 +236,7 @@ class SQLData
      * @param $Login : le Login de la personne à supprimer
      * @return void
      */
-    public static function deleteUser($db, $Siren, $Login){
+    public static function deleteUser($db, $Login){
         $req2 = "DELETE FROM B_Login WHERE Login LIKE ".$Login;
         $db->query($req2);
     }
@@ -253,7 +253,7 @@ class SQLData
         //création de la syntaxe de la requette
         $query = "SELECT
                SUM(B_Transaction.Montant) AS 'Montant',
-               B_Remise.DateTraitement AS 'Date'
+               UNIX_TIMESTAMP(B_Remise.DateTraitement) AS 'Date'
         FROM B_Remise,
              B_Client,
              B_Transaction
@@ -264,20 +264,67 @@ class SQLData
         if($id !== null){
             $query.=" AND B_Client.NumSiren = :id";
         }
-        $query.=" GROUP BY B_Remise.NumRemise;";
+        $query.=" GROUP BY B_Remise.NumRemise ORDER BY Date ASC;";
 
         //securisation de la requette
         $query = $db->prepare($query);
         if($id !== null){
             $query->bindParam('id',$id,PDO::PARAM_INT);
         }
-        echo "BONSOIR";
+
         $query->execute();
         $table = [];
         $somme = 0;
         while($row = $query->fetch(PDO::FETCH_ASSOC)){ 
             $somme += $row['Montant'];
             array_push($table,[$row['Date'],$somme]);
+        }
+        return $table;
+    }
+
+    /**
+     * Renvoie la liste des impayé sous forme de PDOStatment
+     *
+     * @param $db : la connexion à la base de donnée
+     * @param $id : l'id de l'entreprise à étudier (optionnel)
+     * @return mixed
+     */
+    public static function getMotifImpaye($db,$id=null){
+
+        //création de la syntax de la requette
+        $query = "
+        SELECT 
+               COUNT(B_Transaction.NumImpaye) AS Total,
+               B_Transaction.LibelleImpaye AS LibelleImpaye
+        FROM B_Client 
+             NATURAL JOIN B_Remise
+             NATURAL JOIN B_Transaction
+        WHERE B_Transaction.NumImpaye IS NOT NULL
+        ";
+        /*
+        B_Client.NumSiren,
+        B_Remise.DateTraitement AS DateRemise,
+        B_Transaction.DateVente AS DateVente,
+        B_Transaction.NumCarte,
+        B_Transaction.Reseau,
+        B_Transaction.NumImpaye AS NumeroDossier,  
+        */
+        if( $id !== null){
+            $query.=" AND B_Client.NumSiren = :id";
+        }
+        $query.=" GROUP BY LibelleImpaye";
+        echo "$query";
+
+        //securisation de la requette
+        $query = $db->prepare($query);
+        if( $id !== null){
+            $query->bindParam('id',$id,PDO::PARAM_INT);
+        }
+
+        $table = [];
+        $query->execute();
+        while($row = $query->fetch(PDO::FETCH_ASSOC)){ 
+            array_push($table,[$row['LibelleImpaye'],$row['Total']]);
         }
         return $table;
     }
