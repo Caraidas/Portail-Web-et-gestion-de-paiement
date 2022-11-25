@@ -2,13 +2,9 @@
 include_once "Database.php";
 include_once "SQLData.php";
 include_once "GenerateHTML.php";
-
-$cnx = Database::getPDO();
-$req = SQLData::getTresorerie($cnx);
-$result = $req->fetchAll();
-
-$type = $_POST['type'];
-Export::export_tresorerie_to_csv_xls($result,$type);
+include_once __DIR__.'/vendor/autoload.php';
+$db = Database::getPDO();
+Export::export_tresorerie_to_PDF($db);
 
 
 /**
@@ -119,7 +115,7 @@ class Export{
      * @param $date : la date choisie dans le tableau des trésorerie
      *
      */
-    public static function export_tresorerie_to_PDF($db, $date){
+    public static function export_tresorerie_to_PDF($db, $date=null){
         $html2pdf = new Html2Pdf();
         $html2pdf->writeHTML("
             <table>
