@@ -181,31 +181,18 @@ input[name="type"] {
   border-radius:15px
 }
 
-caption {
-  display: block;
-  border: 3px solid red;
+.show-radio{
+  display:flex
 }
-.features {
+.show-radio input[type="radio"]{
   display: block;
-  border: 3px solid #ccc;
-}
-.header {
-  display: block;
-  border: 1px solid black;
+  -webkit-appearance: radio;
 }
 /* .hide {
   display: none;
 } */
 
-.title-order{
-  display:flex;
-  flex-direction: row;
-  flex-wrap: nowrap;
-  justify-content:end;
-}
-.arrow{
-  cursor: pointer;
-}
+
 
 
 
