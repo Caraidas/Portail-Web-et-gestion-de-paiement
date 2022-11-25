@@ -37,12 +37,6 @@ document.addEventListener('DOMContentLoaded',function(){
                 color: 'purple'
             }
         },
-        xAxis: {
-                type: 'datetime',
-                dateTimeLabelFormats: {
-                    day: '%y-%m-%d'
-                }
-            },
         series :[{
             data:<?php
             echo "[";

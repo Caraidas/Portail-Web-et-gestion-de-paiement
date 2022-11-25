@@ -34,46 +34,48 @@ session_start();
             <input type="date" id="date" name="date">
             <input type="submit">
         </form>
+        <form class="show-radio" action="page.php" method="post">
+            <label for="tab-field">Trier le tableau par: </label>
+            <select name="tab-field" id="tab-field">
+                <option value="">--Choisissez une option--</option>
+                <option value="Siren">Siren</option>
+                <option value="MontantTotal">Montant</option>
+            </select>
+            <input type="radio" id="croissant" name="order" value="ASC">
+            <label for="croissant">croissant</label>
+            <input type="radio" id="decroissant" name="order" value="DESC">
+            <label for="decroissant">décroissant</label>
+            <input type="submit">
+        </form>
         <table class="table-fill">
                 <thead>
                     <tr>
-                        <th>
-                            <div class="title-order">
-                                <p>N°SIREN<p>
-                                <form method="get" action="page.php" id="arrow-form-siren">
-                                    <input type="hidden" name="order-siren" id="order" value="ASC">
-                                    <button type="submit" style="background-color:transparent; border: 0px">
-                                        <img style="margin-top:11px" class="arrow" id="imgClickAndChangeSIREN"  src="images\\fleche-vers-le-haut.png">    
-                                    </button>
-                                </form>
-                            </div>
-                        </th>
+                        <th>N°SIREN</th>
                         <th>Raison sociale</th>
                         <th>Nombre de transactions</th>
                         <th>Devise</th>
-                        <th>
-                            <div class="title-order">
-                                <p>Montant total<p>
-                                <form method="get" action="page.php" id="arrow-form-montant">
-                                    <input type="hidden" name="order-montant" id="order" value="ASC">
-                                    <button type="submit" style="background-color:transparent; border: 0px">
-                                        <img style="margin-top:11px" class="arrow" id="imgClickAndChangeMONTANT"  src="images\\fleche-vers-le-haut.png">    
-                                    </button>
-                                </form>
-                            </div>
-                        </th>
+                        <th>Montant total</th>
                     </tr>
                 </thead>
                 <tbody class="table-hover">
                 <?php
                    $db = Database::getPDO();
+                   //L'ordre du tableau 
+                   if(isset($_POST['order']) && isset($_POST['tab-field'])){
+                        $order = $_POST['order'];
+                        $field = $_POST['tab-field'];
+                   }else{
+                        $order = 'Siren';
+                        $field = 'ASC';
+                   }
+                   $tresorerie = SQLData::getTresorerie($db,$order,$field);
                    if(isset($_GET['date'])){
                     if($_GET['date']!=''){
                         $d = $_GET['date'];//aaaa-mm-jj
-                        $tresorerie = SQLData::getTresorerie($db,$date=$d);
-                    }else $tresorerie = SQLData::getTresorerie($db); 
+                        $tresorerie = SQLData::getTresorerie($db,$order,$field,$date=$d);
+                    }else $tresorerie = SQLData::getTresorerie($db,$order,$field); 
                    }else {
-                        $tresorerie = SQLData::getTresorerie($db); 
+                        $tresorerie = SQLData::getTresorerie($db,$order,$field); 
                    }
 
                     if($tresorerie->rowCount() > 0){
@@ -209,40 +211,6 @@ session_start();
 <button id="show">Show form</button>
   </body>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.1/jquery.min.js" integrity="sha512-aVKKRRi/Q/YV+4mjoKBsE4x3H+BkegoM/em46NNlCqNTmUYADjBbeNefNxYV7giUp0VxICtqdrbqU7iVaeZNXA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-  <script>
-        $('#arrow-form-siren').submit(function () {
-            changeImage('siren');
-            return false;
-        });
-
-        $('#arrow-form-montant').submit(function () {
-            changeImage('montant');
-            return false;
-        });
-        
-
-        function changeImage(str) {
-            if(str == 'siren'){
-                if (document.getElementById("imgClickAndChangeSIREN").src == "https://etudiant.u-pem.fr/~laura.leroy/projet_tran/images//fleche-vers-le-haut.png"){
-                document.getElementById("order").value = "DESC";
-                document.getElementById("imgClickAndChangeSIREN").src = "https://etudiant.u-pem.fr/~laura.leroy/projet_tran/images//fleche-vers-le-bas.png";
-                } 
-                else {
-                    document.getElementById("order").value = "ASC";
-                    document.getElementById("imgClickAndChangeSIREN").src = "https://etudiant.u-pem.fr/~laura.leroy/projet_tran/images//fleche-vers-le-haut.png";
-                }
-            }else{
-                if (document.getElementById("imgClickAndChangeMONTANT").src == "https://etudiant.u-pem.fr/~laura.leroy/projet_tran/images//fleche-vers-le-haut.png"){
-                document.getElementById("order").value = "DESC";
-                document.getElementById("imgClickAndChangeMONTANT").src = "https://etudiant.u-pem.fr/~laura.leroy/projet_tran/images//fleche-vers-le-bas.png";
-                } 
-                else {
-                    document.getElementById("order").value = "ASC";
-                    document.getElementById("imgClickAndChangeMONTANT").src = "https://etudiant.u-pem.fr/~laura.leroy/projet_tran/images//fleche-vers-le-haut.png";
-                }
-            }
-        }
-</script>
 
 <script>
     $(document).ready(function() {

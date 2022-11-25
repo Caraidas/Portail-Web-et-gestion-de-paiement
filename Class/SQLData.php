@@ -16,7 +16,7 @@ class SQLData
      * @param $id : la date que l'on veut verifier (optionnel)
      * @return mixed
      */
-    public static function getTresorerie($db, $date=null, $id=null){
+    public static function getTresorerie($db,$order,$field, $date=null, $id=null){
 
         //création de la syntaxe de la requette
         $query = "
@@ -38,8 +38,11 @@ class SQLData
         if($id !== null){
             $query.=" AND B_Client.NumSiren = :id";
         }
-        $query.=" GROUP BY Siren;";
-
+        $query.=" GROUP BY Siren";
+        if ((($order=="ASC"||$order="DESC")&&($field=="Siren"||$field=="MontantTotal"))){
+            $query.=" ORDER BY $field $order;";
+        }
+        
         //securisation de la requette
         $query = $db->prepare($query);
         if($date !== null){
@@ -48,6 +51,8 @@ class SQLData
         if($id !== null){
             $query->bindParam('id',$id,PDO::PARAM_INT);
         }
+        //$query->bindParam(':field',$field,PDO::PARAM_STR);
+        //$query->bindParam(':order', $order,PDO::PARAM_STR);
 
         $query->execute();
         return $query;
