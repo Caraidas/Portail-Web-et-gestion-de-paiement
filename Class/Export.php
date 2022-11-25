@@ -1,6 +1,7 @@
 <?php
-include "Database.php";
-include "SQLData.php";
+include_once "Database.php";
+include_once "SQLData.php";
+include_once "GenerateHTML.php";
 
 $cnx = Database::getPDO();
 $req = SQLData::getTresorerie($cnx);
@@ -109,6 +110,48 @@ class Export{
         header("Content-disposition: attachment; filename=RemiseDetails$fileName");
         print $excel;
         exit;
+    }
+
+    /**
+     * Fait télécharger à l'utilisateur le tableau des trésorerie sous format pdf
+     *
+     * @param $db : la connexion à la base de donnée
+     * @param $date : la date choisie dans le tableau des trésorerie
+     *
+     */
+    public static function export_tresorerie_to_PDF($db, $date){
+        $html2pdf = new Html2Pdf();
+        $html2pdf->writeHTML("
+            <table>
+                <thead>
+                    <tr>
+                        <th>N°SIREN</th>
+                        <th>Raison sociale</th>
+                        <th>Nombre de transactions</th>
+                        <th>Devise</th>
+                        <th>Montant total </th>
+                    </tr>
+                </thead>
+                <tbody>");
+        $html2pdf->writeHTML(GenerateHTML::generateTresorerieTab($db,$date));
+        $html2pdf->writeHTML(
+            "</tbody>
+             <style>
+                td{
+                    border:black solid 1px;
+                    border-collapse: collapse 
+                }
+                table{
+                    border:black solid 1px;
+                    border-collapse: collapse 
+                }
+                thead{
+                    border:grey solid 1px;
+                    border-collapse: collapse 
+                }
+            </style>"
+        );
+        $html2pdf->output('Tresorerie'.date("m.d.y").'pdf','D');
     }
 }
 
