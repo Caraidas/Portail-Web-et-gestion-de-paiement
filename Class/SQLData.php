@@ -195,6 +195,8 @@ class SQLData
             B_Transaction.NumCarte AS 'NumeroCarte',
             B_Transaction.Reseau AS 'Reseau',
             B_Transaction.Montant AS 'Montant',
+            B_Transaction.NumAutorisation,
+            B_Transaction.Devise,
             B_Transaction.Sens AS 'Sens'
             FROM B_Client
             NATURAL JOIN B_Remise
@@ -203,7 +205,7 @@ class SQLData
 
             $query= $db->prepare($req);
             $query->bindParam(":remise",$remise,PDO::PARAM_INT);
-            $query->exec();
+            $query->execute();
             return $query;
     }
 

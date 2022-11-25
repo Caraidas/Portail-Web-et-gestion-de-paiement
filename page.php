@@ -101,6 +101,7 @@ session_start();
         <table class="table-fill">
                 <thead>
                     <tr>
+                        <th>&nbsp;</th>
                         <th>N°SIREN</th>
                         <th>Raison sociale</th>
                         <th>N° Remise</th>
@@ -109,7 +110,6 @@ session_start();
                         <th>Devise</th>
                         <th>Montant total</th>
                         <th>Sens + ou -</th>
-                        <th>Détails</th>
                     </tr>
                 </thead>
                 <tbody class="table-hover">
@@ -120,8 +120,13 @@ session_start();
 
                     if($tresorerie->rowCount() > 0){
                         echo "".$tresorerie->rowCount()." résultats trouvés";
+                        $count = 1;
+                        $list_remise = array();
                         while($row = $tresorerie->fetch(PDO::FETCH_ASSOC)){
                             echo " <tr>
+                                        <td>
+                                            <input type='button' name='' value='Détails' data-href='content$count'>
+                                        </td>
                                         <td>".$row['Siren']."</td>
                                         <td>".$row['RaisonSociale']."</td>
                                         <td>".$row['NumeroRemise']."</td>
@@ -130,8 +135,10 @@ session_start();
                                         <td>".$row['Devise']."</td>
                                         <td>".$row['MontantTotal']."</td>
                                         <td>".$row['Sens']."</td>
-                                        <td></td>
                                    </tr>";
+                            echo $count;
+                            $count++;
+                            $list_remise[] = $row['NumeroRemise'];
                         }
                     }else echo "Pas de résultats pour cet utilisateur";
                 ?>  
@@ -194,35 +201,57 @@ session_start();
         </form>
     </div>
 </div>
-
-<div class="center hideform">
-    <button id="close" style="float: right;">X</button>
-    <form action="/action_page.php">
-        First name:<br>
-        <input type="text" name="firstname" value="Mickey">
-        <br>
-        Last name:<br>
-        <input type="text" name="lastname" value="Mouse">
-        <br><br>
-        <input type="submit" value="Submit">
-    </form>
-</div>
-
-<button id="show">Show form</button>
+<?php
+    for($i = 0; $i < $count-1;$i++){
+        $j=$i+1;
+        echo "<div id='content$j'>
+        <table class='classic-table'>
+            <thead>
+                <tr>
+                    <th>N° SIREN</th>
+                    <th>Date vente</th>
+                    <th>N° carte</th>
+                    <th>Réseau</th>
+                    <th>N° Autorisation</th>
+                    <th>Devise</th>
+                    <th>Montant</th>
+                    <th>Sens</th>
+                </tr>
+            </thead>
+            <tbody>";
+        $details = SQLData::getDetails($db, $list_remise[$i]);
+        while($row2 = $details->fetch(PDO::FETCH_ASSOC)){
+            echo "<tr>
+                    <td>".$row2['Siren']."</td>
+                    <td>".$row2['DateVente']."</td>
+                    <td>".$row2['NumeroCarte']."</td>
+                    <td>".$row2['Reseau']."</td>
+                    <td>".$row2['NumAutorisation']."</td>
+                    <td>".$row2['Devise']."</td>
+                    <td>".$row2['Montant']."</td>
+                    <td>".$row2['Sens']."</td>
+                </tr>";
+        }
+        echo "</tbody></table></div>";
+    }
+?>
   </body>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.1/jquery.min.js" integrity="sha512-aVKKRRi/Q/YV+4mjoKBsE4x3H+BkegoM/em46NNlCqNTmUYADjBbeNefNxYV7giUp0VxICtqdrbqU7iVaeZNXA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-
 <script>
-    $(document).ready(function() {
-        $('#show').on('click', function () {
-            $('.center').show();
-            $(this).hide();
-        })
-
-        $('#close').on('click', function () {
-            $('.center').hide();
-            $('#show').show();
-        })
+    $(document).ready(function () {
+    $('#content1').hide();
+    $('#content2').hide();
+    $('#content3').hide();
+    $('#content4').hide();
+    $('#content5').hide();
+    $("input").click(function () {
+        if ($('tr#' + $(this).data("href")).is(":visible")) {
+            $('tr#' + $(this).data("href")).remove();
+        } else {
+            $(this).closest('tr').after('<tr class="normal-tr" id="' + $(this).data("href") + '"><td colspan="5">' + $('#' + $(this).data("href")).html() + '</td></tr>');
+        }                       
     });
+
+});
 </script>
 </html>

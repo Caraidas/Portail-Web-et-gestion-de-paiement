@@ -76,6 +76,11 @@ tr:hover td {
   background:#abafd5;
   color:#FFFFFF;
 }
+
+tr:hover td , .normal-tr { 
+  background:white;
+  color: black; 
+}
  
 tr:nth-child(odd) td {
   background:#EBEBEB;
@@ -191,6 +196,25 @@ input[name="type"] {
 /* .hide {
   display: none;
 } */
+
+
+.classic-table{
+  width: 100%;
+}
+
+.classic-table, .classic-table thead, .classic-table td, .classic-table th, .classic-table tr, .classic-table tbody{
+  all: revert;
+  table-layout: fixed;
+  border-collapse: collapse;
+  padding:10px;
+  border: 2px solid rgb(0, 0, 0);
+  text-align: center;
+}
+
+.classic-table tr:hover td, tr:nth-child(odd):hover td{
+  background-color: transparent;
+  color:black
+}
 
 
 
