@@ -2,7 +2,10 @@
 include_once "Database.php";
 include_once "SQLData.php";
 include_once "GenerateHTML.php";
-include_once __DIR__.'/vendor/autoload.php';
+include_once dirname(dirname(__FILE__)).'/vendor/autoload.php';
+use \Spipu\Html2Pdf\Html2Pdf;
+use \Spipu\Html2Pdf\Exception\ExceptionFormatter;
+use \Spipu\Html2Pdf\Exception\Html2PdfException;
 $db = Database::getPDO();
 Export::export_tresorerie_to_PDF($db);
 
@@ -116,7 +119,35 @@ class Export{
      *
      */
     public static function export_tresorerie_to_PDF($db, $date=null){
-        $html2pdf = new Html2Pdf();
+        $html2pdf = new Html2Pdf('p','A4','fr');
+        $txt = "
+        <table>
+            <thead>
+                <tr>
+                    <th>N°SIREN</th>
+                    <th>Raison sociale</th>
+                    <th>Nombre de transactions</th>
+                    <th>Devise</th>
+                    <th>Montant total </th>
+                </tr>
+            </thead>
+            <tbody>".GenerateHTML::generateTresorerieTab($db,$date)."</tbody>
+            </table>
+             <style>
+                td{
+                    border:black solid 1px;
+                    border-collapse: collapse 
+                }
+                table{
+                    border:black solid 1px;
+                    border-collapse: collapse 
+                }
+                thead{
+                    border:grey solid 1px;
+                    border-collapse: collapse 
+                }
+            </style>";
+            /*
         $html2pdf->writeHTML("
             <table>
                 <thead>
@@ -132,6 +163,7 @@ class Export{
         $html2pdf->writeHTML(GenerateHTML::generateTresorerieTab($db,$date));
         $html2pdf->writeHTML(
             "</tbody>
+            </table>
              <style>
                 td{
                     border:black solid 1px;
@@ -147,7 +179,9 @@ class Export{
                 }
             </style>"
         );
-        $html2pdf->output('Tresorerie'.date("m.d.y").'pdf','D');
+        */
+        $html2pdf->writeHTML($txt);
+        $html2pdf->output('Tresorerie'.date("m-d-y").'.pdf','D'); //
     }
 }
 
