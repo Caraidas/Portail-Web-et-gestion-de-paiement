@@ -21,24 +21,34 @@ class SQLData
         //création de la syntaxe de la requette
         $query = "
         SELECT B_Client.NumSiren AS 'Siren',
-               RaisonSociale AS 'RaisonSociale',
-               B_Client.Devise AS 'Devise',
-               COUNT(B_Transaction.Montant) AS 'NombreTransactions',
-               SUM(B_Transaction.Montant) AS 'MontantTotal'
-        FROM B_Remise,
-             B_Client,
-             B_Transaction
-        WHERE B_Client.NumSiren LIKE B_Remise.NumSiren
-          AND B_Remise.NumRemise LIKE B_Transaction.NumRemise
+                B_Client.RaisonSociale AS 'RaisonSociale',
+                B_Client.Devise AS 'Devise',
+                SUM(MontantTotalRemise) AS 'MontantTotal',
+                SUM(NombreTransactionTMP) AS 'NombreTransaction'
+                FROM B_Client,(
+                        SELECT
+                        B_Client.NumSiren AS 'client',
+                        B_Remise.NumRemise AS 'NumeroRemise',
+                        B_Remise.DateTraitement AS 'DateTraitement',
+                        COUNT(B_Transaction.NumAutorisation) AS 'NombretransactionTmp' , 
+                        (TableMontantPositif.montant - TableMontantNegatif.montant) AS 'MontantTotalRemise'
+                        FROM B_Remise
+                        LEFT JOIN B_Client ON B_Client.NumSiren = B_Remise.NumSiren
+                        LEFT JOIN B_Transaction ON B_Transaction.NumRemise = B_Remise.NumRemise
+                        LEFT JOIN TableMontantPositif ON TableMontantPositif.NumRemise = B_Remise.NumRemise
+                        LEFT JOIN TableMontantNegatif ON TableMontantNegatif.NumRemise = B_Remise.NumRemise
+                        
         ";
-
         if($date !== null){
-            $query.=" AND B_Transaction.DateVente = :date";
+            $query.=" WHERE B_Transaction.DateVente = :date";
         }
+
+        $query .= " GROUP BY B_Remise.NumRemise) Remises 
+        WHERE Remises.client = B_Client.NumSiren";
         if($id !== null){
             $query.=" AND B_Client.NumSiren = :id";
         }
-        $query.=" GROUP BY Siren";
+        $query.=" GROUP BY B_Client.NumSiren";
         if ((($order=="ASC"||$order="DESC")&&($field=="Siren"||$field=="MontantTotal"))){
             $query.=" ORDER BY $field $order;";
         }
@@ -315,14 +325,6 @@ class SQLData
              NATURAL JOIN B_Transaction
         WHERE B_Transaction.NumImpaye IS NOT NULL
         ";
-        /*
-        B_Client.NumSiren,
-        B_Remise.DateTraitement AS DateRemise,
-        B_Transaction.DateVente AS DateVente,
-        B_Transaction.NumCarte,
-        B_Transaction.Reseau,
-        B_Transaction.NumImpaye AS NumeroDossier,  
-        */
         if( $id !== null){
             $query.=" AND B_Client.NumSiren = :id";
         }
