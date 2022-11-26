@@ -84,14 +84,15 @@ class SQLData
                B_Transaction.DateVente AS DateVente,
                B_Transaction.NumCarte,
                B_Transaction.Reseau,
-               B_Transaction.NumImpaye AS NumeroDossier,  
+               B_Impaye.NumDossier AS NumeroDossier,  
                B_Transaction.Devise,
                B_Transaction.Montant,
-               B_Transaction.LibelleImpaye
+               B_TypeImpaye.LibelleImpaye
         FROM B_Client 
              NATURAL JOIN B_Remise
              NATURAL JOIN B_Transaction
-        WHERE B_Transaction.NumImpaye IS NOT NULL;
+             NATURAL JOIN B_Impaye
+             NATURAL JOIN B_TypeImpaye
         ";
 
         if( $id !== null){
@@ -316,17 +317,17 @@ class SQLData
     public static function getMotifImpaye($db,$id=null){
 
         //création de la syntax de la requette
-        $query = "
-        SELECT 
-               COUNT(B_Transaction.NumImpaye) AS Total,
-               B_Transaction.LibelleImpaye AS LibelleImpaye
-        FROM B_Client 
-             NATURAL JOIN B_Remise
-             NATURAL JOIN B_Transaction
-        WHERE B_Transaction.NumImpaye IS NOT NULL
+        $query = "SELECT 
+               COUNT(B_Impaye.NumDossier) AS Total,
+               B_TypeImpaye.LibelleImpaye AS LibelleImpaye
+                FROM B_Client 
+                NATURAL JOIN B_Remise
+                NATURAL JOIN B_Transaction
+                NATURAL JOIN B_Impaye
+                NATURAL JOIN B_TypeImpaye
         ";
         if( $id !== null){
-            $query.=" AND B_Client.NumSiren = :id";
+            $query.=" WHERE B_Client.NumSiren = :id";
         }
         $query.=" GROUP BY LibelleImpaye";
         echo "$query";
@@ -339,7 +340,9 @@ class SQLData
 
         $table = [];
         $query->execute();
+        echo "B";
         while($row = $query->fetch(PDO::FETCH_ASSOC)){ 
+            echo "AHAH";
             array_push($table,[$row['LibelleImpaye'],$row['Total']]);
         }
         return $table;
