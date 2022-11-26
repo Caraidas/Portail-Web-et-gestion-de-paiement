@@ -227,14 +227,10 @@ class SQLData
      * @param $role : le rôle du client actuellement connecté
      * @return mixed|void
      */
-    public static function getClients($db, $role){
+    public static function getLogin($db, $role){
         if ($role == 'Admin'){
 
-            $req = "SELECT NumSiren AS 'Siren',
-                    RaisonSociale AS 'Raison',
-                    Devise AS 'Devise',
-                    NumeroCarte AS 'NumCarte',
-                    Login AS 'Login'  FROM B_Client";
+            $req = "SELECT Login FROM B_Login";
 
             return $db->query($req);
         }

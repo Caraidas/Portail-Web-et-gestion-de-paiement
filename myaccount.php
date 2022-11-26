@@ -20,13 +20,9 @@ if (isset($_SESSION['id']) && isset($_SESSION['role'])){
         }
 
 
-        $clients = SQLData::getClients($db,$_SESSION['role']);
+        $clients = SQLData::getLogin($db,$_SESSION['role']);
         while($row = $clients->fetch(PDO::FETCH_ASSOC)){
-            echo "<br><tr><td>".$row['Siren']." <br></td>
-            <td>".$row['Raison']." <br> </td>
-            <td>".$row['Devise']." <br> </td>
-            <td>".$row['NumCarte']." <br> </td>
-            <td>".$row['Login']." <br> </td></tr>";
+            echo "<br><tr><td>".$row['Login']." <br></td></tr>";
         }
         echo '<br> Pour supprimer un Client, entrez son Siren ainsi que son Login si-dessous';
         echo'<form id="Form" method="POST" action="">
