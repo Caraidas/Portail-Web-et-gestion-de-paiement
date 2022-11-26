@@ -120,6 +120,7 @@ class Export{
     public static function export_tresorerie_to_PDF($db,$order,$field, $d=null,$id=null){
 
         $txt = "
+        Date d'extraction :".date("y/m/d")."<br>
         <table>
             <thead>
                 <tr>
@@ -159,7 +160,8 @@ class Export{
      * @param $db : la connexion à la base de donnée
      */
     public static function  export_remise_to_PDF($db){
-        $txt = "<table>
+        $txt = "
+        Date d'extraction :".date("y/m/d")."<br><table>
             <thead>
                 <tr>
                     <th>&nbsp;</th>
@@ -203,7 +205,8 @@ class Export{
      *
      */
     public static function export_impaye_to_PDF($db){
-        $txt = "<table>
+        $txt ="
+        Date d'extraction :".date("y/m/d"). "<table>
             <thead>
                 <tr>
                     <th>N°SIREN</th>
@@ -249,7 +252,8 @@ class Export{
      */
     public static function export_detail_to_PDF($db, $id){
 
-        $txt="<table>
+        $txt="
+        Date d'extraction :".date("y/m/d")."<table>
                     <thead>
                         <tr>
                             <th>N° SIREN</th>
