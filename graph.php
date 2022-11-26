@@ -15,6 +15,7 @@
         $cnx = Database::getPDO();
         $stats = SQLData::getTresorerieHistorique($cnx,615888425);
         $stats2= SQLData::getMotifImpaye($cnx,615888425);
+        $stats3=SQLData::getHistoriqueImpaye($cnx,615888425,"2015-08-18","2022-12-31");
     ?>
 <div id="historique_tresorerie" style="width:100%; height:400px;"></div>
 <?php
@@ -23,6 +24,11 @@ print_r($stats);
 <div id="impaye_par_categorie" style="width:100%; height:400px;"></div>
 <?php
 print_r($stats2);
+?>
+
+<div id="historique_impaye" style="width:100%; height:400px;"></div>
+<?php
+print_r($stats3);
 ?>
 yey
 
@@ -81,6 +87,13 @@ document.addEventListener('DOMContentLoaded',function(){
             type:'datetime',
             tickInterval:30 * 24 * 3600 * 1000
             },
+            labels: 
+                {
+                    formatter: function ( ){
+                            return Highcharts.dateFormat('%b %Y', this.value);
+
+                    },
+                },
         yAxis:{
             title:{
                 text : 'Trésorerie totale'
@@ -138,6 +151,108 @@ document.addEventListener('DOMContentLoaded',function(){
     })
 }
 );  
+document.addEventListener('DOMContentLoaded',function(){
+    const chart=Highcharts.chart('historique_impaye', {
+    chart: {
+        type: "column"
+    },
+    title: {
+        text: ''
+    },
+    xAxis: {
+        startOnTick: true,
+        endOnTick: true,
+        crosshair: true,
+        lineColor: '#3F5071',
+        lineWidth: 2,
+        type:'datetime',
+        tickInterval:30 * 24 * 3600 * 1000,
+        labels: 
+        {
+            formatter: function ( ){
+                    return Highcharts.dateFormat('%b %Y', this.value);
+
+            },
+        },
+    },
+    yAxis: {
+        title: {
+            useHTML: true,
+            text: 'Montant en €'
+        },
+        lineColor: '#3F5071',
+        lineWidth: 2
+    },
+    tooltip: {
+        headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
+        pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
+            '<td style="padding:0"><b>{point.y:.1f}</b></td></tr>',
+        footerFormat: '</table>',
+        shared: true,
+        useHTML: true
+    },
+    plotOptions: {
+        column: {
+            pointPadding: 0.2,
+            borderWidth: 0,
+        },
+        series: {
+            borderRadius: 5,
+            shadow: true,
+            pointWidth: 30,
+            centerInCategory: true,
+            groupPadding: 0.35
+        }
+    },
+    series: [{
+            name: 'Impayés par mois (€)',
+            data: <?php
+                    echo "[";
+                    foreach($stats3 as $stat) {
+                        echo "[".$stat[0]*1000 .",$stat[2]],";
+                    }
+                    echo "]";
+            ?>,
+            color: {
+                linearGradient: {
+                    x1: 0.5,
+                    x2: 0.5,
+                    y1: 0,
+                    y2: 1
+                },
+                stops: [
+                    [0, '#3A6DD0'],
+                    [1, '#8A73E2']
+                ]
+            }
+
+        },
+        {
+            name: 'Payé (€)',
+            data: <?php
+                    echo "[";
+                    foreach($stats3 as $stat) {
+                        echo "[".$stat[0]*1000 .",$stat[1]],";
+                    }
+                    echo "]";
+            ?>,
+            color: {
+                linearGradient: {
+                    x1: 0.5,
+                    x2: 0.5,
+                    y1: 0,
+                    y2: 1
+                },
+                stops: [
+                    [0, '#F7B42C'],
+                    [1, '#FC7F57']
+                ]
+            }
+
+        }
+    ],
+})
+});
 </script>
 
           

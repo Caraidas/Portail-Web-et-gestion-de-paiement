@@ -21,24 +21,34 @@ class SQLData
         //création de la syntaxe de la requette
         $query = "
         SELECT B_Client.NumSiren AS 'Siren',
-               RaisonSociale AS 'RaisonSociale',
-               B_Client.Devise AS 'Devise',
-               COUNT(B_Transaction.Montant) AS 'NombreTransactions',
-               SUM(B_Transaction.Montant) AS 'MontantTotal'
-        FROM B_Remise,
-             B_Client,
-             B_Transaction
-        WHERE B_Client.NumSiren LIKE B_Remise.NumSiren
-          AND B_Remise.NumRemise LIKE B_Transaction.NumRemise
+                B_Client.RaisonSociale AS 'RaisonSociale',
+                B_Client.Devise AS 'Devise',
+                SUM(MontantTotalRemise) AS 'MontantTotal',
+                SUM(NombreTransactionTMP) AS 'NombreTransaction'
+                FROM B_Client,(
+                        SELECT
+                        B_Client.NumSiren AS 'client',
+                        B_Remise.NumRemise AS 'NumeroRemise',
+                        B_Remise.DateTraitement AS 'DateTraitement',
+                        COUNT(B_Transaction.NumAutorisation) AS 'NombretransactionTmp' , 
+                        (TableMontantPositif.montant - TableMontantNegatif.montant) AS 'MontantTotalRemise'
+                        FROM B_Remise
+                        LEFT JOIN B_Client ON B_Client.NumSiren = B_Remise.NumSiren
+                        LEFT JOIN B_Transaction ON B_Transaction.NumRemise = B_Remise.NumRemise
+                        LEFT JOIN TableMontantPositif ON TableMontantPositif.NumRemise = B_Remise.NumRemise
+                        LEFT JOIN TableMontantNegatif ON TableMontantNegatif.NumRemise = B_Remise.NumRemise
+                        
         ";
-
         if($date !== null){
-            $query.=" AND B_Transaction.DateVente = :date";
+            $query.=" WHERE B_Transaction.DateVente = :date";
         }
+
+        $query .= " GROUP BY B_Remise.NumRemise) Remises 
+        WHERE Remises.client = B_Client.NumSiren";
         if($id !== null){
             $query.=" AND B_Client.NumSiren = :id";
         }
-        $query.=" GROUP BY Siren";
+        $query.=" GROUP BY B_Client.NumSiren";
         if ((($order=="ASC"||$order="DESC")&&($field=="Siren"||$field=="MontantTotal"))){
             $query.=" ORDER BY $field $order;";
         }
@@ -74,14 +84,15 @@ class SQLData
                B_Transaction.DateVente AS DateVente,
                B_Transaction.NumCarte,
                B_Transaction.Reseau,
-               B_Transaction.NumImpaye AS NumeroDossier,  
+               B_Impaye.NumDossier AS NumeroDossier,  
                B_Transaction.Devise,
                B_Transaction.Montant,
-               B_Transaction.LibelleImpaye
+               B_TypeImpaye.LibelleImpaye
         FROM B_Client 
              NATURAL JOIN B_Remise
              NATURAL JOIN B_Transaction
-        WHERE B_Transaction.NumImpaye IS NOT NULL;
+             NATURAL JOIN B_Impaye
+             NATURAL JOIN B_TypeImpaye
         ";
 
         if( $id !== null){
@@ -306,28 +317,19 @@ class SQLData
     public static function getMotifImpaye($db,$id=null){
 
         //création de la syntax de la requette
-        $query = "
-        SELECT 
-               COUNT(B_Transaction.NumImpaye) AS Total,
-               B_Transaction.LibelleImpaye AS LibelleImpaye
-        FROM B_Client 
-             NATURAL JOIN B_Remise
-             NATURAL JOIN B_Transaction
-        WHERE B_Transaction.NumImpaye IS NOT NULL
+        $query = "SELECT 
+               COUNT(B_Impaye.NumDossier) AS Total,
+               B_TypeImpaye.LibelleImpaye AS LibelleImpaye
+                FROM B_Client 
+                NATURAL JOIN B_Remise
+                NATURAL JOIN B_Transaction
+                NATURAL JOIN B_Impaye
+                NATURAL JOIN B_TypeImpaye
         ";
-        /*
-        B_Client.NumSiren,
-        B_Remise.DateTraitement AS DateRemise,
-        B_Transaction.DateVente AS DateVente,
-        B_Transaction.NumCarte,
-        B_Transaction.Reseau,
-        B_Transaction.NumImpaye AS NumeroDossier,  
-        */
         if( $id !== null){
-            $query.=" AND B_Client.NumSiren = :id";
+            $query.=" WHERE B_Client.NumSiren = :id";
         }
         $query.=" GROUP BY LibelleImpaye";
-        echo "$query";
 
         //securisation de la requette
         $query = $db->prepare($query);
@@ -339,6 +341,28 @@ class SQLData
         $query->execute();
         while($row = $query->fetch(PDO::FETCH_ASSOC)){ 
             array_push($table,[$row['LibelleImpaye'],$row['Total']]);
+        }
+        return $table;
+    }
+
+    public static function getHistoriqueImpaye($db,$id,$dateDebut, $dateFin){
+        $query = "SELECT UNIX_TIMESTAMP(CONCAT(YEAR(DateTraitement),'-',MONTH(DateTraitement),'-',01)) AS 'TimeStamp', SUM(Positif.MontantPositif) TotalPositif, SUM(Negatif.MontantNegatif) TotalNegatif FROM B_Remise JOIN (
+            SELECT B_Remise.NumRemise NumRemise, SUM(B_Transaction.Montant) MontantPositif FROM B_Remise NATURAL JOIN B_Transaction WHERE B_Transaction.Sens='+' GROUP BY NumRemise) Positif 
+            ON B_Remise.NumRemise = Positif.NumRemise JOIN(
+            SELECT B_Remise.NumRemise NumRemise, SUM(B_Transaction.Montant) MontantNegatif FROM B_Remise NATURAL JOIN B_Transaction WHERE B_Transaction.Sens='-' GROUP BY NumRemise) Negatif 
+            ON B_Remise.NumRemise = Negatif.NumRemise
+            JOIN B_Client ON B_Client.NumSiren = B_Remise.NumSiren
+            WHERE B_Client.NumSiren = :id AND B_Remise.DateTraitement BETWEEN :dateD AND :dateF GROUP BY TimeStamp
+            ";
+
+        $query = $db->prepare($query);
+        $query->bindParam('id',$id,PDO::PARAM_INT);
+        $query->bindParam('dateD',$dateDebut,PDO::PARAM_STR);
+        $query->bindParam('dateF',$dateFin,PDO::PARAM_STR);
+        $table = [];
+        $query->execute();
+        while($row = $query->fetch(PDO::FETCH_ASSOC)){ 
+            array_push($table,[$row['TimeStamp'],$row['TotalPositif'],$row['TotalNegatif']]);
         }
         return $table;
     }
