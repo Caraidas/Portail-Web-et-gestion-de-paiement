@@ -24,10 +24,16 @@ if (isset($_SESSION['warning-display'])) {
 
     <div class='container'>
         <h1>Frog Bank.</h1>
-        <div class='warning'>
+        <div class='warning' $warning_display>
             <div class='exclam'></div>
             <p>
-                Votre identifiant ou mot de passe est incorrect, réessayez.
+                <?php
+                $tentative = 3 - $_SESSION['tentative'];
+                if ($_SESSION['tentative'] <3)
+                    echo 'il vous reste '. $tentative.' tentatives.';
+                elseif ($_SESSION['timestamp_limite'] > time())
+                    echo 'attendez 10 min avant un nouvel essai.';
+                ?>
             </p>
         </div>
         <form method='POST' action='connexion-user.php' class='formulaire'>
@@ -39,7 +45,7 @@ if (isset($_SESSION['warning-display'])) {
             <div>
                 <label for='psw' class="pswrd">Mot de passe :</label>
                 <div>
-                    <input type="password" name="pwd" autocomplete="current-password" required="" id="id_password" class="input">
+                    <input type="password" name="psw" autocomplete="current-password" required="" id="id_password" class="input">
                     <i class="far fa-eye" id="togglePassword" style="position: absolute; margin: 19px -40px; cursor: pointer; color: var(--bleu);"></i>
                 </div>
                 <script>
