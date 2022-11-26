@@ -242,6 +242,20 @@ class SQLData
     }
 
     /**
+     * permet d'ajouter un login
+     * @param $db : la connexion à la base de donnée
+     * @param $login : login du future utilisateur
+     * @param $role : role du futur utilisateur
+     * @param $mdp : mot de passe du futur utilisateur
+     * @return void
+     */
+    public static function addLogin($db, $login, $role, $mdp){
+
+        $query = "INSERT INTO B_Login (Login, MotDePasse, Role) VALUES ('".$login."', md5('".$mdp."'), '".$role."')";
+        $db->query($query);
+    }
+
+    /**
      * Renvoie l'historique de la tresorerie sous forme de tableau
      *
      * @param $db : la connexion à la base de donnée
