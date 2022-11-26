@@ -40,7 +40,7 @@ class SQLData
                         
         ";
         if($date !== null){
-            $query.=" WHERE B_Transaction.DateVente = :date";
+            $query.=" WHERE B_Remise.DateTraitement < :date";
         }
 
         $query .= " GROUP BY B_Remise.NumRemise) Remises 
@@ -75,7 +75,7 @@ class SQLData
      * @param $id : l'id de l'entreprise à étudier (optionnel)
      * @return mixed
      */
-    public static function getImpaye($db,$id=null){
+    public static function getImpaye($db,$order,$field,$id=null){
 
         //création de la syntax de la requette
         $query = "
@@ -99,6 +99,10 @@ class SQLData
             $query.=" AND B_Client.NumSiren = :id";
         }
 
+        if ((($order=="ASC"||$order="DESC")&&($field=="Siren"||$field=="MontantTotal"))){
+            $query.=" ORDER BY $field $order;";
+        }
+
         //securisation de la requette
         $query = $db->prepare($query);
         if( $id !== null){
@@ -119,7 +123,7 @@ class SQLData
      * @param $dateFin : la date de fin de la recherche (optionnel)
      * @return mixed
      */
-    public static function getRemise($db, $siren = null, $raison = null, $dateDebut = null, $dateFin = null){
+    public static function getRemise($db,$order,$field, $siren = null, $raison = null, $dateDebut = null, $dateFin = null){
         $numWhere = 0;
         $req = "SELECT B_Client.NumSiren AS 'Siren',
                 B_Client.RaisonSociale AS 'RaisonSociale',
@@ -174,6 +178,10 @@ class SQLData
         }
 
         $req.=" GROUP BY B_Remise.NumRemise";
+
+        if ((($order=="ASC"||$order="DESC")&&($field=="Siren"||$field=="MontantTotal"))){
+            $req.=" ORDER BY $field $order;";
+        }
 
         $query = $db->prepare($req);
         if ($raison!==null ){

@@ -22,7 +22,7 @@ class GenerateHTML
                 $retour.= " <tr>
                                 <td>".$row['Siren']."</td>
                                 <td>".$row['RaisonSociale']."</td>
-                                <td>".$row['NombreTransactions']."</td>
+                                <td>".$row['NombreTransaction']."</td>
                                 <td>".$row['Devise']."</td>
                                 <td>".$row['MontantTotal']."</td>
                            </tr>";
@@ -40,10 +40,10 @@ class GenerateHTML
      * @param $db : la connexion à la base de donnée
      * @return array : le code html de l'interieur du tableau,le compteur pour les impaye,la liste des utilisateur
      */
-    public static function generateRemiseTab($db){
+    public static function generateRemiseTab($db,$order,$field){
 
         $retour = '';
-        $tresorerie = SQLData::getRemise($db);
+        $tresorerie = SQLData::getRemise($db,$order,$field);
 
         if($tresorerie->rowCount() > 0){
             echo "".$tresorerie->rowCount()." résultats trouvés";
@@ -63,6 +63,7 @@ class GenerateHTML
                                         <td>".$row['MontantTotal']."</td>
                                         <td>".$row['Sens']."</td>
                                    </tr>";
+                echo $count;
                 $count++;
                 $list_remise[] = $row['NumeroRemise'];
             }
@@ -86,9 +87,9 @@ class GenerateHTML
      * @param $db : la connexion à la base de donnée
      * @return string : le code html de l'interieur du tableau
      */
-    public static function generateImpayeTab($db){
+    public static function generateImpayeTab($db,$order,$field){
         $retour = "";
-        $tresorerie = SQLData::getImpaye($db);
+        $tresorerie = SQLData::getImpaye($db,$order,$field);
 
         if($tresorerie->rowCount() > 0){
             echo "".$tresorerie->rowCount()." résultats trouvés";
@@ -122,6 +123,7 @@ class GenerateHTML
      */
     public static function generateDetailsTab($db, $count, $list_remise)
     {
+
         $retour = "";
 
         for ($i = 0; $i < $count - 1; $i++) {
@@ -143,16 +145,16 @@ class GenerateHTML
                                 <tbody>";
             $details = SQLData::getDetails($db, $list_remise[$i]);
             while ($row2 = $details->fetch(PDO::FETCH_ASSOC)) {
-                $retour .= "<tr>
-                                <td>".$row2['Siren']."</td>
-                                <td>".$row2['DateVente']."</td>
-                                <td>".$row2['NumeroCarte']."</td>
-                                <td>".$row2['Reseau']."</td>
-                                <td>".$row2['NumAutorisation']."</td>
-                                <td>".$row2['Devise']."</td>
-                                <td>".$row2['Montant']."</td>
-                                <td>".$row2['Sens']."</td>
-                            </tr>";
+                $retour.="<tr>
+                    <td>" . $row2['Siren'] . "</td>
+                    <td>" . $row2['DateVente'] . "</td>
+                    <td>" . $row2['NumeroCarte'] . "</td>
+                    <td>" . $row2['Reseau'] . "</td>
+                    <td>" . $row2['NumAutorisation'] . "</td>
+                    <td>" . $row2['Devise'] . "</td>
+                    <td>" . $row2['Montant'] . "</td>
+                    <td>" . $row2['Sens'] . "</td>
+                </tr>";
             }
             $retour .= "</tbody></table></div>";
         }

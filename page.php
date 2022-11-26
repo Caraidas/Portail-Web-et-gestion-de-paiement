@@ -111,7 +111,14 @@
                 </thead>
                 <tbody class="table-hover">
                 <?php
-                    $retour = GenerateHTML::generateRemiseTab($db);
+                    if(isset($_POST['order']) && isset($_POST['tab-field'])){
+                            $order = $_POST['order'];
+                            $field = $_POST['tab-field'];
+                    }else {
+                        $order = 'Siren';
+                        $field = 'ASC';
+                    }
+                    $retour = GenerateHTML::generateRemiseTab($db,$order,$field);
                     echo $retour[0];
                     $count = $retour[1];
                     $list_remise = $retour[2];
@@ -156,7 +163,16 @@
                     </tr>
                 </thead>
                 <tbody class="table-hover">
-                <?= GenerateHTML::generateImpayeTab($db) ?>
+                <?php
+                if(isset($_POST['order']) && isset($_POST['tab-field'])){
+                    $order = $_POST['order'];
+                    $field = $_POST['tab-field'];
+                }else {
+                    $order = 'Siren';
+                    $field = 'ASC';
+                }
+                echo GenerateHTML::generateImpayeTab($db,$order,$field) ;
+                ?>
                 </tbody>
             </table>
     </div>

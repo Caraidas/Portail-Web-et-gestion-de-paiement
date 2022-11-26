@@ -6,7 +6,7 @@ include_once dirname(dirname(__FILE__)).'/vendor/autoload.php';
 use \Spipu\Html2Pdf\Html2Pdf;
 
 $db = Database::getPDO();
-Export::export_tresorerie_to_PDF($db);
+Export::export_tresorerie_to_csv_xls($requestResult, $fileType);
 
 
 /**
@@ -41,7 +41,7 @@ class Export{
         }
         
         header("Content-type: application/$contentType");
-        header("Content-disposition: attachment; filename=Tresorerie$fileName");
+        header("Content-disposition: attachment; filename=TRESORERIE-".date('y/m/d')."$fileName");
         print $excel;
         exit;
     }
@@ -73,7 +73,7 @@ class Export{
         }
         
         header("Content-type: application/$contentType");
-        header("Content-disposition: attachment; filename=Remises$fileName");
+        header("Content-disposition: attachment; filename=REMISES-".date('y/m/d')."$fileName");
         print $excel;
         exit;
     }
@@ -105,7 +105,7 @@ class Export{
         }
         
         header("Content-type: application/$contentType");
-        header("Content-disposition: attachment; filename=RemiseDetails$fileName");
+        header("Content-disposition: attachment; filename=REMISE-DETAILS".date('y/m/d')."$fileName");
         print $excel;
         exit;
     }
@@ -151,7 +151,7 @@ class Export{
         $html2pdf = new Html2Pdf('p','A4','fr');
         $html2pdf->writeHTML($txt);
         ob_end_clean();
-        $html2pdf->output('Tresorerie'.date("y-m-d").'.pdf','D'); //
+        $html2pdf->output('TRESORERIE'.date("y/m/d").'.pdf','D'); //
     }
 
     /**
@@ -159,7 +159,7 @@ class Export{
      *
      * @param $db : la connexion à la base de donnée
      */
-    public static function  export_remise_to_PDF($db){
+    public static function  export_remise_to_PDF($db,$order,$field){
         $txt = "
         Date d'extraction :".date("y/m/d")."<br><table>
             <thead>
@@ -175,7 +175,7 @@ class Export{
                     <th>Sens + ou -</th>
                 </tr>
             </thead>
-            <tbody>". GenerateHTML::generateRemiseTab($db)[0]. "</tbody>
+            <tbody>". GenerateHTML::generateRemiseTab($db,$order,$field)[0]. "</tbody>
         </table> 
         <style>
             td{
@@ -195,7 +195,7 @@ class Export{
         $html2pdf = new Html2Pdf('p','A4','fr');
         $html2pdf->writeHTML($txt);
         ob_end_clean();
-        $html2pdf->output('Remise'.date("y-m-d").'.pdf','D');
+        $html2pdf->output('REMISE'.date("y/m/d").'.pdf','D');
     }
 
     /**
@@ -240,7 +240,7 @@ class Export{
         $html2pdf = new Html2Pdf('p','A4','fr');
         $html2pdf->writeHTML($txt);
         ob_end_clean();
-        $html2pdf->output('Remises'.date("y-m-d").'.pdf','D');
+        $html2pdf->output('REMISES'.date("y/m/d").'.pdf','D');
     }
 
     /**
@@ -299,7 +299,7 @@ class Export{
         $html2pdf = new Html2Pdf('p','A4','fr');
         $html2pdf->writeHTML($txt);
         ob_end_clean();
-        $html2pdf->output('Detail'.date("y-m-d").'.pdf','D');
+        $html2pdf->output('DETAIL'.date("y/m/d").'.pdf','D');
     }
 }
 
