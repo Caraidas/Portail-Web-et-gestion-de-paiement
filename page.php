@@ -13,22 +13,10 @@
 	<meta name="viewport" content="initial-scale=1.0; maximum-scale=1.0; width=device-width;">
     <link rel="stylesheet" type="text/css" href="style.css">
 </head>
-<style>
-.center {
-    margin: auto;
-    width: 60%;
-    padding: 20px;
-    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-}
-
-.hideform {
-    display: none;
-}
-</style>
 <body> 
     
     <div class="mytabs">
-        <input type="radio" name="mytabs" id="tab-tresorerie" checked="checked">
+        <input type="radio" name="mytabs" id="tab-tresorerie" checked>
         <label class="label-first label-style" for="tab-tresorerie">Trésorerie</label>
         <div class="tab">
         <form action="page.php" method="get">
@@ -84,6 +72,29 @@
         <input type="radio" name="mytabs" id="tab-remise">
         <label class="label-style" for="tab-remise">Remise</label>
         <div class="tab">
+        <form action="page.php" method="get">
+            <label for="date">Annonces du:</label>
+            <input type="date" id="date" name="date">
+            <input type="submit">
+        </form>
+        <form class="show-radio" action="page.php" method="post">
+            <label for="tab-field">Trier le tableau par: </label>
+            <select name="tab-field" id="tab-field">
+                <option value="">--Choisissez une option--</option>
+                <option value="Siren">Siren</option>
+                <option value="MontantTotal">Montant</option>
+            </select>
+            <input type="radio" id="croissant" name="order" value="ASC">
+            <label for="croissant">croissant</label>
+            <input type="radio" id="decroissant" name="order" value="DESC">
+            <label for="decroissant">décroissant</label>
+            <input type="submit">
+        </form>
+        <form>
+            <label for="siren-search">Rechercher un N° de remise:</label>
+            <input type="search" id="siren-search" name="siren-search">
+            <button type="submit">Search</button>
+        </form>
         <table class="table-fill">
                 <thead>
                     <tr>
@@ -112,6 +123,24 @@
         <input type="radio" name="mytabs" id="tab-impaye">
         <label class="label-last label-style" for="tab-impaye">Impayés</label>
         <div class="tab">
+            <form action="page.php" method="get">
+            <label for="date">Annonces du:</label>
+            <input type="date" id="date" name="date">
+            <input type="submit">
+        </form>
+        <form class="show-radio" action="page.php" method="post">
+            <label for="tab-field">Trier le tableau par: </label>
+            <select name="tab-field" id="tab-field">
+                <option value="">--Choisissez une option--</option>
+                <option value="Siren">Siren</option>
+                <option value="MontantTotal">Montant</option>
+            </select>
+            <input type="radio" id="croissant" name="order" value="ASC">
+            <label for="croissant">croissant</label>
+            <input type="radio" id="decroissant" name="order" value="DESC">
+            <label for="decroissant">décroissant</label>
+            <input type="submit">
+        </form>
         <table class="table-fill">
                 <thead>
                     <tr>
@@ -148,11 +177,10 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.1/jquery.min.js" integrity="sha512-aVKKRRi/Q/YV+4mjoKBsE4x3H+BkegoM/em46NNlCqNTmUYADjBbeNefNxYV7giUp0VxICtqdrbqU7iVaeZNXA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script>
     $(document).ready(function () {
-    $('#content1').hide();
-    $('#content2').hide();
-    $('#content3').hide();
-    $('#content4').hide();
-    $('#content5').hide();
+    var count = "<?php echo $count; ?>";
+    for (let i = 1; i < count; i++) {
+        $('#content'+i).hide();
+    }
     $("input").click(function () {
         if ($('tr#' + $(this).data("href")).is(":visible")) {
             $('tr#' + $(this).data("href")).remove();

@@ -63,7 +63,6 @@ class GenerateHTML
                                         <td>".$row['MontantTotal']."</td>
                                         <td>".$row['Sens']."</td>
                                    </tr>";
-                echo $count;
                 $count++;
                 $list_remise[] = $row['NumeroRemise'];
             }
@@ -123,7 +122,6 @@ class GenerateHTML
      */
     public static function generateDetailsTab($db, $count, $list_remise)
     {
-
         $retour = "";
 
         for ($i = 0; $i < $count - 1; $i++) {
@@ -145,16 +143,16 @@ class GenerateHTML
                                 <tbody>";
             $details = SQLData::getDetails($db, $list_remise[$i]);
             while ($row2 = $details->fetch(PDO::FETCH_ASSOC)) {
-                echo "<tr>
-                    <td>" . $row2['Siren'] . "</td>
-                    <td>" . $row2['DateVente'] . "</td>
-                    <td>" . $row2['NumeroCarte'] . "</td>
-                    <td>" . $row2['Reseau'] . "</td>
-                    <td>" . $row2['NumAutorisation'] . "</td>
-                    <td>" . $row2['Devise'] . "</td>
-                    <td>" . $row2['Montant'] . "</td>
-                    <td>" . $row2['Sens'] . "</td>
-                </tr>";
+                $retour .= "<tr>
+                                <td>".$row2['Siren']."</td>
+                                <td>".$row2['DateVente']."</td>
+                                <td>".$row2['NumeroCarte']."</td>
+                                <td>".$row2['Reseau']."</td>
+                                <td>".$row2['NumAutorisation']."</td>
+                                <td>".$row2['Devise']."</td>
+                                <td>".$row2['Montant']."</td>
+                                <td>".$row2['Sens']."</td>
+                            </tr>";
             }
             $retour .= "</tbody></table></div>";
         }
