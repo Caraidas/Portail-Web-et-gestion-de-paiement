@@ -4,8 +4,7 @@ include_once "SQLData.php";
 include_once "GenerateHTML.php";
 include_once dirname(dirname(__FILE__)).'/vendor/autoload.php';
 use \Spipu\Html2Pdf\Html2Pdf;
-use \Spipu\Html2Pdf\Exception\ExceptionFormatter;
-use \Spipu\Html2Pdf\Exception\Html2PdfException;
+
 $db = Database::getPDO();
 Export::export_tresorerie_to_PDF($db);
 
@@ -147,41 +146,10 @@ class Export{
                     border-collapse: collapse 
                 }
             </style>";
-            /*
-        $html2pdf->writeHTML("
-            <table>
-                <thead>
-                    <tr>
-                        <th>N°SIREN</th>
-                        <th>Raison sociale</th>
-                        <th>Nombre de transactions</th>
-                        <th>Devise</th>
-                        <th>Montant total </th>
-                    </tr>
-                </thead>
-                <tbody>");
-        $html2pdf->writeHTML(GenerateHTML::generateTresorerieTab($db,$date));
-        $html2pdf->writeHTML(
-            "</tbody>
-            </table>
-             <style>
-                td{
-                    border:black solid 1px;
-                    border-collapse: collapse 
-                }
-                table{
-                    border:black solid 1px;
-                    border-collapse: collapse 
-                }
-                thead{
-                    border:grey solid 1px;
-                    border-collapse: collapse 
-                }
-            </style>"
-        );
-        */
+
         $html2pdf->writeHTML($txt);
-        $html2pdf->output('Tresorerie'.date("m-d-y").'.pdf','D'); //
+        ob_end_clean();
+        $html2pdf->output('Tresorerie'.date("y-m-d").'.pdf','D'); //
     }
 }
 
