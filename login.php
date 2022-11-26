@@ -24,7 +24,7 @@ if (isset($_SESSION['warning-display'])) {
 
     <div class='container'>
         <h1>Frog Bank.</h1>
-        <div class='warning'>
+        <div class='warning' $warning_display>
             <div class='exclam'></div>
             <p>
                 Votre identifiant ou mot de passe est incorrect, réessayez.
