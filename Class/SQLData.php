@@ -330,7 +330,6 @@ class SQLData
             $query.=" WHERE B_Client.NumSiren = :id";
         }
         $query.=" GROUP BY LibelleImpaye";
-        echo "$query";
 
         //securisation de la requette
         $query = $db->prepare($query);
@@ -340,10 +339,30 @@ class SQLData
 
         $table = [];
         $query->execute();
-        echo "B";
         while($row = $query->fetch(PDO::FETCH_ASSOC)){ 
-            echo "AHAH";
             array_push($table,[$row['LibelleImpaye'],$row['Total']]);
+        }
+        return $table;
+    }
+
+    public static function getHistoriqueImpaye($db,$id,$dateDebut, $dateFin){
+        $query = "SELECT UNIX_TIMESTAMP(CONCAT(YEAR(DateTraitement),'-',MONTH(DateTraitement),'-',01)) AS 'TimeStamp', SUM(Positif.MontantPositif) TotalPositif, SUM(Negatif.MontantNegatif) TotalNegatif FROM B_Remise JOIN (
+            SELECT B_Remise.NumRemise NumRemise, SUM(B_Transaction.Montant) MontantPositif FROM B_Remise NATURAL JOIN B_Transaction WHERE B_Transaction.Sens='+' GROUP BY NumRemise) Positif 
+            ON B_Remise.NumRemise = Positif.NumRemise JOIN(
+            SELECT B_Remise.NumRemise NumRemise, SUM(B_Transaction.Montant) MontantNegatif FROM B_Remise NATURAL JOIN B_Transaction WHERE B_Transaction.Sens='-' GROUP BY NumRemise) Negatif 
+            ON B_Remise.NumRemise = Negatif.NumRemise
+            JOIN B_Client ON B_Client.NumSiren = B_Remise.NumSiren
+            WHERE B_Client.NumSiren = :id AND B_Remise.DateTraitement BETWEEN :dateD AND :dateF GROUP BY TimeStamp
+            ";
+
+        $query = $db->prepare($query);
+        $query->bindParam('id',$id,PDO::PARAM_INT);
+        $query->bindParam('dateD',$dateDebut,PDO::PARAM_STR);
+        $query->bindParam('dateF',$dateFin,PDO::PARAM_STR);
+        $table = [];
+        $query->execute();
+        while($row = $query->fetch(PDO::FETCH_ASSOC)){ 
+            array_push($table,[$row['TimeStamp'],$row['TotalPositif'],$row['TotalNegatif']]);
         }
         return $table;
     }
