@@ -64,32 +64,17 @@ session_start();
                    if(isset($_POST['order']) && isset($_POST['tab-field'])){
                         $order = $_POST['order'];
                         $field = $_POST['tab-field'];
-                   }else{
-                        $order = 'Siren';
-                        $field = 'ASC';
-                   }
-                   $tresorerie = SQLData::getTresorerie($db,$order,$field);
-                   if(isset($_GET['date'])){
-                    if($_GET['date']!=''){
-                        $d = $_GET['date'];//aaaa-mm-jj
-                        $tresorerie = SQLData::getTresorerie($db,$order,$field,$date=$d);
-                    }else $tresorerie = SQLData::getTresorerie($db,$order,$field); 
                    }else {
-                        $tresorerie = SQLData::getTresorerie($db,$order,$field); 
+                       $order = 'Siren';
+                       $field = 'ASC';
                    }
+                   if(isset($_GET['date']) && $_GET['date']!=''){
+                       $d = $_GET['date'];//aaaa-mm-jj;
+                   }else{
+                       $d = null;
+                   }
+                   echo GenerateHTML::generateTresorerieTab($db,$order,$field,$d)
 
-                    if($tresorerie->rowCount() > 0){
-                        echo "".$tresorerie->rowCount()." résultats trouvés";
-                        while($row = $tresorerie->fetch(PDO::FETCH_ASSOC)){ 
-                            echo " <tr>
-                                        <td>".$row['Siren']."</td>
-                                        <td>".$row['RaisonSociale']."</td>
-                                        <td>".$row['NombreTransactions']."</td>
-                                        <td>".$row['Devise']."</td>
-                                        <td>".$row['MontantTotal']."</td>
-                                   </tr>";
-                        }
-                    }else echo "Pas de résultats pour cet utilisateur";
                 ?>  
                 </tbody>
             </table>

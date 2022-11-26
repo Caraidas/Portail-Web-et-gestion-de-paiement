@@ -11,14 +11,10 @@ class GenerateHTML
      * @param $d  : (optionnelle) la date pour la trésorerie
      * @return string : le code html de l'interieur du tableau
      */
-    public static function generateTresorerieTab($db, $d=null){
+    public static function generateTresorerieTab($db,$order,$field, $d=null,$id=null){
 
         $retour = '';
-        if($d === null){
-            $tresorerie = SQLData::getTresorerie($db,$date=$d);
-        }else{
-            $tresorerie = SQLData::getTresorerie($db);
-        }
+        $tresorerie = SQLData::getTresorerie($db,$order,$field,$d,$id);
 
         if($tresorerie->rowCount() > 0){
             echo "".$tresorerie->rowCount()." résultats trouvés";
