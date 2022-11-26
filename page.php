@@ -2,6 +2,7 @@
     session_start();
     require_once 'Class/Database.php';
     require_once 'Class/SQLData.php';
+    require_once  'Class/GenerateHTML.php';
     $db = Database::getPDO(); //database pour toute la page
 ?>
 
