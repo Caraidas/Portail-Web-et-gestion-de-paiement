@@ -1,7 +1,8 @@
 <?php
-session_start();
- require_once 'Class/Database.php';
- require_once 'Class/SQLData.php'
+    session_start();
+    require_once 'Class/Database.php';
+    require_once 'Class/SQLData.php';
+    $db = Database::getPDO(); //database pour toute la page
 ?>
 
 <html lang="en">
@@ -59,7 +60,6 @@ session_start();
                 </thead>
                 <tbody class="table-hover">
                 <?php
-                   $db = Database::getPDO();
                    //L'ordre du tableau 
                    if(isset($_POST['order']) && isset($_POST['tab-field'])){
                         $order = $_POST['order'];
@@ -99,34 +99,11 @@ session_start();
                 </thead>
                 <tbody class="table-hover">
                 <?php
-                   $db = Database::getPDO();
-
-                   $tresorerie = SQLData::getRemise($db);
-
-                    if($tresorerie->rowCount() > 0){
-                        echo "".$tresorerie->rowCount()." résultats trouvés";
-                        $count = 1;
-                        $list_remise = array();
-                        while($row = $tresorerie->fetch(PDO::FETCH_ASSOC)){
-                            echo " <tr>
-                                        <td>
-                                            <input type='button' name='' value='Détails' data-href='content$count'>
-                                        </td>
-                                        <td>".$row['Siren']."</td>
-                                        <td>".$row['RaisonSociale']."</td>
-                                        <td>".$row['NumeroRemise']."</td>
-                                        <td>".$row['DateTraitement']."</td>
-                                        <td>".$row['Nombretransaction']."</td>
-                                        <td>".$row['Devise']."</td>
-                                        <td>".$row['MontantTotal']."</td>
-                                        <td>".$row['Sens']."</td>
-                                   </tr>";
-                            echo $count;
-                            $count++;
-                            $list_remise[] = $row['NumeroRemise'];
-                        }
-                    }else echo "Pas de résultats pour cet utilisateur";
-                ?>  
+                    $retour = GenerateHTML::generateRemiseTab($db);
+                    echo $retour[0];
+                    $count = $retour[1];
+                    $list_remise = $retour[2];
+                ?>
                 </tbody>
             </table>
         </div>
@@ -149,28 +126,7 @@ session_start();
                     </tr>
                 </thead>
                 <tbody class="table-hover">
-                <?php
-                   $db = Database::getPDO();
-
-                   $tresorerie = SQLData::getImpaye($db);
-
-                    if($tresorerie->rowCount() > 0){
-                        echo "".$tresorerie->rowCount()." résultats trouvés";
-                        while($row = $tresorerie->fetch(PDO::FETCH_ASSOC)){
-                            echo " <tr>
-                                        <td>".$row['NumSiren']."</td>
-                                        <td>".$row['DateVente']."</td>
-                                        <td>".$row['DateRemise']."</td>
-                                        <td>".$row['NumCarte']."</td>
-                                        <td>".$row['Reseau']."</td>
-                                        <td>".$row['NumeroDossier']."</td>
-                                        <td>".$row['Devise']."</td>
-                                        <td>".$row['Montant']."</td>
-                                        <td>".$row['LibelleImpaye']."</td>
-                                   </tr>";
-                        }
-                    }else echo "Pas de résultats pour cet utilisateur";
-                ?>  
+                <?= GenerateHTML::generateImpayeTab($db) ?>
                 </tbody>
             </table>
     </div>
@@ -186,40 +142,7 @@ session_start();
         </form>
     </div>
 </div>
-<?php
-    for($i = 0; $i < $count-1;$i++){
-        $j=$i+1;
-        echo "<div id='content$j'>
-        <table class='classic-table'>
-            <thead>
-                <tr>
-                    <th>N° SIREN</th>
-                    <th>Date vente</th>
-                    <th>N° carte</th>
-                    <th>Réseau</th>
-                    <th>N° Autorisation</th>
-                    <th>Devise</th>
-                    <th>Montant</th>
-                    <th>Sens</th>
-                </tr>
-            </thead>
-            <tbody>";
-        $details = SQLData::getDetails($db, $list_remise[$i]);
-        while($row2 = $details->fetch(PDO::FETCH_ASSOC)){
-            echo "<tr>
-                    <td>".$row2['Siren']."</td>
-                    <td>".$row2['DateVente']."</td>
-                    <td>".$row2['NumeroCarte']."</td>
-                    <td>".$row2['Reseau']."</td>
-                    <td>".$row2['NumAutorisation']."</td>
-                    <td>".$row2['Devise']."</td>
-                    <td>".$row2['Montant']."</td>
-                    <td>".$row2['Sens']."</td>
-                </tr>";
-        }
-        echo "</tbody></table></div>";
-    }
-?>
+<?= GenerateHTML::generateDetailsTab($db,$count,$list_remise)?>
   </body>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.1/jquery.min.js" integrity="sha512-aVKKRRi/Q/YV+4mjoKBsE4x3H+BkegoM/em46NNlCqNTmUYADjBbeNefNxYV7giUp0VxICtqdrbqU7iVaeZNXA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script>

@@ -117,8 +117,8 @@ class Export{
      * @param $date : la date choisie dans le tableau des trésorerie
      *
      */
-    public static function export_tresorerie_to_PDF($db, $date=null){
-        $html2pdf = new Html2Pdf('p','A4','fr');
+    public static function export_tresorerie_to_PDF($db,$order,$field, $d=null,$id=null){
+
         $txt = "
         <table>
             <thead>
@@ -130,7 +130,7 @@ class Export{
                     <th>Montant total </th>
                 </tr>
             </thead>
-            <tbody>".GenerateHTML::generateTresorerieTab($db,$date)."</tbody>
+            <tbody>".GenerateHTML::generateTresorerieTab($db,$order,$field, $d,$id)."</tbody>
             </table>
              <style>
                 td{
@@ -147,9 +147,97 @@ class Export{
                 }
             </style>";
 
+        $html2pdf = new Html2Pdf('p','A4','fr');
         $html2pdf->writeHTML($txt);
         ob_end_clean();
         $html2pdf->output('Tresorerie'.date("y-m-d").'.pdf','D'); //
+    }
+
+    /**
+     * Fait télécharger à l'utilisateur le tableau des remises sous format pdf
+     *
+     * @param $db : la connexion à la base de donnée
+     */
+    public static function  export_remise_to_PDF($db){
+        $txt = "<table>
+            <thead>
+                <tr>
+                    <th>&nbsp;</th>
+                    <th>N°SIREN</th>
+                    <th>Raison sociale</th>
+                    <th>N° Remise</th>
+                    <th>Date traitement</th>
+                    <th>Nbr Transactions</th>
+                    <th>Devise</th>
+                    <th>Montant total</th>
+                    <th>Sens + ou -</th>
+                </tr>
+            </thead>
+            <tbody>". GenerateHTML::generateRemiseTab($db)[0]. "</tbody>
+        </table> 
+        <style>
+            td{
+                border:black solid 1px;
+                border-collapse: collapse 
+            }
+            table{
+                border:black solid 1px;
+                border-collapse: collapse 
+            }
+            thead{
+                border:grey solid 1px;
+                border-collapse: collapse 
+            }
+        </style>";
+
+        $html2pdf = new Html2Pdf('p','A4','fr');
+        $html2pdf->writeHTML($txt);
+        ob_end_clean();
+        $html2pdf->output('Remise'.date("y-m-d").'.pdf','D');
+    }
+
+    /**
+     * Fait télécharger à l'utilisateur le tableau des remises sous format pdf
+     *
+     * @param $db : la connexion à la base de donnée
+     *
+     */
+    public static function export_impaye_to_PDF($db){
+        $txt = "<table>
+            <thead>
+                <tr>
+                    <th>N°SIREN</th>
+                    <th>Date vente</th>
+                    <th>Date remise</th>
+                    <th>N° Carte</th>
+                    <th>Réseau</th>
+                    <th>N° dossier impayés</th>
+                    <th>Devise</th>
+                    <th>Montant</th>
+                    <th>Libellé impayés</th>
+                </tr>
+            </thead>
+            <tbody>". GenerateHTML::generateRemiseTab($db). "</tbody>
+        </table> 
+        <style>
+            td{
+                border:black solid 1px;
+                border-collapse: collapse 
+            }
+            table{
+                border:black solid 1px;
+                border-collapse: collapse 
+            }
+            thead{
+                border:grey solid 1px;
+                border-collapse: collapse 
+            }
+        </style>";
+
+        $html2pdf = new Html2Pdf('p','A4','fr');
+        $html2pdf->writeHTML($txt);
+        ob_end_clean();
+        $html2pdf->output('Remises'.date("y-m-d").'.pdf','D');
     }
 }
 
