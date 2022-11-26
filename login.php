@@ -6,8 +6,8 @@ if (isset($_SESSION['warning-display'])) {
 } else {
     $warning_display = "style='display: none'";
 }
+?>
 
-echo "
 <!DOCTYPE html>
 <html lang='en'>
 
@@ -16,14 +16,15 @@ echo "
     <meta http-equiv='X-UA-Compatible' content='IE=edge'>
     <meta name='viewport' content='width=device-width, initial-scale=1.0'>
     <link rel='stylesheet' href='style-connexion.css'>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css">
     <title>Frog Bank - Veuillez vous connecter</title>
 </head>
 
 <body>
-    
+
     <div class='container'>
         <h1>Frog Bank.</h1>
-        <div class='warning' $warning_display>
+        <div class='warning'>
             <div class='exclam'></div>
             <p>
                 Votre identifiant ou mot de passe est incorrect, réessayez.
@@ -36,8 +37,23 @@ echo "
             </div>
 
             <div>
-                <label for='psw'>Mot de passe :</label>
-                <input type='password' class='input' name='psw'>
+                <label for='psw' class="pswrd">Mot de passe :</label>
+                <div>
+                    <input type="password" name="pwd" autocomplete="current-password" required="" id="id_password" class="input">
+                    <i class="far fa-eye" id="togglePassword" style="position: absolute; margin: 19px -40px; cursor: pointer; color: var(--bleu);"></i>
+                </div>
+                <script>
+                    const togglePassword = document.querySelector('#togglePassword');
+                    const password = document.querySelector('#id_password');
+
+                    togglePassword.addEventListener('click', function(e) {
+                        // toggle the type attribute
+                        const type = password.getAttribute('type') === 'password' ? 'text' : 'password';
+                        password.setAttribute('type', type);
+                        // toggle the eye slash icon
+                        this.classList.toggle('fa-eye-slash');
+                    });
+                </script>
             </div>
 
             <input type='submit' value='Se connecter' class='submit'>
@@ -45,5 +61,5 @@ echo "
         </form>
     </div>
 </body>
-</html>";
-?>
+
+</html>
