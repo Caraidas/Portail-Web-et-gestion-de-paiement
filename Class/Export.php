@@ -239,6 +239,64 @@ class Export{
         ob_end_clean();
         $html2pdf->output('Remises'.date("y-m-d").'.pdf','D');
     }
+
+    /**
+     * Fait télécharger à l'utilisateur un tableau de détail sous format pdf
+     *
+     * @param $db : la connexion à la base de donnée
+     * @param $id : l'indentifiant dont on veut le détail
+     *
+     */
+    public static function export_detail_to_PDF($db, $id){
+
+        $txt="<table>
+                    <thead>
+                        <tr>
+                            <th>N° SIREN</th>
+                            <th>Date vente</th>
+                            <th>N° carte</th>
+                            <th>Réseau</th>
+                            <th>N° Autorisation</th>
+                            <th>Devise</th>
+                            <th>Montant</th>
+                            <th>Sens</th>
+                        </tr>
+                    </thead>
+                    <tbody>";
+
+        $details = SQLData::getDetails($db, $id);
+        while ($row2 = $details->fetch(PDO::FETCH_ASSOC)) {
+            $txt.= "<tr>
+                    <td>" . $row2['Siren'] . "</td>
+                    <td>" . $row2['DateVente'] . "</td>
+                    <td>" . $row2['NumeroCarte'] . "</td>
+                    <td>" . $row2['Reseau'] . "</td>
+                    <td>" . $row2['NumAutorisation'] . "</td>
+                    <td>" . $row2['Devise'] . "</td>
+                    <td>" . $row2['Montant'] . "</td>
+                    <td>" . $row2['Sens'] . "</td>
+                </tr>";
+        }
+
+        $txt.="</tbody></table> <style>
+            td{
+                border:black solid 1px;
+                border-collapse: collapse 
+            }
+            table{
+                border:black solid 1px;
+                border-collapse: collapse 
+            }
+            thead{
+                border:grey solid 1px;
+                border-collapse: collapse 
+            }
+        </style>";
+        $html2pdf = new Html2Pdf('p','A4','fr');
+        $html2pdf->writeHTML($txt);
+        ob_end_clean();
+        $html2pdf->output('Detail'.date("y-m-d").'.pdf','D');
+    }
 }
 
 ?>
