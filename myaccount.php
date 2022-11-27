@@ -5,18 +5,34 @@ session_start();
 if (isset($_SESSION['id']) && isset($_SESSION['role'])){
 
     echo 'Votre login est : '.$_SESSION['id'].'<br> Votre role est : ' .$_SESSION['role'];
+    //vérification qu'il s'agit bien de l'admin
     if ($_SESSION['role'] == 'Admin'){
         $db = Database::getPDO();
+
+
+        //vérification que les champs pour la suppression d'un login est bien entré
+
         if (isset($_POST['Login']) && !empty($_POST['Login'])) {
-            SQLData::deleteUser($db, $_POST['Siren']);
-            echo "<br>l'utilisateur " . $_POST['Siren'] . "a bien été supprimé<br>";
+            if(isset($_POST['checkbox'])){
+                SQLData::deleteUser($db, $_POST['Siren']);
+                echo "<br>l'utilisateur " . $_POST['Siren'] . "a bien été supprimé<br>";
+            }
+            else
+                echo"l'accord du PO n'a pas été accordé";
         }
 
+        //vérification que les champs pour l'ajout d'un login sont bien entré
         if (isset($_POST["AjoutMDP"]) && ($_POST["AjoutMDP"] === $_POST["ConfirmationMDP"]) && !empty($_POST["AjoutMDP"])) {
             if (isset($_POST["AjoutLogin"]) && !empty($_POST["AjoutLogin"])){
-                SQLData::addLogin($db, $_POST["AjoutLogin"], $_POST["AjoutRole"], $_POST["AjoutMDP"]);
-                echo "<br>l'utilisateur " . $_POST['AjoutLogin'] . "a bien été ajouté<br>";
+                if(isset($_POST['checkbox'])){
+                    SQLData::addLogin($db, $_POST["AjoutLogin"], $_POST["AjoutRole"], $_POST["AjoutMDP"]);
+                    echo "<br>l'utilisateur " . $_POST['AjoutLogin'] . "a bien été ajouté<br>";
+                }
+               else
+                   echo"l'accord du PO n'a pas été accordé";
             }
+            else
+                echo "champs login manquant";
         }
 
 
@@ -52,7 +68,9 @@ if (isset($_SESSION['id']) && isset($_SESSION['role'])){
              <br>
              <label for="addUser">Ajouter l\'utilisateur</label>
              <br>
-             <button id="Button" type="submit">Créer</button>';
+             <button id="Button" type="submit">Créer</button>
+             <input type="checkbox" id="checkbox" name="checkbox" value="1">
+             <label for="checkbox"> accord du PO</label>';
     }
 
 
