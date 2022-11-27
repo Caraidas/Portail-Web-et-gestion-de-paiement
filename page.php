@@ -1,28 +1,27 @@
 <?php
-    session_start();
     require_once 'Class/Database.php';
     require_once 'Class/SQLData.php';
     require_once  'Class/GenerateHTML.php';
     $db = Database::getPDO(); //database pour toute la page
-    $id = null;
+    $siren = null;
+    include 'header.php';
     if(isset($_SESSION['role'])){
         $role = $_SESSION['role'];
-
         switch($role){
             case 'Commerçant' :
-                $id = SQLData::getSirenOfCommerceant($db,$_SESSION["id"]);
+                $siren = SQLData::getSirenOfCommerceant($db,$_SESSION["id"]);
                 break;
             case 'Admin' :
-                header('Location : myaccount.php');
+                header('Location: myaccount.php');
                 break;
             case 'PO' :
                 break;
             default :
-                header('Location : login.php');
+                header('Location: login.php');
         }
 
     }else{
-        header('Location : login.php');
+        header('Location: login.php');
     }
 ?>
 
@@ -227,7 +226,7 @@ for ($i = 0; $i < $count - 1; $i++) {
                 </thead>
                 <tbody>";
     echo GenerateHTML::generateDetailsTab($db,$list_remise[$i])[0];
-}
+} 
 ?>
   </body>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.1/jquery.min.js" integrity="sha512-aVKKRRi/Q/YV+4mjoKBsE4x3H+BkegoM/em46NNlCqNTmUYADjBbeNefNxYV7giUp0VxICtqdrbqU7iVaeZNXA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>

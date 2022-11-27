@@ -240,7 +240,7 @@ class SQLData
     public static function getLogin($db, $role){
         if ($role == 'Admin'){
 
-            $req = "SELECT Login FROM B_Login";
+            $req = "SELECT L.Login AS Login, L.Role AS Role, C.NumSiren AS Siren, C.RaisonSociale AS 'Raison Sociale' FROM B_Login L LEFT JOIN B_Client C ON C.Login=L.Login";
 
             return $db->query($req);
         }
@@ -254,7 +254,7 @@ class SQLData
      * @return void
      */
     public static function deleteUser($db, $Login){
-        $req2 = "DELETE FROM B_Login WHERE Login LIKE ".$Login;
+        $req2 = "DELETE FROM B_Login WHERE Login=$Login";
         $db->query($req2);
     }
 
