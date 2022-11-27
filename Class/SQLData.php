@@ -381,7 +381,7 @@ class SQLData
         $commande = "SELECT NumSiren FROM B_Client NATURAL JOIN B_Login WHERE B_Login.Login = :Login; ";
         $query = $db->prepare($commande);
         $query->bindParam("Login",$login,PDO::PARAM_INT);
-        $query->exec();
+        $query->execute();
         $row = $query->fetch(PDO::FETCH_ASSOC);
         return $row["NumSiren"];
     }
