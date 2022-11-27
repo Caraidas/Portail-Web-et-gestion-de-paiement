@@ -30,8 +30,11 @@ if (isset($_SESSION['warning-display'])) {
                 <?php
                 if(isset($_SESSION['tentative']) && $_SESSION['timestamp_limite']) {
                     $tentative = 3 - $_SESSION['tentative'];
-                    if ($_SESSION['tentative'] < 3)
-                        echo '<mark>il vous reste ' . $tentative . ' tentatives.</mark>';
+                    if ($_SESSION['tentative'] == 2)
+                        echo '<mark>C\'est votre dernière tentative !</mark>';
+                    elseif ($_SESSION['tentative'] < 3)
+                        echo 'il vous reste ' . $tentative . ' tentatives.';
+
                     elseif ($_SESSION['timestamp_limite'] > time())
                         echo 'attendez 10 min avant un nouvel essai.';
                 }

@@ -4,7 +4,7 @@ include_once('Class/Database.php');
 
 //initialisations des variables de sécurisation
 if(!isset($_SESSION['tentative'])){
-    $_SESSION['tentative'] = 1; //
+    $_SESSION['tentative'] = 1;
     $_SESSION['timestamp_limite'] = time() + 60*10;
 }
 
