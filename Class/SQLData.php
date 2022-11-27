@@ -12,12 +12,16 @@ class SQLData
      * Renvoie la liste des tresoreries sous forme de PDOStatment
      *
      * @param $db : la connexion à la base de donnée
-     * @param $date : l'id de l'entreprise à étudier (optionnel)
-     * @param $id : la date que l'on veut verifier (optionnel)
+     * @param $order : L'ordre qu'on utilise pour trier
+     * @param $field : le champs par lequel on trie
+     * @param $sirenCo : le siren du commerçant si c'est lui qui fait la rechercher
+     * @param $date : la date étudiée (optionnel)
+     * @param $siren : le siren recherchée par l'utilisateur (optionnel)
+     * @param $raison : la raison sociale recherchée par l'utilisateur (optionnel)
      * @return mixed
      */
-    public static function getTresorerie($db,$order,$field, $date=null, $id=null){
-
+    public static function getTresorerie($db,$order,$field,$sirenCo=null, $date=null, $siren=null, $raison=null){
+        $numConditionSearch = 0;
         //création de la syntaxe de la requette
         $query = "
         SELECT B_Client.NumSiren AS 'Siren',
@@ -42,28 +46,49 @@ class SQLData
         if($date !== null){
             $query.=" WHERE B_Remise.DateTraitement < :date";
         }
-
         $query .= " GROUP BY B_Remise.NumRemise) Remises 
         WHERE Remises.client = B_Client.NumSiren";
-        if($id !== null){
-            $query.=" AND B_Client.NumSiren = :id";
+
+        if($sirenCo !== null){
+            $query.=" AND B_Client.NumSiren = :sirenCo";
         }
+
+        if($siren !== null){
+            if ($numConditionSearch==0){
+                $query .= " AND (";
+            }else{
+                $query .= " OR";
+            }
+            $numConditionSearch++;
+            $query.=" B_Client.NumSiren LIKE \"%$siren%\"";
+        }
+
+        if($raison !== null){
+            if ($numConditionSearch==0){
+                $query .= " AND (";
+            }else{
+                $query .= " OR";
+            }
+            $numConditionSearch++;
+            $query.=" B_Client.RaisonSociale LIKE \"%$raison%\"";
+        }
+
+        if ($numConditionSearch>0){
+            $query.=")";
+        }
+
         $query.=" GROUP BY B_Client.NumSiren";
         if ((($order=="ASC"||$order="DESC")&&($field=="Siren"||$field=="MontantTotal"))){
             $query.=" ORDER BY $field $order;";
         }
-        
         //securisation de la requette
         $query = $db->prepare($query);
         if($date !== null){
             $query->bindParam('date',$date,PDO::PARAM_STR);
         }
-        if($id !== null){
-            $query->bindParam('id',$id,PDO::PARAM_INT);
+        if($sirenCo !== null){
+            $query->bindParam('sirenCo',$sirenCo,PDO::PARAM_STR);
         }
-        //$query->bindParam(':field',$field,PDO::PARAM_STR);
-        //$query->bindParam(':order', $order,PDO::PARAM_STR);
-
         $query->execute();
         return $query;
     }
@@ -72,10 +97,13 @@ class SQLData
      * Renvoie la liste des impayé sous forme de PDOStatment
      *
      * @param $db : la connexion à la base de donnée
+     * @param $order : L'ordre qu'on utilise pour trier
+     * @param $field : le champs par lequel on trie
      * @param $id : l'id de l'entreprise à étudier (optionnel)
      * @return mixed
      */
-    public static function getImpaye($db,$order,$field,$id=null){
+    public static function getImpaye($db,$order,$field,$sirenCo=null, $dateDebut=null, $dateFin=null, $siren=null, $raison=null, $dossier=null){
+        $numConditionSearch = 0;
         if ($field=="MontantTotal"){
             $field="Montant";
         }
@@ -95,20 +123,62 @@ class SQLData
              NATURAL JOIN B_Transaction
              NATURAL JOIN B_Impaye
              NATURAL JOIN B_TypeImpaye
+        WHERE B_Remise.NumRemise = B_Transaction.NumRemise
         ";
 
-        if( $id !== null){
-            $query.=" AND B_Client.NumSiren = :id";
+        if($sirenCo !== null){
+            $query.=" AND B_Client.NumSiren = :sirenCo";
+        }
+
+        if($dateDebut !==null){
+            $query.=" AND B_Remise.DateTraitement > \"$dateDebut\"";
+        }
+
+        if($dateFin !==null){
+            $query.=" AND B_Remise.DateTraitement < \"$dateFin\"";
+        }
+
+        if($siren !== null){
+            if ($numConditionSearch==0){
+                $query .= " AND (";
+            }else{
+                $query .= " OR";
+            }
+            $numConditionSearch++;
+            $query.=" B_Client.NumSiren LIKE \"%$siren%\"";
+        }
+
+        if($raison !== null){
+            if ($numConditionSearch==0){
+                $query .= " AND (";
+            }else{
+                $query .= " OR";
+            }
+            $numConditionSearch++;
+            $query.=" B_Client.RaisonSociale LIKE \"%$raison%\"";
+        }
+
+        if($dossier !== null){
+            if ($numConditionSearch==0){
+                $query .= " AND (";
+            }else{
+                $query .= " OR";
+            }
+            $numConditionSearch++;
+            $query.=" B_Impaye.NumDossier LIKE \"%$dossier%\"";
+        }
+
+        if ($numConditionSearch>0){
+            $query.=")";
         }
 
         if ((($order=="ASC"||$order="DESC")&&($field=="Siren"||$field=="Montant"))){
             $query.=" ORDER BY $field $order;";
         }
-
         //securisation de la requette
         $query = $db->prepare($query);
-        if( $id !== null){
-            $query->bindParam('id',$id,PDO::PARAM_INT);
+        if( $sirenCo !== null){
+            $query->bindParam('sirenCo',$sirenCo,PDO::PARAM_INT);
         }
 
         $query->execute();
@@ -119,14 +189,16 @@ class SQLData
      * Permet d'avoir la remise par clients
      *
      * @param $db : la connexion a la base de donnée
+     * @param $order : L'ordre qu'on utilise pour trier
+     * @param $field : le champs par lequel on trie
      * @param $siren : le numéro de siren de l'entreprise (optionnel)
      * @param $raison : la raison sociale de l'entreprise (optionnel)
      * @param $dateDebut : la date de début de la recherche (optionnel)
      * @param $dateFin : la date de fin de la recherche (optionnel)
      * @return mixed
      */
-    public static function getRemise($db,$order,$field, $siren = null, $raison = null, $dateDebut = null, $dateFin = null){
-        $numWhere = 0;
+    public static function getRemise($db,$order,$field,$sirenCo=null, $siren = null, $raison = null, $numRemise =null, $dateDebut = null, $dateFin = null){
+        $numConditionSearch=0;
         $req = "SELECT B_Client.NumSiren AS 'Siren',
                 B_Client.RaisonSociale AS 'RaisonSociale',
                 B_Client.Devise AS 'Devise',
@@ -140,43 +212,56 @@ class SQLData
                 LEFT JOIN B_Transaction ON B_Transaction.NumRemise = B_Remise.NumRemise
                 LEFT JOIN TableMontantPositif ON TableMontantPositif.NumRemise = B_Remise.NumRemise
                 LEFT JOIN TableMontantNegatif ON TableMontantNegatif.NumRemise = B_Remise.NumRemise
+                WHERE B_Remise.NumSiren = B_Client.NumSiren
             ";
 
-        if ($siren!==null){
-            if ($numWhere ==0){
-                $req.=" WHERE";
-            }else{
-                $req.=" AND";
-            }
-            $numWhere++;
-            $req.=" B_Client.NumSiren = :siren";
+        if($sirenCo !== null){
+            $req.=" AND B_Client.NumSiren = :sirenCo";
         }
-        if ( $raison !==null){
-            if ($numWhere ==0){
-                $req.=" WHERE";
-            }else{
-                $req.=" AND";
-            }
-            $numWhere++;
-            $req.=" B_Client.RaisonSociale = :raison";
+        if($dateDebut !==null){
+            $req.=" AND B_Remise.DateTraitement > \"$dateDebut\"";
         }
-        if ($dateDebut !== null){
-            if ($numWhere ==0){
-                $req.=" WHERE";
-            }else{
-                $req.=" AND";
-            }
-            $numWhere++;
-            $req.= " B_Remise.DateTraitement >= :dateDebut";
+        if($dateFin !==null){
+            $req.=" AND B_Remise.DateTraitement < \"$dateFin\"";
         }
-        if ($dateFin !== null){
-            if ($numWhere ==0){
-                $req.=" WHERE";
+
+        /**/
+        
+      
+
+        if($siren !== null){
+            if ($numConditionSearch==0){
+                $req .= " AND (";
             }else{
-                $req.=" AND";
+                $req .= " OR";
             }
-            $numWhere++;
-            $req.= " B_Remise.DateTraitement <= :dateFin";
+            $numConditionSearch++;
+            $req.=" B_Client.NumSiren LIKE \"%$siren%\"";
+        }
+
+        if($raison !== null){
+            if ($numConditionSearch==0){
+                $req .= " AND (";
+            }else{
+                $req .= " OR";
+            }
+            $numConditionSearch++;
+            $req.=" B_Client.RaisonSociale LIKE \"%$raison%\"";
+        }
+
+        if($numRemise !== null){
+            if ($numConditionSearch==0){
+                $req .= " AND (";
+            }else{
+                $req .= " OR";
+            }
+            $numConditionSearch++;
+            $req.=" B_Remise.NumRemise LIKE \"%$numRemise%\"";
+        }
+        /** */
+
+        if ($numConditionSearch>0){
+            $req.=")";
         }
 
         $req.=" GROUP BY B_Remise.NumRemise";
@@ -186,17 +271,8 @@ class SQLData
         }
 
         $query = $db->prepare($req);
-        if ($raison!==null ){
-            $query->bindParam(":raison",$raison,PDO::PARAM_STR);
-        }
         if ($siren!==null){
-            $query->bindParam(":siren",$siren,PDO::PARAM_INT);
-        }
-        if ($raison!==null){
-            $query->bindParam(":dateDebut",$dateDebut,PDO::PARAM_STR);
-        }
-        if ($raison!==null){
-            $query->bindParam(":dateFin",$dateFin,PDO::PARAM_STR);
+            $query->bindParam(":sirenCo",$sirenCo,PDO::PARAM_INT);
         }
 
         $query->execute();

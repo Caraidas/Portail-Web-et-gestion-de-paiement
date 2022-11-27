@@ -3,16 +3,16 @@
     require_once 'Class/SQLData.php';
     require_once  'Class/GenerateHTML.php';
     $db = Database::getPDO(); //database pour toute la page
-    $siren = null;
+    $sirenCo = null;
     include 'header.php';
     if(isset($_SESSION['role'])){
         $role = $_SESSION['role'];
         switch($role){
             case 'Commerçant' :
-                $siren = SQLData::getSirenOfCommerceant($db,$_SESSION["id"]);
+                $sirenCo = SQLData::getSirenOfCommerceant($db,$_SESSION["id"]);
                 break;
             case 'Admin' :
-                header('Location: myaccount.php');
+                header('Location: adminChoice.html');
                 break;
             case 'PO' :
                 break;
@@ -22,6 +22,30 @@
 
     }else{
         header('Location: login.php');
+    }
+
+    if(isset($_POST['search'])&& !empty($_POST['search'])){
+        $research = $_POST['search'];
+    }else {
+        $research = null;
+    }
+
+    if(isset($_POST['date'])&& (!empty($_POST['date']))){
+        $date = $_POST['date'];
+    }else {
+        $date = null;
+    }
+
+    if(isset($_POST['dateFin'])&& (!empty($_POST['dateFin']))){
+        $dateFin = $_POST['dateFin'];
+    }else {
+        $dateFin = null;
+    }
+
+    if(isset($_POST['dateDebut'])&& (!empty($_POST['dateDebut']))){
+        $dateDebut = $_POST['dateDebut'];
+    }else {
+        $dateDebut = null;
     }
 ?>
 
@@ -81,7 +105,8 @@
                    }else{
                        $d = null;
                    }
-                   echo GenerateHTML::generateTresorerieTab($db,$order,$field,$d)[0]
+                  //public static function getTresorerie($db,$order,$field,$sirenCo=null, $date=null, $siren=null, $raison=null){
+                   echo GenerateHTML::generateTresorerieTab($db,$order,$field,$sirenCo,$d,$research,$research)[0]
 
                 ?>
                 </tbody>
@@ -91,9 +116,12 @@
         <input type="radio" name="mytabs" id="tab-remise">
         <label class="label-style" for="tab-remise">Remise</label>
         <div class="tab">
-        <form action="page.php" method="get">
-            <label for="date">Annonces du:</label>
-            <input type="date" id="date" name="date">
+        <form action="page.php" method="post">
+            <label for="dateDebut">Date de début:</label>
+            <input type="date" id="dateDebut" name="dateDebut">
+
+            <label for="dateFin">Date de fin:</label>
+            <input type="date" id="dateFin" name="dateFin">
             <input type="submit">
         </form>
         <form class="show-radio" action="page.php" method="post">
@@ -108,11 +136,6 @@
             <input type="radio" id="decroissant" name="order" value="DESC">
             <label for="decroissant">décroissant</label>
             <input type="submit">
-        </form>
-        <form>
-            <label for="siren-search">Rechercher un N° de remise:</label>
-            <input type="search" id="siren-search" name="siren-search">
-            <button type="submit">Search</button>
         </form>
         <table class="table-fill">
                 <thead>
@@ -137,7 +160,7 @@
                         $order = 'Siren';
                         $field = 'ASC';
                     }
-                    $retour = GenerateHTML::generateRemiseTab($db,$order,$field);
+                    $retour = GenerateHTML::generateRemiseTab($db,$order,$field,$sirenCo, $research, $research, $research, $dateDebut, $dateFin);
                     echo $retour[0];
                     $count = $retour[1];
                     $list_remise = $retour[2];
@@ -149,9 +172,12 @@
         <input type="radio" name="mytabs" id="tab-impaye">
         <label class="label-last label-style" for="tab-impaye">Impayés</label>
         <div class="tab">
-            <form action="page.php" method="get">
-            <label for="date">Annonces du:</label>
-            <input type="date" id="date" name="date">
+            <form action="page.php" method="post">
+            <label for="dateDebut">Date de début:</label>
+            <input type="date" id="dateDebut" name="dateDebut">
+
+            <label for="dateFin">Date de fin:</label>
+            <input type="date" id="dateFin" name="dateFin">
             <input type="submit">
         </form>
         <form class="show-radio" action="page.php" method="post">
@@ -190,7 +216,7 @@
                     $order = 'Siren';
                     $field = 'ASC';
                 }
-                echo GenerateHTML::generateImpayeTab($db,$order,$field)[0];
+                echo GenerateHTML::generateImpayeTab($db,$order,$field,$sirenCo,$dateDebut,$dateFin,$research,$research,$research)[0];
                 ?>
                 </tbody>
             </table>
@@ -204,7 +230,14 @@
             <input type="radio" id="pdf" name="type" value="2">
             <label class="radio-btn" for="pdf">.pdf</label>
             <input class='btn' type="submit" value="Submit">
+            
         </form>
+        <form action='page.php' method='post'>
+            <label for="search">Rechercher</label>
+            <input type="search" id="search" name="search">
+            <button type="submit">Search</button>
+        </form>
+    </div>
     </div>
 </div>
 <?php

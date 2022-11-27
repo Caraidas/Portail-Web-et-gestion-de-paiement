@@ -11,11 +11,11 @@ class GenerateHTML
      * @param $d  : (optionnelle) la date pour la trésorerie
      * @return array : le code html de l'interieur du tableau et la requette nécéssaire pour le générer
      */
-    public static function generateTresorerieTab($db,$order,$field, $d=null,$id=null){
+    public static function generateTresorerieTab($db,$order,$field,$sirenCo =null, $d=null,$siren=null, $raison=null){
 
         $retour = '';
-        $tresorerie = SQLData::getTresorerie($db,$order,$field,$d,$id);
-
+        $tresorerie = SQLData::getTresorerie($db,$order,$field,$sirenCo,$d,$siren,$raison);
+        echo "ROWCOUNT:".$tresorerie->rowCount();
         if($tresorerie->rowCount() > 0){
             echo "".$tresorerie->rowCount()." résultats trouvés";
             while($row = $tresorerie->fetch(PDO::FETCH_ASSOC)){
@@ -47,10 +47,10 @@ class GenerateHTML
      * @return array : le code html de l'interieur du tableau,le compteur pour les impaye,la liste des utilisateur,
      *                 la requette utilisée pour générer le tableau
      */
-    public static function generateRemiseTab($db,$order,$field){
+    public static function generateRemiseTab($db,$order,$field,$sirenCo, $siren, $raison, $numRemise, $dateDebut, $dateFin){
 
         $retour = '';
-        $tresorerie = SQLData::getRemise($db,$order,$field);
+        $tresorerie = SQLData::getRemise($db,$order,$field,$sirenCo, $siren, $raison, $numRemise, $dateDebut, $dateFin);
 
         if($tresorerie->rowCount() > 0){
             echo "".$tresorerie->rowCount()." résultats trouvés";
@@ -99,9 +99,9 @@ class GenerateHTML
      * @param $db : la connexion à la base de donnée
      * @return array : le code html de l'interieur du tableau, et la requette utilisé pour le générer
      */
-    public static function generateImpayeTab($db,$order,$field){
+    public static function generateImpayeTab($db,$order,$field,$sirenCo,$dateDebut,$dateFin,$siren,$raison,$dossier){
         $retour = "";
-        $tresorerie = SQLData::getImpaye($db,$order,$field);
+        $tresorerie = SQLData::getImpaye($db,$order,$field,$sirenCo,$dateDebut,$dateFin,$siren,$raison,$dossier);
 
         if($tresorerie->rowCount() > 0){
             echo "".$tresorerie->rowCount()." résultats trouvés";

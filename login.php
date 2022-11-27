@@ -44,7 +44,7 @@ if (isset($_SESSION['warning-display'])) {
         </div>
         <form method='POST' action='connexion-user.php' class='formulaire'>
             <div>
-                <label for='id'>Login :</label>
+                <label for='id'>Identifiant :</label>
                 <input type='text' class='input' name='id'>
             </div>
 
