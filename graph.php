@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!-- <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -33,9 +33,7 @@ print_r($stats3);
 yey
 
 </body>
-</html>
-
-
+</html> -->
 <script>
 /*
 Highcharts.theme = {
@@ -87,7 +85,7 @@ document.addEventListener('DOMContentLoaded',function(){
             type:'datetime',
             tickInterval:30 * 24 * 3600 * 1000
             },
-            labels: 
+            labels:
                 {
                     formatter: function ( ){
                             return Highcharts.dateFormat('%b %Y', this.value);
@@ -117,7 +115,7 @@ document.addEventListener('DOMContentLoaded',function(){
         ]
     })
 }
-);  
+);
 
 document.addEventListener('DOMContentLoaded',function(){
     const chart=Highcharts.chart('impaye_par_categorie',{
@@ -150,68 +148,68 @@ document.addEventListener('DOMContentLoaded',function(){
         ]
     })
 }
-);  
+);
 document.addEventListener('DOMContentLoaded',function(){
     const chart=Highcharts.chart('historique_impaye', {
-    chart: {
-        type: "column"
-    },
-    title: {
-        text: ''
-    },
-    xAxis: {
-        startOnTick: true,
-        endOnTick: true,
-        crosshair: true,
-        lineColor: '#3F5071',
-        lineWidth: 2,
-        type:'datetime',
-        tickInterval:30 * 24 * 3600 * 1000,
-        labels: 
-        {
-            formatter: function ( ){
-                    return Highcharts.dateFormat('%b %Y', this.value);
-
-            },
+        chart: {
+            type: "column"
         },
-    },
-    yAxis: {
         title: {
-            useHTML: true,
-            text: 'Montant en €'
+            text: ''
         },
-        lineColor: '#3F5071',
-        lineWidth: 2
-    },
-    tooltip: {
-        headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
-        pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
-            '<td style="padding:0"><b>{point.y:.1f}</b></td></tr>',
-        footerFormat: '</table>',
-        shared: true,
-        useHTML: true
-    },
-    plotOptions: {
-        column: {
-            pointPadding: 0.2,
-            borderWidth: 0,
+        xAxis: {
+            startOnTick: true,
+            endOnTick: true,
+            crosshair: true,
+            lineColor: '#3F5071',
+            lineWidth: 2,
+            type:'datetime',
+            tickInterval:30 * 24 * 3600 * 1000,
+            labels:
+                {
+                    formatter: function ( ){
+                        return Highcharts.dateFormat('%b %Y', this.value);
+
+                    },
+                },
         },
-        series: {
-            borderRadius: 5,
-            shadow: true,
-            pointWidth: 30,
-            centerInCategory: true,
-            groupPadding: 0.35
-        }
-    },
-    series: [{
+        yAxis: {
+            title: {
+                useHTML: true,
+                text: ''
+            },
+            lineColor: '#3F5071',
+            lineWidth: 2
+        },
+        tooltip: {
+            headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
+            pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
+                '<td style="padding:0"><b>{point.y:.1f}</b></td></tr>',
+            footerFormat: '</table>',
+            shared: true,
+            useHTML: true
+        },
+        plotOptions: {
+            column: {
+                pointPadding: 0.2,
+                borderWidth: 0,
+            },
+            series: {
+                borderRadius: 5,
+                shadow: true,
+                pointWidth: 30,
+                centerInCategory: true,
+                groupPadding: 0.35
+            }
+        },
+        series: [{
             name: 'Impayés par mois (€)',
             data: <?php
-                    echo "[";
-                    foreach($stats3 as $stat) {
-                        echo "[".$stat[0]*1000 .",$stat[2]],";
-                    }
-                    echo "]";
+            echo "[";
+            foreach($stats3 as $stat) {
+                echo "[".$stat[0]*1000 .",$stat[2]],";
+            }
+            echo "]";
             ?>,
             color: {
                 linearGradient: {
@@ -227,32 +225,31 @@ document.addEventListener('DOMContentLoaded',function(){
             }
 
         },
-        {
-            name: 'Payé (€)',
-            data: <?php
-                    echo "[";
-                    foreach($stats3 as $stat) {
-                        echo "[".$stat[0]*1000 .",$stat[1]],";
-                    }
-                    echo "]";
-            ?>,
-            color: {
-                linearGradient: {
-                    x1: 0.5,
-                    x2: 0.5,
-                    y1: 0,
-                    y2: 1
-                },
-                stops: [
-                    [0, '#F7B42C'],
-                    [1, '#FC7F57']
-                ]
+            {
+                name: 'Payé (€)',
+                data: <?php
+                echo "[";
+                foreach($stats3 as $stat) {
+                    echo "[".$stat[0]*1000 .",$stat[1]],";
+                }
+                echo "]";
+                ?>,
+                color: {
+                    linearGradient: {
+                        x1: 0.5,
+                        x2: 0.5,
+                        y1: 0,
+                        y2: 1
+                    },
+                    stops: [
+                        [0, '#F7B42C'],
+                        [1, '#FC7F57']
+                    ]
+                }
             }
-
-        }
-    ],
-})
+        ],
+    })
 });
 </script>
 
-          
+
