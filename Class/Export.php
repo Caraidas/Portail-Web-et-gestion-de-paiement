@@ -131,7 +131,7 @@ class Export{
                     <th>Montant total </th>
                 </tr>
             </thead>
-            <tbody>".GenerateHTML::generateTresorerieTab($db,$order,$field, $d,$id)."</tbody>
+            <tbody>".GenerateHTML::generateTresorerieTab($db,$order,$field, $d,$id)[0]."</tbody>
             </table>
              <style>
                 td{
@@ -220,7 +220,7 @@ class Export{
                     <th>Libellé impayés</th>
                 </tr>
             </thead>
-            <tbody>". GenerateHTML::generateRemiseTab($db). "</tbody>
+            <tbody>". GenerateHTML::generateRemiseTab($db)[0]. "</tbody>
         </table> 
         <style>
             td{
@@ -268,7 +268,7 @@ class Export{
                     </thead>
                     <tbody>";
 
-        $details = SQLData::getDetails($db, $id);
+        $details = SQLData::getDetails($db, $id)[0];
         while ($row2 = $details->fetch(PDO::FETCH_ASSOC)) {
             $txt.= "<tr>
                     <td>" . $row2['Siren'] . "</td>
