@@ -147,8 +147,8 @@ class GenerateHTML
         $retour .= "</tbody></table></div>";
 
 
-        $retouTab = array($retour,$details);
-        return $retour;
+        $retourTab = array($retour,$details);
+        return $retourTab;
 
     }
 }
