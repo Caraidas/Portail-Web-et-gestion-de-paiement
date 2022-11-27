@@ -76,10 +76,12 @@ class SQLData
      * @return mixed
      */
     public static function getImpaye($db,$order,$field,$id=null){
-
+        if ($field=="MontantTotal"){
+            $field="Montant";
+        }
         //création de la syntax de la requette
         $query = "
-        SELECT B_Client.NumSiren,
+        SELECT B_Client.NumSiren AS Siren,
                B_Remise.DateTraitement AS DateRemise,
                B_Transaction.DateVente AS DateVente,
                B_Transaction.NumCarte,
@@ -99,7 +101,7 @@ class SQLData
             $query.=" AND B_Client.NumSiren = :id";
         }
 
-        if ((($order=="ASC"||$order="DESC")&&($field=="Siren"||$field=="MontantTotal"))){
+        if ((($order=="ASC"||$order="DESC")&&($field=="Siren"||$field=="Montant"))){
             $query.=" ORDER BY $field $order;";
         }
 
@@ -312,7 +314,7 @@ class SQLData
     }
 
     /**
-     * Renvoie la liste des impayé sous forme de PDOStatment
+     * Renvoie la liste des libelles impayes et le nombre de fois qu'ils ont eut lieu
      *
      * @param $db : la connexion à la base de donnée
      * @param $id : l'id de l'entreprise à étudier (optionnel)
@@ -349,6 +351,15 @@ class SQLData
         return $table;
     }
 
+    /**
+     * Renvoie le tableau représentant l'historique des impayés et des payés
+     *
+     * @param $db : la connexion à la base de donnée
+     * @param $id : l'id de l'entreprise à étudier 
+     * @param $dateDebut : la date de début de la période à étudier
+     * @param $dateFin : la date de fin de la période à étudier
+     * @return mixed
+     */
     public static function getHistoriqueImpaye($db,$id,$dateDebut, $dateFin){
         $query = "SELECT UNIX_TIMESTAMP(CONCAT(YEAR(DateTraitement),'-',MONTH(DateTraitement),'-',01)) AS 'TimeStamp', SUM(Positif.MontantPositif) TotalPositif, SUM(Negatif.MontantNegatif) TotalNegatif FROM B_Remise JOIN (
             SELECT B_Remise.NumRemise NumRemise, SUM(B_Transaction.Montant) MontantPositif FROM B_Remise NATURAL JOIN B_Transaction WHERE B_Transaction.Sens='+' GROUP BY NumRemise) Positif 
@@ -384,6 +395,22 @@ class SQLData
         $query->execute();
         $row = $query->fetch(PDO::FETCH_ASSOC);
         return $row["NumSiren"];
+    }
+
+    /**
+     * @param $db : la connexion a la bdd
+     * @return mixed : le num siren correspondant au login
+     */
+    public static function getSommeImpaye($db){
+
+        $query = "SELECT C.NumSiren, C.RaisonSociale, SUM(T.Montant) MontantImpaye FROM B_Impaye I 
+        JOIN B_Transaction T ON I.NumAutorisation=T.NumAutorisation 
+        JOIN B_Remise R ON R.NumRemise=T.NumRemise J
+        OIN B_Client C ON C.NumSiren = R.NumSiren 
+        GROUP By NumSiren";
+        $query = $db->prepare($query);
+        $query->execute();
+        return $query;
     }
 
 

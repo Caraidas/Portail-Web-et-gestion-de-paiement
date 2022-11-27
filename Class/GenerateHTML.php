@@ -107,7 +107,7 @@ class GenerateHTML
             echo "".$tresorerie->rowCount()." résultats trouvés";
             while($row = $tresorerie->fetch(PDO::FETCH_ASSOC)){
                 $retour.= " <tr>
-                                        <td>".$row['NumSiren']."</td>
+                                        <td>".$row['Siren']."</td>
                                         <td>".$row['DateVente']."</td>
                                         <td>".$row['DateRemise']."</td>
                                         <td>".$row['NumCarte']."</td>
