@@ -92,10 +92,6 @@ mark { background-color: #dc2525; color:black; }
     color: var(--bleu);
 }
 
-.warning > p {
-    max-width: 400px;
-}
-
 /* Les champs */
 
 form {
@@ -159,6 +155,11 @@ label {
 form  input[type="checkbox"] {
     position: absolute;
     height: 50px;
+}
+
+.red-text {
+    color: #ff4b4b;
+    font-weight: bold;
 }
 
 @keyframes hover-submit{

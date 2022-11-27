@@ -4,7 +4,7 @@ include_once('Class/Database.php');
 
 //initialisations des variables de sécurisation
 if(!isset($_SESSION['tentative'])){
-    $_SESSION['tentative'] = 1;
+    $_SESSION['tentative'] = 0;
     $_SESSION['timestamp_limite'] = time() + 60*10;
 }
 
@@ -18,7 +18,7 @@ if (isset($_POST['id']) && isset($_POST['psw'])){
         $_SESSION['tentative'] = 0;
         $_SESSION['id'] = $_POST['id']; //login
         $_SESSION['role'] = $role; //role
-        $_SESSION['warning-display'] = "style='display: none'";
+        $_SESSION['warning-display'] = "style='display: none;'";
 
         header('Location: page.php');
 

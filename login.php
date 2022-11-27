@@ -4,7 +4,7 @@ session_start();
 if (isset($_SESSION['warning-display'])) {
     $warning_display = $_SESSION['warning-display'];
 } else {
-    $warning_display = "style='display: none'";
+    $warning_display = "style='display: none;'";
 }
 ?>
 
@@ -24,22 +24,23 @@ if (isset($_SESSION['warning-display'])) {
 
     <div class='container'>
         <h1>Frog Bank.</h1>
-        <div class='warning' $warning_display>
+        <?php
+        echo "
+        <div class='warning' $warning_display>";
+        ?>
             <div class='exclam'></div>
-            <p>
                 <?php
                 if(isset($_SESSION['tentative']) && $_SESSION['timestamp_limite']) {
                     $tentative = 3 - $_SESSION['tentative'];
                     if ($_SESSION['tentative'] == 2)
-                        echo '<mark>C\'est votre dernière tentative !</mark>';
+                        echo '<p class="red-text">Mot de passe ou login incorrect. Attention ! C\'est votre dernière tentative !</p>';
                     elseif ($_SESSION['tentative'] < 3)
-                        echo 'il vous reste ' . $tentative . ' tentatives.';
+                        echo '<p>Mot de passe ou login incorrect. Il vous reste ' . $tentative . ' tentatives.</p>';
 
                     elseif ($_SESSION['timestamp_limite'] > time())
-                        echo 'attendez 10 min avant un nouvel essai.';
+                        echo '<p>Vous avez entré un mot de passe érroné trop de fois, veuillez attendre 10 minutes avant de réessayer ...</p>';
                 }
                 ?>
-            </p>
         </div>
         <form method='POST' action='connexion-user.php' class='formulaire'>
             <div>
