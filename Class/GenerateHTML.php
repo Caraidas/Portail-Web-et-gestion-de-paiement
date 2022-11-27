@@ -57,6 +57,10 @@ class GenerateHTML
             $count = 1;
             $list_remise = array();
             while($row = $tresorerie->fetch(PDO::FETCH_ASSOC)){
+                if ($row['Sens'] == "-")
+                    $negatif = "<p style=\"color:#FF0000\">".$row['MontantTotal']."</p>";
+                else
+                    $negatif = $row['MontantTotal'];
                 $retour.= " <tr>
                                         <td>
                                             <input type='button' name='' value='Détails' data-href='content$count'>
@@ -67,7 +71,7 @@ class GenerateHTML
                                         <td>".$row['DateTraitement']."</td>
                                         <td>".$row['Nombretransaction']."</td>
                                         <td>".$row['Devise']."</td>
-                                        <td>".$row['MontantTotal']."</td>
+                                        <td>".$negatif."</td>
                                         <td>".$row['Sens']."</td>
                                    </tr>";
                 echo $count;
