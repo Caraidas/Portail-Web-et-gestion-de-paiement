@@ -84,7 +84,7 @@
                    }
                    echo GenerateHTML::generateTresorerieTab($db,$order,$field,$d)[0]
 
-                ?>  
+                ?>
                 </tbody>
             </table>
         </div>

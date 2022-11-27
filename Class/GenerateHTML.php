@@ -19,12 +19,16 @@ class GenerateHTML
         if($tresorerie->rowCount() > 0){
             echo "".$tresorerie->rowCount()." résultats trouvés";
             while($row = $tresorerie->fetch(PDO::FETCH_ASSOC)){
+                if ($row['MontantTotal'] < 0)
+                    $solde = "<p style=\"color:#FF0000\">".$row['MontantTotal']."</p>";
+                else
+                    $solde = $row['MontantTotal'];
                 $retour.= " <tr>
                                 <td>".$row['Siren']."</td>
                                 <td>".$row['RaisonSociale']."</td>
                                 <td>".$row['NombreTransaction']."</td>
                                 <td>".$row['Devise']."</td>
-                                <td>".$row['MontantTotal']."</td>
+                                <td>".$solde."</td>
                            </tr>";
             }
         }else{
