@@ -28,11 +28,13 @@ if (isset($_SESSION['warning-display'])) {
             <div class='exclam'></div>
             <p>
                 <?php
-                $tentative = 3 - $_SESSION['tentative'];
-                if ($_SESSION['tentative'] <3)
-                    echo 'il vous reste '. $tentative.' tentatives.';
-                elseif ($_SESSION['timestamp_limite'] > time())
-                    echo 'attendez 10 min avant un nouvel essai.';
+                if(isset($_SESSION['tentative']) && $_SESSION['timestamp_limite']) {
+                    $tentative = 3 - $_SESSION['tentative'];
+                    if ($_SESSION['tentative'] < 3)
+                        echo '<mark>il vous reste ' . $tentative . ' tentatives.</mark>';
+                    elseif ($_SESSION['timestamp_limite'] > time())
+                        echo 'attendez 10 min avant un nouvel essai.';
+                }
                 ?>
             </p>
         </div>

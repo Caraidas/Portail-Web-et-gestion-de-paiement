@@ -46,6 +46,8 @@ h1 {
     font-size: 100px;
 }
 
+mark { background-color: #dc2525; color:black; }
+
 /* .frog {}*/
 
 .container {
