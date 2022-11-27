@@ -206,43 +206,10 @@ input:focus {
     outline: none !important;
 }
 
-.chart-container {
-    width: 80%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 600px;
-}
-
-.bar-chart {
-    width: 100%;
-    max-width: 1200px;
-    height: 100%;
-}
-
-.bar {
-    width: 95%;
-    height: 800px;
-}
-
-@media (min-width: 1024px) {
-    .bar {
-        display: none;
-    }
-
-    .column {
-        display: flex;
-    }
-}
-
-@media (max-width: 1024px) {
-    .bar {
-        display: flex;
-    }
-
-    .column {
-        display: none;
-    }
+.column-chart {
+    min-width: 1200px;
+    height: 900px;
+    overflow: scroll;
 }
 
 @media (max-width: 653px) {
