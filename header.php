@@ -18,12 +18,16 @@ if (isset($_SESSION["id"])) {
     <title>Document</title>
 
     <style>
+        :root {
+            --gradient : linear-gradient(45deg, rgba(58,109,208,1) 0%, rgba(138,115,226,1) 100%);
+            --bleu : #3F5071
+        }
+        
         .menu {    
             display:flex;
             flex-direction: row;
             padding:20px;  
             position:relative;
-            height:50px;
             box-shadow: 0 4px 2px -2px gray;
             font-weight:600;
             font-size:32px;  
@@ -33,7 +37,19 @@ if (isset($_SESSION["id"])) {
             margin-left: auto;
             margin-right: 0;
             text-decoration: none;
-            color: blue
+            background: var(--gradient);
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .logo {
+            font-weight:600;
+            font-size:32px;
+            background: var(--gradient);
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
 
         @media all and (max-width: 480px) {
@@ -49,7 +65,7 @@ if (isset($_SESSION["id"])) {
 <?php
     echo "
         <div class='menu'>
-            <div>FROG Bank</div>
+            <div class='logo'>FROG Bank</div>
             <a href='#'>$id</a>
         </div>
     ";

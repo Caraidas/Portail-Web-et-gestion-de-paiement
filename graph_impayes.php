@@ -1,6 +1,7 @@
 <?php
 require_once 'Class/Database.php';
 require_once 'Class/SQLData.php';
+include 'header.php';
 
 if (isset($_SESSION['style_dates']) && isset($_SESSION['style_four']) && isset($_SESSION['style_twelve'])) {
   $style_dates = $_SESSION['style_dates'];
@@ -41,9 +42,6 @@ if (isset($_POST['debut'])) {
         $debut = "2015-08-18";
     }
 }
-
-echo "$debut";
-echo "$fin";
 
 $cnx = Database::getPDO();
 $stats3 = SQLData::getHistoriqueImpaye($cnx, 615888425, $debut, $fin);
