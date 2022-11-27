@@ -62,7 +62,7 @@
                    }else{
                        $d = null;
                    }
-                   echo GenerateHTML::generateTresorerieTab($db,$order,$field,$d)
+                   echo GenerateHTML::generateTresorerieTab($db,$order,$field,$d)[0]
 
                 ?>  
                 </tbody>
@@ -171,7 +171,7 @@
                     $order = 'Siren';
                     $field = 'ASC';
                 }
-                echo GenerateHTML::generateImpayeTab($db,$order,$field) ;
+                echo GenerateHTML::generateImpayeTab($db,$order,$field)[0];
                 ?>
                 </tbody>
             </table>
@@ -188,7 +188,27 @@
         </form>
     </div>
 </div>
-<?= GenerateHTML::generateDetailsTab($db,$count,$list_remise)?>
+<?php
+for ($i = 0; $i < $count - 1; $i++) {
+    $j = $i + 1;
+    echo "<div id='content$j'>
+            <table class='classic-table'>
+                <thead>
+                    <tr>
+                        <th>N° SIREN</th>
+                        <th>Date vente</th>
+                        <th>N° carte</th>
+                        <th>Réseau</th>
+                        <th>N° Autorisation</th>
+                        <th>Devise</th>
+                        <th>Montant</th>
+                        <th>Sens</th>
+                    </tr>
+                </thead>
+                <tbody>";
+    echo GenerateHTML::generateDetailsTab($db,$list_remise[$i])[0];
+}
+?>
   </body>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.1/jquery.min.js" integrity="sha512-aVKKRRi/Q/YV+4mjoKBsE4x3H+BkegoM/em46NNlCqNTmUYADjBbeNefNxYV7giUp0VxICtqdrbqU7iVaeZNXA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script>
