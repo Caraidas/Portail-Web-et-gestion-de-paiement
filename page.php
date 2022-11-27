@@ -4,6 +4,26 @@
     require_once 'Class/SQLData.php';
     require_once  'Class/GenerateHTML.php';
     $db = Database::getPDO(); //database pour toute la page
+    $id = null;
+    if(isset($_SESSION['role'])){
+        $role = $_SESSION['role'];
+
+        switch($role){
+            case 'Commerçant' :
+                $id = SQLData::getSirenOfCommerceant($db,$_SESSION["id"]);
+                break;
+            case 'Admin' :
+                header('Location : myaccount.php');
+                break;
+            case 'PO' :
+                break;
+            default :
+                header('Location : login.php');
+        }
+
+    }else{
+        header('Location : login.php');
+    }
 ?>
 
 <html lang="en">
