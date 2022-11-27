@@ -1,28 +1,27 @@
 <?php
-    session_start();
     require_once 'Class/Database.php';
     require_once 'Class/SQLData.php';
     require_once  'Class/GenerateHTML.php';
     $db = Database::getPDO(); //database pour toute la page
-    $id = null;
+    $siren = null;
+    include 'header.php';
     if(isset($_SESSION['role'])){
         $role = $_SESSION['role'];
-
         switch($role){
             case 'Commerçant' :
-                $id = SQLData::getSirenOfCommerceant($db,$_SESSION["id"]);
+                $siren = SQLData::getSirenOfCommerceant($db,$_SESSION["id"]);
                 break;
             case 'Admin' :
-                header('Location : myaccount.php');
+                header('Location: myaccount.php');
                 break;
             case 'PO' :
                 break;
             default :
-                header('Location : login.php');
+                header('Location: login.php');
         }
 
     }else{
-        header('Location : login.php');
+        header('Location: login.php');
     }
 ?>
 
