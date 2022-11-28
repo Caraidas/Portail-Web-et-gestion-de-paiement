@@ -46,6 +46,27 @@ h1 {
     font-size: 100px;
 }
 
+h1[id="title"]{
+    margin:50px;
+    font-size: 40px;
+    text-align: center;
+}
+
+.success{
+    width:30%;
+    padding:20px;
+    background-color:rgb(147, 221, 147);
+    text-align: center;
+    display: block;
+    margin-bottom: 20px;
+    border-radius:20px
+}
+
+.success p{
+    margin:10px;
+    font-size:20px
+}
+
 mark { background-color: #dc2525; color:black; }
 
 /* .frog {}*/
@@ -93,6 +114,12 @@ mark { background-color: #dc2525; color:black; }
 }
 
 /* Les champs */
+.center{
+    align-items: center;
+    background-color: rgba(211, 209, 209, 0.663);
+    padding:50px;
+    border-radius:20px;
+}
 
 form {
     width: 70%;
