@@ -31,14 +31,19 @@ if (isset($_SESSION['warning-display'])) {
             <div class='exclam'></div>
                 <?php
                 if(isset($_SESSION['tentative']) && $_SESSION['timestamp_limite']) {
+
+                    $temps_restant = $_SESSION['timestamp_limite'] - time();
+                    if ($temps_restant < 0)
+                        $temps_restant = "Vous pouvez réessayer.";
                     $tentative = 3 - $_SESSION['tentative'];
                     if ($_SESSION['tentative'] == 2)
                         echo '<p class="red-text">Mot de passe ou login incorrect. Attention ! C\'est votre dernière tentative !</p>';
                     elseif ($_SESSION['tentative'] < 3)
                         echo '<p>Mot de passe ou login incorrect. Il vous reste ' . $tentative . ' tentatives.</p>';
 
+
                     elseif ($_SESSION['timestamp_limite'] > time())
-                        echo '<p>Vous avez entré un mot de passe érroné trop de fois, veuillez attendre 10 minutes avant de réessayer ...</p>';
+                        echo '<p>Vous avez entré un mot de passe érroné trop de fois, veuillez attendre '.$temps_restant.' secondes avant de réessayer ...</p>';
                 }
                 ?>
         </div>
