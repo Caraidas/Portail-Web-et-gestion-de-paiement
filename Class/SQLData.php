@@ -44,7 +44,7 @@ class SQLData
                         
         ";
         if($date !== null){
-            $query.=" WHERE B_Remise.DateTraitement < :date";
+            $query.=" WHERE B_Remise.DateTraitement <= :date";
         }
         $query .= " GROUP BY B_Remise.NumRemise) Remises 
         WHERE Remises.client = B_Client.NumSiren";
@@ -131,11 +131,11 @@ class SQLData
         }
 
         if($dateDebut !==null){
-            $query.=" AND B_Remise.DateTraitement > \"$dateDebut\"";
+            $query.=" AND B_Remise.DateTraitement >= \"$dateDebut\"";
         }
 
         if($dateFin !==null){
-            $query.=" AND B_Remise.DateTraitement < \"$dateFin\"";
+            $query.=" AND B_Remise.DateTraitement <= \"$dateFin\"";
         }
 
         if($siren !== null){
@@ -220,10 +220,10 @@ class SQLData
             $req.=" AND B_Client.NumSiren = :sirenCo";
         }
         if($dateDebut !==null){
-            $req.=" AND B_Remise.DateTraitement > \"$dateDebut\"";
+            $req.=" AND B_Remise.DateTraitement >= \"$dateDebut\"";
         }
         if($dateFin !==null){
-            $req.=" AND B_Remise.DateTraitement < \"$dateFin\"";
+            $req.=" AND B_Remise.DateTraitement <= \"$dateFin\"";
         }
 
         if($siren !== null){
