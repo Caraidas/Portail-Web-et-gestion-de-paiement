@@ -57,7 +57,7 @@ class GenerateHTML
 
         if($tresorerie->rowCount() > 0){
             echo "".$tresorerie->rowCount()." résultats trouvés";
-            
+
             while($row = $tresorerie->fetch(PDO::FETCH_ASSOC)){
                 if ($row['Sens'] == "-")
                     $negatif = "<p style=\"color:#FF0000\">".$row['MontantTotal']."</p>";

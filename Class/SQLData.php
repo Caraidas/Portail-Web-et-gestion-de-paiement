@@ -217,7 +217,7 @@ class SQLData
             ";
 
         if($sirenCo !== null){
-
+            $req.=" AND B_Client.NumSiren = :sirenCo";
         }
         if($dateDebut !==null){
             $req.=" AND B_Remise.DateTraitement > \"$dateDebut\"";
@@ -266,10 +266,8 @@ class SQLData
             $req.=" ORDER BY $field $order;";
         }
 
-
+        $query = $db->prepare($req);
         if($sirenCo !== null){
-            $req.=" AND B_Client.NumSiren = :sirenCo";
-            $query = $db->prepare($req);
             $query->bindParam('sirenCo',$sirenCo,PDO::PARAM_STR);
         }
 
