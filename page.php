@@ -94,6 +94,7 @@
             <label for="decroissant">décroissant</label>
             <input type="submit">
         </form>
+
         <table class="table-fill">
                 <thead>
                     <tr>
@@ -120,11 +121,28 @@
                        $d = null;
                    }
                   //public static function getTresorerie($db,$order,$field,$sirenCo=null, $date=null, $siren=null, $raison=null){
-                   echo GenerateHTML::generateTresorerieTab($db,$order,$field,$sirenCo,$d,$research,$research)[0]
-
+                   echo GenerateHTML::generateTresorerieTab($db,$order,$field,$sirenCo,$d,$research,$research)[0];
+                   $datas = GenerateHTML::generateTresorerieTab($db,$order,$field,$sirenCo,$d,$research,$research)[1];
+                   print_r($datas);
                 ?>
                 </tbody>
             </table>
+            <div class="export">
+            <form action='Class/Export.php' method='post'>
+                <input type="radio" id="csv" name="export-tresorerie" value="0">
+                <label class="radio-btn" for="csv">.csv</label><br>
+                <input type="radio" id="xls" name="export-tresorerie" value="1">
+                <label class="radio-btn" for="xls">.xls</label><br>
+                <input type="radio" id="pdf" name="export-tresorerie" value="2">
+                <label class="radio-btn" for="pdf">.pdf</label>
+                <?php
+                    foreach($datas as $data){
+                        echo "<input name='data-tresorerie[]' type='hidden' value='",implode("|",$data),"'>";
+                    }
+                ?>
+                <input class='btn' type="submit" value="Submit">        
+            </form>
+        </div>
         </div>
 
         <input type="radio" name="mytabs" id="tab-remise" onclick="setTab('tab-remise')">
@@ -236,16 +254,6 @@
             </table>
     </div>
     <div class="fixedContainer">
-        <form action='Class/Export.php' method='post'>
-            <input type="radio" id="csv" name="type" value="0">
-            <label class="radio-btn" for="csv">.csv</label><br>
-            <input type="radio" id="xls" name="type" value="1">
-            <label class="radio-btn" for="xls">.xls</label><br>
-            <input type="radio" id="pdf" name="type" value="2">
-            <label class="radio-btn" for="pdf">.pdf</label>
-            <input class='btn' type="submit" value="Submit">
-            
-        </form>
         <form action='page.php' method='post'>
             <label for="search">Rechercher</label>
             <input type="search" id="search" name="search">

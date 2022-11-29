@@ -15,10 +15,11 @@ class GenerateHTML
 
         $retour = '';
         $tresorerie = SQLData::getTresorerie($db,$order,$field,$sirenCo,$d,$siren,$raison);
-        echo "ROWCOUNT:".$tresorerie->rowCount();
         if($tresorerie->rowCount() > 0){
+
             echo "".$tresorerie->rowCount()." résultats trouvés";
-            while($row = $tresorerie->fetch(PDO::FETCH_ASSOC)){
+            $fetch = $tresorerie->fetchAll();
+            foreach($fetch as $row){
                 if ($row['MontantTotal'] < 0)
                     $solde = "<p style=\"color:#FF0000\">".$row['MontantTotal']."</p>";
                 else
@@ -34,8 +35,7 @@ class GenerateHTML
         }else{
             $retour.="Pas de résultats pour cet utilisateur";
         }
-
-        $retourTab = array($retour,$tresorerie);
+        $retourTab = array($retour,$fetch);
 
         return $retourTab;
     }

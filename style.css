@@ -165,14 +165,14 @@ td {
   transform: translateZ(0);
 }
 
-.fixedContainer form{
+.export form{
   display:flex;
 }
-.fixedContainer form label{
+.export form label{
  padding-right: 10px;
 }
 
-.fixedContainer form input[type="radio"]{
+.export form input[type="radio"]{
   -webkit-appearance: radio;
   display: block;
 }

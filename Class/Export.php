@@ -4,9 +4,16 @@ include_once "SQLData.php";
 include_once "GenerateHTML.php";
 include_once dirname(dirname(__FILE__)).'/vendor/autoload.php';
 use \Spipu\Html2Pdf\Html2Pdf;
-
+echo "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA";
 $db = Database::getPDO();
-Export::export_tresorerie_to_csv_xls($requestResult, $fileType);
+if (isset($_POST['export-tresorerie']) && isset($_POST['data-tresorerie'])){
+    echo "AEAZEZEZAEZEZAEZEEZA";
+    $type= $_POST['export-tresorerie'];
+    $datas = $_POST['data-tresorerie'];
+    echo "AAAAAAEAZEZEZAEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE";
+    print_r($datas);
+    Export::export_tresorerie_to_csv_xls($datas, $type);
+}
 
 
 /**
