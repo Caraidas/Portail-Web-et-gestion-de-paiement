@@ -177,8 +177,8 @@ class SQLData
         }
         //securisation de la requette
         $query = $db->prepare($query);
-        if( $sirenCo !== null){
-            $query->bindParam('sirenCo',$sirenCo,PDO::PARAM_INT);
+        if($sirenCo !== null){
+            $query->bindParam('sirenCo',$sirenCo,PDO::PARAM_STR);
         }
 
         $query->execute();
@@ -198,7 +198,7 @@ class SQLData
      * @return mixed
      */
     public static function getRemise($db,$order,$field,$sirenCo=null, $siren = null, $raison = null, $numRemise =null, $dateDebut = null, $dateFin = null){
-        echo "TEST ECHO";
+
         $numConditionSearch=0;
         $req = "SELECT B_Client.NumSiren AS 'Siren',
                 B_Client.RaisonSociale AS 'RaisonSociale',
@@ -217,8 +217,7 @@ class SQLData
             ";
 
         if($sirenCo !== null){
-            echo "JE MET LE BIND      ";
-            $req.=" AND B_Client.NumSiren = :sirenCo";
+
         }
         if($dateDebut !==null){
             $req.=" AND B_Remise.DateTraitement > \"$dateDebut\"";
@@ -226,10 +225,6 @@ class SQLData
         if($dateFin !==null){
             $req.=" AND B_Remise.DateTraitement < \"$dateFin\"";
         }
-
-        /**/
-        
-      
 
         if($siren !== null){
             if ($numConditionSearch==0){
@@ -260,7 +255,6 @@ class SQLData
             $numConditionSearch++;
             $req.=" B_Remise.NumRemise LIKE \"%$numRemise%\"";
         }
-        /** */
 
         if ($numConditionSearch>0){
             $req.=")";
@@ -272,9 +266,11 @@ class SQLData
             $req.=" ORDER BY $field $order;";
         }
 
-        $query = $db->prepare($req);
-        if ($sirenCo!==null){
-            $query->bindParam("sirenCo",$sirenCo,PDO::PARAM_INT);
+
+        if($sirenCo !== null){
+            $req.=" AND B_Client.NumSiren = :sirenCo";
+            $query = $db->prepare($req);
+            $query->bindParam('sirenCo',$sirenCo,PDO::PARAM_STR);
         }
 
         $query->execute();
