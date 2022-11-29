@@ -271,7 +271,7 @@ class SQLData
         }
 
         $query = $db->prepare($req);
-        if ($siren!==null){
+        if ($sirenCo!==null){
             $query->bindParam(":sirenCo",$sirenCo,PDO::PARAM_INT);
         }
 
