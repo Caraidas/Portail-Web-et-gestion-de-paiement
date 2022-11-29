@@ -51,11 +51,13 @@ class GenerateHTML
 
         $retour = '';
         $tresorerie = SQLData::getRemise($db,$order,$field,$sirenCo, $siren, $raison, $numRemise, $dateDebut, $dateFin);
+        $count = 1;
+        $list_remise = array();
+
 
         if($tresorerie->rowCount() > 0){
             echo "".$tresorerie->rowCount()." résultats trouvés";
-            $count = 1;
-            $list_remise = array();
+            
             while($row = $tresorerie->fetch(PDO::FETCH_ASSOC)){
                 if ($row['Sens'] == "-")
                     $negatif = "<p style=\"color:#FF0000\">".$row['MontantTotal']."</p>";
