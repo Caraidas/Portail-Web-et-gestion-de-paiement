@@ -198,6 +198,7 @@ class SQLData
      * @return mixed
      */
     public static function getRemise($db,$order,$field,$sirenCo=null, $siren = null, $raison = null, $numRemise =null, $dateDebut = null, $dateFin = null){
+        echo "TEST ECHO";
         $numConditionSearch=0;
         $req = "SELECT B_Client.NumSiren AS 'Siren',
                 B_Client.RaisonSociale AS 'RaisonSociale',
@@ -216,6 +217,7 @@ class SQLData
             ";
 
         if($sirenCo !== null){
+            echo "JE MET LE BIND      ";
             $req.=" AND B_Client.NumSiren = :sirenCo";
         }
         if($dateDebut !==null){
@@ -272,7 +274,7 @@ class SQLData
 
         $query = $db->prepare($req);
         if ($sirenCo!==null){
-            $query->bindParam(":sirenCo",$sirenCo,PDO::PARAM_INT);
+            $query->bindParam("sirenCo",$sirenCo,PDO::PARAM_INT);
         }
 
         $query->execute();
