@@ -121,9 +121,10 @@
                        $d = null;
                    }
                   //public static function getTresorerie($db,$order,$field,$sirenCo=null, $date=null, $siren=null, $raison=null){
-                   echo GenerateHTML::generateTresorerieTab($db,$order,$field,$sirenCo,$d,$research,$research)[0];
-                   $datas = GenerateHTML::generateTresorerieTab($db,$order,$field,$sirenCo,$d,$research,$research)[1];
-                   print_r($datas);
+                    $gTresorerie = GenerateHTML::generateTresorerieTab($db,$order,$field,$sirenCo,$d,$research,$research);
+                   $txtTresorerie = $gTresorerie[0];
+                   echo "$txtTresorerie";
+                   $datasTresorerie = $gTresorerie[1];
                 ?>
                 </tbody>
             </table>
@@ -136,9 +137,8 @@
                 <input type="radio" id="pdf" name="export-tresorerie" value="2">
                 <label class="radio-btn" for="pdf">.pdf</label>
                 <?php
-                    foreach($datas as $data){
-                        echo "<input name='data-tresorerie[]' type='hidden' value='",implode("|",$data),"'>";
-                    }
+                    $_SESSION["data-tresorerie"]=$datasTresorerie;
+                    echo "<input name='txtTresorerie' type='hidden' value='$txtTresorerie'>";
                 ?>
                 <input class='btn' type="submit" value="Submit">        
             </form>
@@ -192,13 +192,30 @@
                         $order = 'Siren';
                         $field = 'ASC';
                     }
-                    $retour = GenerateHTML::generateRemiseTab($db,$order,$field,$sirenCo, $research, $research, $research, $dateDebut, $dateFin);
-                    echo $retour[0];
-                    $count = $retour[1];
-                    $list_remise = $retour[2];
+
+                    $gRemise = GenerateHTML::generateRemiseTab($db,$order,$field,$sirenCo, $research, $research, $research, $dateDebut, $dateFin);
+                    $txtRemise = $gRemise[0];
+                    echo $txtRemise;
+                    $count = $gRemise[1];
+                    $list_remise = $gRemise[2];
+                    $datasRemise = $gRemise[3];
+                    $_SESSION["data-remise"]=$datasRemise;
+                    $_SESSION["txt-remise"]=$txtRemise;
                 ?>
                 </tbody>
             </table>
+            <div class="export">
+                <form action='Class/Export.php' method='post'>
+                    <input type="radio" id="csv" name="export-remise" value="0">
+                    <label class="radio-btn" for="csv">.csv</label><br>
+                    <input type="radio" id="xls" name="export-remise" value="1">
+                    <label class="radio-btn" for="xls">.xls</label><br>
+                    <input type="radio" id="pdf" name="export-remise" value="2">
+                    <label class="radio-btn" for="pdf">.pdf</label>
+                    
+                    <input class='btn' type="submit" value="Submit">        
+                </form>
+            </div>
         </div>
 
         <input type="radio" name="mytabs" id="tab-impaye" onclick="setTab('tab-impaye')">
@@ -248,10 +265,28 @@
                     $order = 'Siren';
                     $field = 'ASC';
                 }
-                echo GenerateHTML::generateImpayeTab($db,$order,$field,$sirenCo,$dateDebut,$dateFin,$research,$research,$research)[0];
+                $gImpaye = GenerateHTML::generateImpayeTab($db,$order,$field,$sirenCo,$dateDebut,$dateFin,$research,$research,$research);
+                $txtImpaye = $gImpaye[0];
+                $datasImpaye = $gImpaye[1];
+                echo $txtImpaye;
                 ?>
                 </tbody>
             </table>
+            <div class="export">
+                <form action='Class/Export.php' method='post'>
+                    <input type="radio" id="csv" name="export-impaye" value="0">
+                    <label class="radio-btn" for="csv">.csv</label><br>
+                    <input type="radio" id="xls" name="export-impaye" value="1">
+                    <label class="radio-btn" for="xls">.xls</label><br>
+                    <input type="radio" id="pdf" name="export-impaye" value="2">
+                    <label class="radio-btn" for="pdf">.pdf</label>
+                    <?php
+                    $_SESSION["data-impaye"]=$datasImpaye;
+                    echo "<input name='txtImpaye' type='hidden' value='$txtImpaye'>";
+                ?>
+                    <input class='btn' type="submit" value="Submit">        
+                </form>
+            </div>
     </div>
     <div class="fixedContainer">
         <form action='page.php' method='post'>

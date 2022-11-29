@@ -34,6 +34,7 @@ class GenerateHTML
             }
         }else{
             $retour.="Pas de résultats pour cet utilisateur";
+            $fetch = [];
         }
         $retourTab = array($retour,$fetch);
 
@@ -57,8 +58,8 @@ class GenerateHTML
 
         if($tresorerie->rowCount() > 0){
             echo "".$tresorerie->rowCount()." résultats trouvés";
-
-            while($row = $tresorerie->fetch(PDO::FETCH_ASSOC)){
+            $fetch = $tresorerie->fetchAll();
+            foreach($fetch as $row){
                 if ($row['Sens'] == "-")
                     $negatif = "<p style=\"color:#FF0000\">".$row['MontantTotal']."</p>";
                 else
@@ -82,13 +83,14 @@ class GenerateHTML
             }
         }else{
             $retour.= "Pas de résultats pour cet utilisateur";
+            $fetch = [];
         }
 
         $retourarray = array(
             $retour,
             $count,
             $list_remise,
-            $tresorerie
+            $fetch
         );
 
         return $retourarray;
@@ -105,9 +107,11 @@ class GenerateHTML
         $retour = "";
         $tresorerie = SQLData::getImpaye($db,$order,$field,$sirenCo,$dateDebut,$dateFin,$siren,$raison,$dossier);
 
+        
         if($tresorerie->rowCount() > 0){
             echo "".$tresorerie->rowCount()." résultats trouvés";
-            while($row = $tresorerie->fetch(PDO::FETCH_ASSOC)){
+            $fetch = $tresorerie->fetchAll();
+            foreach($fetch as $row){
                 $retour.= " <tr>
                                         <td>".$row['Siren']."</td>
                                         <td>".$row['DateVente']."</td>
@@ -122,9 +126,10 @@ class GenerateHTML
             }
         }else{
             $retour.= "Pas de résultats pour cet utilisateur";
+            $fetch = [];
         }
 
-        $retourTab = array($retour,$tresorerie);
+        $retourTab = array($retour,$fetch);
 
         return $retourTab;
     }

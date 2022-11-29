@@ -4,17 +4,34 @@ include_once "SQLData.php";
 include_once "GenerateHTML.php";
 include_once dirname(dirname(__FILE__)).'/vendor/autoload.php';
 use \Spipu\Html2Pdf\Html2Pdf;
-echo "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA";
-$db = Database::getPDO();
-if (isset($_POST['export-tresorerie']) && isset($_POST['data-tresorerie'])){
-    echo "AEAZEZEZAEZEZAEZEEZA";
-    $type= $_POST['export-tresorerie'];
-    $datas = $_POST['data-tresorerie'];
-    echo "AAAAAAEAZEZEZAEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE";
-    print_r($datas);
-    Export::export_tresorerie_to_csv_xls($datas, $type);
-}
 
+session_start();
+$db = Database::getPDO();
+if (isset($_POST['export-tresorerie']) && isset($_SESSION['data-tresorerie']) && isset($_POST['txtTresorerie'])){
+    $type= $_POST['export-tresorerie'];
+    if ($type==0 || $type ==1){
+        $datas = $_SESSION['data-tresorerie'];
+        Export::export_tresorerie_to_csv_xls($datas, $type);
+    }else if ($type == 2){
+        Export::export_tresorerie_to_PDF($_POST['txtTresorerie']);
+    }
+}else if (isset($_POST['export-remise']) && isset($_SESSION['data-remise']) && isset($_SESSION["txt-remise"])){
+    $type= $_POST['export-remise'];
+    if ($type==0 || $type ==1){
+        $datas = $_SESSION['data-remise'];
+        Export::export_remise_to_csv_xls($datas, $type);
+    }else if ($type == 2){
+        Export::export_remise_to_PDF($_SESSION["txt-remise"]);
+    }
+}if (isset($_POST['export-impaye']) && isset($_SESSION['data-impaye']) && isset($_POST['txtImpaye'])){
+    $type= $_POST['export-impaye'];
+    if ($type==0 || $type ==1){
+        $datas = $_SESSION['data-impaye'];
+        Export::export_impayes_to_csv_xls($datas, $type);
+    }else if ($type == 2){
+        Export::export_impaye_to_PDF($_POST['txtImpaye']);
+    }
+}
 
 /**
  * Classe qui s'occupe de faire les différentes exportations des tableaux
@@ -44,7 +61,7 @@ class Export{
         $excel = "";
         $excel .=  "Numero de Siren".$endCase."RaisonSociale".$endCase."Devise".$endCase."Nombres de Transaction".$endCase."Montant Total".$endLine;
         foreach($requestResult as $row) {
-            $excel .= "$row[Siren]".$endCase."$row[RaisonSociale]".$endCase."$row[Devise]".$endCase."$row[NombreTransactions]".$endCase."$row[MontantTotal]$endLine";
+            $excel .= "$row[Siren]".$endCase."$row[RaisonSociale]".$endCase."$row[Devise]".$endCase."$row[NombreTransaction]".$endCase."$row[MontantTotal]$endLine";
         }
         
         header("Content-type: application/$contentType");
@@ -76,7 +93,7 @@ class Export{
         $excel = "";
         $excel .=  "Numero de Siren".$endCase."RaisonSociale".$endCase."Devise".$endCase."Numero de Remise".$endCase."Date de Traitement".$endCase."Nombres de Transactions".$endCase."Montant Total".$endCase."Sens".$endLine;
         foreach($requestResult as $row) {
-            $excel .= "$row[Siren]".$endCase."$row[RaisonSociale]".$endCase."$row[Devise]".$endCase."$row[NumeroRemise]".$endCase."$row[DateTraitement]".$endCase."$row[NombreTransaction]".$endCase."$row[MontantTotal]".$endCase."$row[Sens]".$endLine;
+            $excel .= "$row[Siren]".$endCase."$row[RaisonSociale]".$endCase."$row[Devise]".$endCase."$row[NumeroRemise]".$endCase."$row[DateTraitement]".$endCase."$row[Nombretransaction]".$endCase."$row[MontantTotal]".$endCase."$row[Sens]".$endLine;
         }
         
         header("Content-type: application/$contentType");
@@ -118,13 +135,45 @@ class Export{
     }
 
     /**
+     * Fonction qui génère les différents fichiers d'exportations pour le tableau des impayes.
+     *
+     * @param $requestResult : le PDOStatment contenant les informations nécéssaires
+     * @param $fileType : le type de fichiers de retour voulu (CSV,xls..)
+     * @return void
+     */
+    public static function export_impayes_to_csv_xls($requestResult, $fileType){ // Prend en paramètre le resultat de la requete après le fetchAll et le type de fichier vers lequel on exporte : 0 pour csv et 1 pour xls
+        if($fileType==0){
+            $fileName = ".csv";
+            $contentType = "text/csv";
+            $endCase = ";";
+            $endLine = "\n";
+        }else if($fileType==1){
+            $fileName = ".xls";
+            $contentType = "application/vnd.ms-excel";
+            $endCase = "\t";
+            $endLine = "\n";
+        }
+
+        $excel = "";
+        $excel .=  "Numero de Siren".$endCase."Date de Remise".$endCase."Date de Vente".$endCase."N° de Carte".$endCase."Réseau".$endCase."N° de Dossier".$endCase."Devise".$endCase."Montant".$endCase."Libelle Impaye".$endLine;
+        foreach($requestResult as $row) {
+            $excel .= "$row[Siren]".$endCase."$row[DateRemise]".$endCase."$row[DateVente]".$endCase."$row[NumCarte]".$endCase."$row[Reseau]".$endCase."$row[NumeroDossier]".$endCase."$row[Devise]".$endCase."$row[Montant]".$endCase."$row[LibelleImpaye]".$endLine;
+        }
+        
+        header("Content-type: application/$contentType");
+        header("Content-disposition: attachment; filename=IMPAYES-".date('y/m/d')."$fileName");
+        print $excel;
+        exit;
+    }
+
+    /**
      * Fait télécharger à l'utilisateur le tableau des trésorerie sous format pdf
      *
      * @param $db : la connexion à la base de donnée
      * @param $date : la date choisie dans le tableau des trésorerie
      *
      */
-    public static function export_tresorerie_to_PDF($db,$order,$field, $d=null,$id=null){
+    public static function export_tresorerie_to_PDF($texte){
 
         $txt = "
         Date d'extraction :".date("y/m/d")."<br>
@@ -138,7 +187,7 @@ class Export{
                     <th>Montant total </th>
                 </tr>
             </thead>
-            <tbody>".GenerateHTML::generateTresorerieTab($db,$order,$field, $d,$id)[0]."</tbody>
+            <tbody>".$texte."</tbody>
             </table>
              <style>
                 td{
@@ -166,7 +215,7 @@ class Export{
      *
      * @param $db : la connexion à la base de donnée
      */
-    public static function  export_remise_to_PDF($db,$order,$field){
+    public static function  export_remise_to_PDF($texte){
         $txt = "
         Date d'extraction :".date("y/m/d")."<br><table>
             <thead>
@@ -182,7 +231,7 @@ class Export{
                     <th>Sens + ou -</th>
                 </tr>
             </thead>
-            <tbody>". GenerateHTML::generateRemiseTab($db,$order,$field)[0]. "</tbody>
+            <tbody>". $texte. "</tbody>
         </table> 
         <style>
             td{
@@ -211,7 +260,7 @@ class Export{
      * @param $db : la connexion à la base de donnée
      *
      */
-    public static function export_impaye_to_PDF($db){
+    public static function export_impaye_to_PDF($texte){
         $txt ="
         Date d'extraction :".date("y/m/d"). "<table>
             <thead>
@@ -227,7 +276,7 @@ class Export{
                     <th>Libellé impayés</th>
                 </tr>
             </thead>
-            <tbody>". GenerateHTML::generateRemiseTab($db)[0]. "</tbody>
+            <tbody>". $texte. "</tbody>
         </table> 
         <style>
             td{
