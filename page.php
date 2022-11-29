@@ -56,10 +56,24 @@
 	<meta name="viewport" content="initial-scale=1.0; maximum-scale=1.0; width=device-width;">
     <link rel="stylesheet" type="text/css" href="style.css">
 </head>
-<body> 
+<body>
+    <script>
+
+        const setTab = function(tab) {
+            localStorage.setItem("selected_tab", tab);
+        };
+
+        window.onload = function() {
+            if ("selected_tab" in localStorage) {
+                document.getElementById(localStorage.getItem("selected_tab")).checked = true;
+            } else {
+                document.getElementById("tab-tresorerie").checked = true;
+            }
+        };
+    </script>
     
     <div class="mytabs">
-        <input type="radio" name="mytabs" id="tab-tresorerie" checked>
+        <input type="radio" name="mytabs" id="tab-tresorerie" onclick="setTab('tab-tresorerie')" checked>
         <label class="label-first label-style" for="tab-tresorerie">Trésorerie</label>
         <div class="tab">
         <form action="page.php" method="get">
@@ -113,7 +127,7 @@
             </table>
         </div>
 
-        <input type="radio" name="mytabs" id="tab-remise">
+        <input type="radio" name="mytabs" id="tab-remise" onclick="setTab('tab-remise')">
         <label class="label-style" for="tab-remise">Remise</label>
         <div class="tab">
         <form action="page.php" method="post">
@@ -169,7 +183,7 @@
             </table>
         </div>
 
-        <input type="radio" name="mytabs" id="tab-impaye">
+        <input type="radio" name="mytabs" id="tab-impaye" onclick="setTab('tab-impaye')">
         <label class="label-last label-style" for="tab-impaye">Impayés</label>
         <div class="tab">
             <form action="page.php" method="post">

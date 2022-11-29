@@ -44,6 +44,7 @@ if (isset($_POST['debut'])) {
 }
 
 $cnx = Database::getPDO();
+$stats2= SQLData::getMotifImpaye($cnx,615888425);
 $stats3 = SQLData::getHistoriqueImpaye($cnx, 615888425, $debut, $fin);
 ?>
 
@@ -63,6 +64,21 @@ $stats3 = SQLData::getHistoriqueImpaye($cnx, 615888425, $debut, $fin);
 </head>
 
 <body>
+<script>
+    let i = 2;
+    let name = "column";
+
+    const changeGraph = function() {
+        const graph = localStorage.getItem("graph");
+        if (graph == "spline") {
+            localStorage.setItem("graph", "column");
+        } else {
+            localStorage.setItem("graph", "spline");
+        }
+
+        window.location.reload();
+    };
+</script>
   <div class="site-container">
     <div class="retour-tableau">
       <!-- <img src="" alt=""> -->
@@ -110,26 +126,25 @@ $stats3 = SQLData::getHistoriqueImpaye($cnx, 615888425, $debut, $fin);
         <input type="submit" name="submit">
       </form>
       <?php
-      if (isset($_POST['debut'])) {
-        $_SESSION['debut'] = $_POST['debut'];
-      }
+          if (isset($_POST['debut'])) {
+            $_SESSION['debut'] = $_POST['debut'];
+          }
 
-      if (isset($_POST['fin'])) {
-          $_SESSION['fin'] = $_POST['fin'];
-      }
-
-
+          if (isset($_POST['fin'])) {
+              $_SESSION['fin'] = $_POST['fin'];
+          }
       ?>
     </div>
     <div class="title">
       <h2>Graphiques :</h2>
     </div>
+      <button id="button" onclick="changeGraph();" style="width: 150px; height: 25px;">Changer de Graph</button>
     <div id="historique_impaye" style="width: 95%; max-width: 1000px;min-height:600px;"></div>
     <script>
       document.addEventListener('DOMContentLoaded', function() {
         const chart = Highcharts.chart('historique_impaye', {
           chart: {
-            type: "column"
+            type: ("graph" in localStorage ? localStorage.getItem("graph") : "column")
           },
           title: {
             text: ''
@@ -227,6 +242,40 @@ $stats3 = SQLData::getHistoriqueImpaye($cnx, 615888425, $debut, $fin);
         })
       });
     </script>
+      <div id="impaye_par_categorie" style="width: 95%; max-width: 800px;min-height:600px; margin-top: 50px;"></div>
+      <script>
+          document.addEventListener('DOMContentLoaded',function(){
+              const chart=Highcharts.chart('impaye_par_categorie',{
+                  chart:{
+                      type: 'pie'
+                  },
+                  title: {
+                      text: 'Nombre d\'impayés triés par motif'
+                  },
+                  plotOptions: {
+                      series: {
+                          color: 'purple'
+                      }
+                  },
+                  series :[{
+                      data:<?php
+                      echo "[";
+                      foreach($stats2 as $stat) {
+                          echo "[\"$stat[0]\",$stat[1]],";
+                      }
+                      echo "]";
+                      ?>,
+                      name: 'Historique',
+                      marker: {
+                          lineWidth: 3,
+                          lineColor: 'purple',
+                          fillColor: 'white'
+                      }
+                  }
+                  ]
+              })
+          });
+      </script>
   </div>
   </div>
 </body>
