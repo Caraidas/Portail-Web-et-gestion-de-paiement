@@ -148,7 +148,9 @@ class GenerateHTML
         $retour = "";
         $sauvegarde = "";
         $details = SQLData::getDetails($db, $id);
-        while ($row2 = $details->fetch(PDO::FETCH_ASSOC)) {
+
+        $fetch = $details->fetchAll();
+        foreach($fetch as $row2){
             $sauvegarde .= "<tr>
                 <td>" . $row2['Siren'] . "</td>
                 <td>" . $row2['DateVente'] . "</td>
@@ -186,8 +188,7 @@ class GenerateHTML
             </div>
             </div>";
 
-
-        $retourTab = array($retour,$details);
+        $retourTab = array($retour,$fetch);
         return $retourTab;
 
     }

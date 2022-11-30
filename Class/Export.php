@@ -31,8 +31,8 @@ if (isset($_POST['export-tresorerie']) && isset($_SESSION['data-tresorerie']) &&
     }else if ($type == 2){
         Export::export_impaye_to_PDF($_POST['txtImpaye']);
     }
-}if (isset($_POST['export-detail']) && isset($_POST['numDetail'])&& isset($_SESSION['Detail'.$_POST['numDetail']]) && isset($_POST['txtDetail'])){
-    echo "PIPOLAPI";
+}if (isset($_POST['export-detail']) && isset($_POST['numDetail']) && isset($_SESSION['Detail'.$_POST['numDetail']]) && isset($_POST['txtDetail'])){
+
     $type = $_POST['export-detail'];
     if($type==0 || $type ==1){
         $datas = $_SESSION['Detail'.$_POST['numDetail']];
@@ -40,7 +40,7 @@ if (isset($_POST['export-tresorerie']) && isset($_SESSION['data-tresorerie']) &&
     }else if ($type == 2){
         Export::export_detail_to_PDF($_POST['txtDetail']);
     }
-
+//
 }
 
 /**
