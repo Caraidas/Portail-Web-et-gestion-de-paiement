@@ -297,7 +297,7 @@ class Export{
         $html2pdf = new Html2Pdf('L','A4','fr');
         $html2pdf->writeHTML($txt);
         ob_end_clean();
-        $html2pdf->output('REMISES'.date("y/m/d").'.pdf','D');
+        $html2pdf->output('IMPAYE '.date("y/m/d").'.pdf','D');
     }
 
     /**
@@ -307,7 +307,7 @@ class Export{
      * @param $id : l'indentifiant dont on veut le détail
      *
      */
-    public static function export_detail_to_PDF($db, $id){
+    public static function export_detail_to_PDF($texte){
 
         $txt="
         Date d'extraction :".date("y/m/d")."<table>
@@ -323,23 +323,7 @@ class Export{
                             <th>Sens</th>
                         </tr>
                     </thead>
-                    <tbody>";
-
-        $details = SQLData::getDetails($db, $id)[0];
-        while ($row2 = $details->fetch(PDO::FETCH_ASSOC)) {
-            $txt.= "<tr>
-                    <td>" . $row2['Siren'] . "</td>
-                    <td>" . $row2['DateVente'] . "</td>
-                    <td>" . $row2['NumeroCarte'] . "</td>
-                    <td>" . $row2['Reseau'] . "</td>
-                    <td>" . $row2['NumAutorisation'] . "</td>
-                    <td>" . $row2['Devise'] . "</td>
-                    <td>" . $row2['Montant'] . "</td>
-                    <td>" . $row2['Sens'] . "</td>
-                </tr>";
-        }
-
-        $txt.="</tbody></table> <style>
+                    <tbody>".$texte."</tbody></table> <style>
             td{
                 border:black solid 1px;
                 border-collapse: collapse 
@@ -356,7 +340,7 @@ class Export{
         $html2pdf = new Html2Pdf('L','A4','fr');
         $html2pdf->writeHTML($txt);
         ob_end_clean();
-        $html2pdf->output('DETAIL'.date("y/m/d").'.pdf','D');
+        $html2pdf->output('DETAIL IMPAYE '.date("y/m/d").'.pdf','D');
     }
 }
 
