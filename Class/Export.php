@@ -204,7 +204,7 @@ class Export{
                 }
             </style>";
 
-        $html2pdf = new Html2Pdf('p','A4','fr');
+        $html2pdf = new Html2Pdf('L','A4','fr');
         $html2pdf->writeHTML($txt);
         ob_end_clean();
         $html2pdf->output('TRESORERIE'.date("y/m/d").'.pdf','D'); //
@@ -248,7 +248,7 @@ class Export{
             }
         </style>";
 
-        $html2pdf = new Html2Pdf('p','A4','fr');
+        $html2pdf = new Html2Pdf('L','A4','fr');
         $html2pdf->writeHTML($txt);
         ob_end_clean();
         $html2pdf->output('REMISE'.date("y/m/d").'.pdf','D');
@@ -293,7 +293,7 @@ class Export{
             }
         </style>";
 
-        $html2pdf = new Html2Pdf('p','A4','fr');
+        $html2pdf = new Html2Pdf('L','A4','fr');
         $html2pdf->writeHTML($txt);
         ob_end_clean();
         $html2pdf->output('REMISES'.date("y/m/d").'.pdf','D');
@@ -352,7 +352,7 @@ class Export{
                 border-collapse: collapse 
             }
         </style>";
-        $html2pdf = new Html2Pdf('p','A4','fr');
+        $html2pdf = new Html2Pdf('L','A4','fr');
         $html2pdf->writeHTML($txt);
         ob_end_clean();
         $html2pdf->output('DETAIL'.date("y/m/d").'.pdf','D');
