@@ -231,7 +231,8 @@ class Export{
                     <th>Sens + ou -</th>
                 </tr>
             </thead>
-            <tbody>". $texte. "</tbody>
+            <tbody>". (preg_replace("/<input type='button' name='' value='Détails' data-href='content\d'>/","",$texte)).
+                "</tbody>
         </table> 
         <style>
             td{
