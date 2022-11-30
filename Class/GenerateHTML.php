@@ -146,8 +146,19 @@ class GenerateHTML
     {
 
         $retour = "";
+        $sauvegarde = "";
         $details = SQLData::getDetails($db, $id);
         while ($row2 = $details->fetch(PDO::FETCH_ASSOC)) {
+            $sauvegarde .= "<tr>
+                <td>" . $row2['Siren'] . "</td>
+                <td>" . $row2['DateVente'] . "</td>
+                <td>" . $row2['NumeroCarte'] . "</td>
+                <td>" . $row2['Reseau'] . "</td>
+                <td>" . $row2['NumAutorisation'] . "</td>
+                <td>" . $row2['Devise'] . "</td>
+                <td>" . $row2['Montant'] . "</td>
+                <td>" . $row2['Sens'] . "</td>
+            </tr>";
             $retour .= "<tr>
                 <td>" . $row2['Siren'] . "</td>
                 <td>" . $row2['DateVente'] . "</td>
@@ -159,7 +170,20 @@ class GenerateHTML
                 <td>" . $row2['Sens'] . "</td>
             </tr>";
         }
-        $retour .= "</tbody></table></div>";
+        $retour .= "</tbody></table><div class='export'>
+                <form action='Class/Export.php' method='post'>
+                    <div>exporter : </div>
+                    <input type='radio' id='csv' name='export-detail' value='0'>
+                    <label class='radio-btn' for='csv'>.csv</label><br>
+                    <input type='radio' id='xls' name='export-detail' value='1'>
+                    <label class='radio-btn' for='xls'>.xls</label><br>
+                    <input type='radio' id='pdf' name='export-detail' value='2'>
+                    <label class='radio-btn' for='pdf'>.pdf</label>
+                    <input name='txtImpaye' type='hidden' value='$sauvegarde'>
+                    <input class='btn' type='submit' value='Submit'>
+                </form>
+            </div>
+            </div>";
 
 
         $retourTab = array($retour,$details);

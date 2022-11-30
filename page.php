@@ -316,6 +316,7 @@ for ($i = 0; $i < $count - 1; $i++) {
                 </thead>
                 <tbody>";
     echo GenerateHTML::generateDetailsTab($db,$list_remise[$i])[0];
+
 } 
 ?>
   </body>
