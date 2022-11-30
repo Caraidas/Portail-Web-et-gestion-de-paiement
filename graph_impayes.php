@@ -3,6 +3,15 @@ require_once 'Class/Database.php';
 require_once 'Class/SQLData.php';
 include 'header.php';
 
+if (isset($_SESSION["id"])) {
+    $id = $_SESSION["id"];
+} else {
+    header("Location: login.php");
+}
+
+$db = Database::getPDO(); //database pour toute la page
+$sirenCo = SQLData::getSirenOfCommerceant($db, $_SESSION["id"]);
+
 if (isset($_SESSION['style_dates']) && isset($_SESSION['style_four']) && isset($_SESSION['style_twelve'])) {
   $style_dates = $_SESSION['style_dates'];
   $style_four = $_SESSION['style_four'];
@@ -44,8 +53,8 @@ if (isset($_POST['debut'])) {
 }
 
 $cnx = Database::getPDO();
-$stats2= SQLData::getMotifImpaye($cnx,615888425);
-$stats3 = SQLData::getHistoriqueImpaye($cnx, 615888425, $debut, $fin);
+$stats2= SQLData::getMotifImpaye($cnx, intval($sirenCo));
+$stats3 = SQLData::getHistoriqueImpaye($cnx, intval($sirenCo), $debut, $fin);
 ?>
 
 <!DOCTYPE html>
@@ -81,8 +90,7 @@ $stats3 = SQLData::getHistoriqueImpaye($cnx, 615888425, $debut, $fin);
 </script>
   <div class="site-container">
     <div class="retour-tableau">
-      <!-- <img src="" alt=""> -->
-      <a href="">Revenir aux tableaux</a>
+      <a href="page.php">Revenir aux tableaux</a>
     </div>
     <ul class="buttons">
       <a href="chose_date_selection.php?selected=dates">

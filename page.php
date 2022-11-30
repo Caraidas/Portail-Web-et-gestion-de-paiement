@@ -271,6 +271,8 @@
                 echo $txtImpaye;
                 ?>
                 </tbody>
+            <br>
+            <a href="graph_impayes.php" style="color: black; text-decoration: none; font-style: italic;">Voir les graphiques</a>
             </table>
             <div class="export">
                 <form action='Class/Export.php' method='post'>

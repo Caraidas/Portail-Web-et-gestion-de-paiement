@@ -26,6 +26,7 @@ if (isset($_SESSION["id"])) {
         .menu {    
             display:flex;
             flex-direction: row;
+            align-items: center;
             padding:20px;  
             position:relative;
             box-shadow: 0 4px 2px -2px gray;
@@ -54,10 +55,13 @@ if (isset($_SESSION["id"])) {
 
         @media all and (max-width: 480px) {
         .menu {
-            height:30px;
             font-weight:300;
-            font-size:13px;    
+            font-size: 13px;
         }
+
+            .logo {
+                font-size: 1.25em;
+            }
         }
     </style>
 </head>
@@ -66,7 +70,7 @@ if (isset($_SESSION["id"])) {
     echo "
         <div class='menu'>
             <div class='logo'>FROG Bank</div>
-            <a href='#'>$id</a>
+            <a href='destroy.php' style='font-size: 0.75em;'>$id (déconnexion)</a>
         </div>
     ";
     ?>

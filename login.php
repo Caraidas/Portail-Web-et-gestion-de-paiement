@@ -74,7 +74,6 @@ if (isset($_SESSION['warning-display'])) {
             </div>
 
             <input type='submit' value='Se connecter' class='submit'>
-            <a href='destroy.php'>destroy session</a>
         </form>
     </div>
 </body>
