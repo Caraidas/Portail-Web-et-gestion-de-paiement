@@ -315,8 +315,9 @@ for ($i = 0; $i < $count - 1; $i++) {
                     </tr>
                 </thead>
                 <tbody>";
-    echo GenerateHTML::generateDetailsTab($db,$list_remise[$i])[0];
-
+    $retour =  GenerateHTML::generateDetailsTab($db,$list_remise[$i],$i);
+    echo $retour[0];
+    $_SESSION['Detail'.$i] = $retour[1];
 } 
 ?>
   </body>

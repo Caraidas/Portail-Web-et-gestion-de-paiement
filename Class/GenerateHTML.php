@@ -142,7 +142,7 @@ class GenerateHTML
      * @param $list_remise : la liste des remises à détailler
      * @return string : le code HTML de l'interieur du tableau
      */
-    public static function generateDetailsTab($db,$id)
+    public static function generateDetailsTab($db,$id,$compteur)
     {
 
         $retour = "";
@@ -179,7 +179,8 @@ class GenerateHTML
                     <label class='radio-btn' for='xls'>.xls</label><br>
                     <input type='radio' id='pdf' name='export-detail' value='2'>
                     <label class='radio-btn' for='pdf'>.pdf</label>
-                    <input name='txtImpaye' type='hidden' value='$sauvegarde'>
+                    <input name='txtDetail' type='hidden' value='$sauvegarde'>
+                    <input name='numDetail' type='hidden' value='$compteur'>
                     <input class='btn' type='submit' value='Submit'>
                 </form>
             </div>
