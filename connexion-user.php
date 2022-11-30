@@ -20,7 +20,13 @@ if (isset($_POST['id']) && isset($_POST['psw'])){
         $_SESSION['role'] = $role; //role
         $_SESSION['warning-display'] = "style='display: none;'";
 
-        header('Location: page.php');
+        if ($role == 'Commerçant' || $role == 'PO'){
+            header('Location: index.php');
+        }else if ($role == 'Admin'){
+            header('Location: adminChoice.php');
+        }
+
+        
 
     } else {// sinon (erreur)... -> Il n'a pas de compte correspondant
         $_SESSION['warning-display'] = "";

@@ -113,7 +113,7 @@ $stats3 = SQLData::getHistoriqueImpaye($cnx, intval($sirenCo), $debut, $fin);
       <div>
         <div class='exclam'></div>
         <p>
-          Entrez la date de début :
+          Entrez la date de Fin :
         </p>
       </div>
       <form action="graph_impayes.php" method="POST">
