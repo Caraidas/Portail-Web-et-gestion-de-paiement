@@ -90,7 +90,7 @@ $stats3 = SQLData::getHistoriqueImpaye($cnx, intval($sirenCo), $debut, $fin);
 </script>
   <div class="site-container">
     <div class="retour-tableau">
-      <a href="page.php">Revenir aux tableaux</a>
+      <a href="index.php">Revenir aux tableaux</a>
     </div>
     <ul class="buttons">
       <a href="chose_date_selection.php?selected=dates">
