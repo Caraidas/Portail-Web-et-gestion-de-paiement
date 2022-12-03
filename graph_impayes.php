@@ -3,14 +3,18 @@ require_once 'Class/Database.php';
 require_once 'Class/SQLData.php';
 include 'header.php';
 
-if (isset($_SESSION["id"])) {
+if (isset($_SESSION["id"]) && isset($_SESSION["role"])) {
     $id = $_SESSION["id"];
+    $role = $_SESSION["role"];
+    echo $role;
+    echo "<br>";
+    echo $id;
 } else {
     header("Location: login.php");
 }
 
 $db = Database::getPDO(); //database pour toute la page
-$sirenCo = SQLData::getSirenOfCommerceant($db, $_SESSION["id"]);
+$sirenCo = SQLData::getSirenOfCommerceant($db, $id);
 
 if (isset($_SESSION['style_dates']) && isset($_SESSION['style_four']) && isset($_SESSION['style_twelve'])) {
   $style_dates = $_SESSION['style_dates'];
@@ -53,7 +57,7 @@ if (isset($_POST['debut'])) {
 }
 
 $cnx = Database::getPDO();
-if ($role == "Commerçant"){
+if ($role === "Commerçant"){
   $stats2= SQLData::getMotifImpaye($cnx, intval($sirenCo));
 }else{
   $stats2= SQLData::getMotifImpaye($cnx, null);
