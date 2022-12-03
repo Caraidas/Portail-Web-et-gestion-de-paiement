@@ -108,6 +108,58 @@ td {
   text-shadow: -1px -1px 1px rgba(0, 0, 0, 0.1);
 }
 
+.text-tab{
+  padding:20px;
+  display:flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.left-text-tab{
+  width:65%;
+  padding-top: 25px;
+}
+
+.right-text-tab{
+  width:30%;
+}
+
+.buttons {
+  display: flex;
+  width: 100%;
+  max-width: 900px;
+  justify-content: space-between;
+}
+
+.buttons>a {
+  width: 60%;
+}
+
+.buttons>a>li {
+  list-style-type: none;
+  border: 2px solid #3F5071;
+  border-radius: 5000px;
+  padding: 2px 8px 2px 8px;
+  font-size: 18px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  background: white;
+  border: none;
+  box-shadow: rgba(50, 50, 93, 0.138) 0px 13px 27px -5px, rgba(0, 0, 0, 0.1) 0px 8px 16px -8px;
+}
+
+.buttons>a>li>img {
+  padding: 5px 5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 30%;
+  height: 80%;
+  max-width: 50px;
+  max-height: 50px;
+}
 
 .mytabs {
   position: relative;

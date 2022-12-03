@@ -80,25 +80,28 @@
         <input type="radio" name="mytabs" id="tab-tresorerie" onclick="setTab('tab-tresorerie')" checked>
         <label class="label-first label-style" for="tab-tresorerie">Trésorerie</label>
         <div class="tab">
-        <form action="index.php" method="get">
-            <label for="date">Annonces du:</label>
-            <input type="date" id="date" name="date">
-            <input type="submit">
-        </form>
-        <form class="show-radio" action="index.php" method="post">
-            <label for="tab-field">Trier le tableau par: </label>
-            <select name="tab-field" id="tab-field">
-                <option value="">--Choisissez une option--</option>
-                <option value="Siren">Siren</option>
-                <option value="MontantTotal">Montant</option>
-            </select>
-            <input type="radio" id="croissant" name="order" value="ASC">
-            <label for="croissant">croissant</label>
-            <input type="radio" id="decroissant" name="order" value="DESC">
-            <label for="decroissant">décroissant</label>
-            <input type="submit">
-        </form>
-
+        <div class="text-tab">
+            <div class="left-text-tab"> 
+                <form action="index.php" method="get">
+                    <label for="date">Annonces du:</label>
+                    <input type="date" id="date" name="date">
+                    <input type="submit">
+                </form>
+                <form class="show-radio" action="index.php" method="post">
+                    <label for="tab-field">Trier le tableau par: </label>
+                    <select name="tab-field" id="tab-field">
+                        <option value="">--Choisissez une option--</option>
+                        <option value="Siren">Siren</option>
+                        <option value="MontantTotal">Montant</option>
+                    </select>
+                    <input type="radio" id="croissant" name="order" value="ASC">
+                    <label for="croissant">croissant</label>
+                    <input type="radio" id="decroissant" name="order" value="DESC">
+                    <label for="decroissant">décroissant</label>
+                    <input type="submit">
+                </form>
+            </div>
+        </div>
         <table class="table-fill">
                 <thead>
                     <tr>
@@ -160,27 +163,31 @@
         <input type="radio" name="mytabs" id="tab-remise" onclick="setTab('tab-remise')">
         <label class="label-style" for="tab-remise">Remise</label>
         <div class="tab">
-        <form action="index.php" method="post">
-            <label for="dateDebut">Date de début:</label>
-            <input type="date" id="dateDebut" name="dateDebut">
+        <div class="text-tab">
+            <div class="left-text-tab"> 
+                <form action="index.php" method="post">
+                    <label for="dateDebut">Date de début:</label>
+                    <input type="date" id="dateDebut" name="dateDebut">
 
-            <label for="dateFin">Date de fin:</label>
-            <input type="date" id="dateFin" name="dateFin">
-            <input type="submit">
-        </form>
-        <form class="show-radio" action="index.php" method="post">
-            <label for="tab-field">Trier le tableau par: </label>
-            <select name="tab-field" id="tab-field">
-                <option value="">--Choisissez une option--</option>
-                <option value="Siren">Siren</option>
-                <option value="MontantTotal">Montant</option>
-            </select>
-            <input type="radio" id="croissant" name="order" value="ASC">
-            <label for="croissant">croissant</label>
-            <input type="radio" id="decroissant" name="order" value="DESC">
-            <label for="decroissant">décroissant</label>
-            <input type="submit">
-        </form>
+                    <label for="dateFin">Date de fin:</label>
+                    <input type="date" id="dateFin" name="dateFin">
+                    <input type="submit">
+                </form>
+                <form class="show-radio" action="index.php" method="post">
+                    <label for="tab-field">Trier le tableau par: </label>
+                    <select name="tab-field" id="tab-field">
+                        <option value="">--Choisissez une option--</option>
+                        <option value="Siren">Siren</option>
+                        <option value="MontantTotal">Montant</option>
+                    </select>
+                    <input type="radio" id="croissant" name="order" value="ASC">
+                    <label for="croissant">croissant</label>
+                    <input type="radio" id="decroissant" name="order" value="DESC">
+                    <label for="decroissant">décroissant</label>
+                    <input type="submit">
+                </form>
+            </div>
+        </div>
         <table class="table-fill">
                 <thead>
                     <tr>
@@ -233,27 +240,38 @@
         <input type="radio" name="mytabs" id="tab-impaye" onclick="setTab('tab-impaye')">
         <label class="label-last label-style" for="tab-impaye">Impayés</label>
         <div class="tab">
-            <form action="index.php" method="post">
-            <label for="dateDebut">Date de début:</label>
-            <input type="date" id="dateDebut" name="dateDebut">
+            <div class="text-tab">
+                <div class="left-text-tab">
+                    <form action="index.php" method="post">
+                        <label for="dateDebut">Date de début:</label>
+                        <input type="date" id="dateDebut" name="dateDebut">
 
-            <label for="dateFin">Date de fin:</label>
-            <input type="date" id="dateFin" name="dateFin">
-            <input type="submit">
-        </form>
-        <form class="show-radio" action="index.php" method="post">
-            <label for="tab-field">Trier le tableau par: </label>
-            <select name="tab-field" id="tab-field">
-                <option value="">--Choisissez une option--</option>
-                <option value="Siren">Siren</option>
-                <option value="MontantTotal">Montant</option>
-            </select>
-            <input type="radio" id="croissant" name="order" value="ASC">
-            <label for="croissant">croissant</label>
-            <input type="radio" id="decroissant" name="order" value="DESC">
-            <label for="decroissant">décroissant</label>
-            <input type="submit">
-        </form>
+                        <label for="dateFin">Date de fin:</label>
+                        <input type="date" id="dateFin" name="dateFin">
+                        <input type="submit">
+                    </form>
+                    <form class="show-radio" action="index.php" method="post">
+                        <label for="tab-field">Trier le tableau par: </label>
+                        <select name="tab-field" id="tab-field">
+                            <option value="">--Choisissez une option--</option>
+                            <option value="Siren">Siren</option>
+                            <option value="MontantTotal">Montant</option>
+                        </select>
+                        <input type="radio" id="croissant" name="order" value="ASC">
+                        <label for="croissant">croissant</label>
+                        <input type="radio" id="decroissant" name="order" value="DESC">
+                        <label for="decroissant">décroissant</label>
+                        <input type="submit">
+                    </form>
+                </div>
+                <div class="right-text-tab">
+                    <ul class="buttons">
+                        <a href="graph_impayes.php">
+                            <li>Voir les graphiques <img src="images/croissance.png"></li>
+                        </a>
+                    </ul>
+                </div>
+            </div>
         <table class="table-fill">
                 <thead>
                     <tr>
@@ -284,7 +302,7 @@
                 ?>
                 </tbody>
             <br>
-            <a href="graph_impayes.php" style="color: black; text-decoration: none; font-style: italic;">Voir les graphiques</a>
+            
             </table>
             <div class="export">
                 <form action='Class/Export.php' method='post'>

@@ -17,7 +17,7 @@ class GenerateHTML
         $tresorerie = SQLData::getTresorerie($db,$order,$field,$sirenCo,$d,$siren,$raison);
         if($tresorerie->rowCount() > 0){
 
-            echo "".$tresorerie->rowCount()." résultats trouvés";
+            echo "<div style=\"padding:20px\">".$tresorerie->rowCount()." résultats trouvés </div>";
             $fetch = $tresorerie->fetchAll();
             foreach($fetch as $row){
                 if ($row['MontantTotal'] < 0)
@@ -57,7 +57,7 @@ class GenerateHTML
 
 
         if($tresorerie->rowCount() > 0){
-            echo "".$tresorerie->rowCount()." résultats trouvés";
+            echo "<div style=\"padding:20px\">".$tresorerie->rowCount()." résultats trouvés </div>";
             $fetch = $tresorerie->fetchAll();
             foreach($fetch as $row){
                 if ($row['Sens'] == "-")
@@ -77,7 +77,6 @@ class GenerateHTML
                                         <td>".$negatif."</td>
                                         <td>".$row['Sens']."</td>
                                    </tr>";
-                echo $count;
                 $count++;
                 $list_remise[] = $row['NumeroRemise'];
             }
@@ -109,7 +108,7 @@ class GenerateHTML
 
         
         if($tresorerie->rowCount() > 0){
-            echo "".$tresorerie->rowCount()." résultats trouvés";
+            echo "<div style=\"padding:20px\">".$tresorerie->rowCount()." résultats trouvés </div>";
             $fetch = $tresorerie->fetchAll();
             foreach($fetch as $row){
                 $retour.= " <tr>
