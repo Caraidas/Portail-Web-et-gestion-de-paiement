@@ -211,7 +211,7 @@ td {
   font-size: 17px;
   position: absolute;
   justify-content: space-between;
-  left: 40%;
+  left: 50%;
   padding:30px 20px 0px 20px;
   top: auto;
   transform: translateZ(0);
@@ -331,6 +331,65 @@ input[name="type"] {
 }
 
 
+
+.mytabs .label-style {
+  margin-top:50px
+}
+
+.label-first{
+  border-radius: 0px 0px 0px 0px;
+}
+
+.label-last{
+  border-radius: 20px 0px 0px 0px;
+}
+
+
+.mytabs .tab {
+  width: 90%;
+  padding: 20px 50px 80px 50px;
+  background: #EEEEEE;
+  order: 0;
+  display:block;
+}
+.mytabs .tab h2 {
+  font-size: 3em;
+}
+
+.mytabs input[type='radio']:checked + .label-style + .tab {
+  display: block;
+}
+
+.mytabs input[type="radio"]:checked + .label-style {
+  background: #EEEEEE;
+  text-decoration: underline 5px #3A6DD0 ;
+  text-underline-offset: 5px;
+}
+
+
+.show-radio{
+  flex-direction: column;
+}
+
+.text-tab{
+  flex-direction: column;
+}
+
+.left-text-tab{
+  width:100%
+}
+
+.left-text-tab form{
+  padding:20px
+}
+
+.left-text-tab form label,input{
+  padding:5px
+}
+
+.right-text-tab{
+  width:100%
+}
 }
 
 

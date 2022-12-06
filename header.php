@@ -58,9 +58,9 @@ if (isset($_SESSION["id"])) {
             font-size: 13px;
         }
 
-            .logo {
-                font-size: 1.25em;
-            }
+        .logo {
+            font-size: 1.25em;
+        }
         }
     </style>
 </head>
@@ -68,7 +68,7 @@ if (isset($_SESSION["id"])) {
 <?php
     echo "
         <div class='menu'>
-            <div class='logo'>FROG Bank</div>
+            <div class='logo'><a href='index.php'>FROG Bank</a></div>
             <a href='destroy.php' style='font-size: 0.75em;'>$id (déconnexion)</a>
         </div>
     ";

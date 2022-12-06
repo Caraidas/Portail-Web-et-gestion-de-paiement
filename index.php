@@ -49,10 +49,10 @@
     }
 ?>
 
-<html lang="en">
+<html lang="fr">
 <head>
 	<meta charset="utf-8" />
-	<title>Table Style</title>
+	<title>Acceuil</title>
 	<meta name="viewport" content="initial-scale=1.0; maximum-scale=1.0; width=device-width;">
     <link rel="stylesheet" type="text/css" href="style.css">
   <script src="https://code.highcharts.com/highcharts.js"></script>
@@ -136,7 +136,7 @@
                 </tbody>
             </table>
             <div class="export">
-            <form action='Class/Export.php' method='post'>
+            <form style="margin-top: 20px" action='Class/Export.php' method='post'>
                 <input type="radio" id="csv" name="export-tresorerie" value="0">
                 <label class="radio-btn" for="csv">.csv</label><br>
                 <input type="radio" id="xls" name="export-tresorerie" value="1">
@@ -224,7 +224,7 @@
                 </tbody>
             </table>
             <div class="export">
-                <form action='Class/Export.php' method='post'>
+                <form style="margin-top: 20px" action='Class/Export.php' method='post'>
                     <input type="radio" id="csv" name="export-remise" value="0">
                     <label class="radio-btn" for="csv">.csv</label><br>
                     <input type="radio" id="xls" name="export-remise" value="1">
@@ -305,7 +305,7 @@
             
             </table>
             <div class="export">
-                <form action='Class/Export.php' method='post'>
+                <form style="margin-top: 20px" action='Class/Export.php' method='post'>
                     <input type="radio" id="csv" name="export-impaye" value="0">
                     <label class="radio-btn" for="csv">.csv</label><br>
                     <input type="radio" id="xls" name="export-impaye" value="1">
@@ -323,7 +323,7 @@
     <div class="fixedContainer">
         <form action='index.php' method='post'>
             <label for="search">Rechercher</label>
-            <input type="search" id="search" name="search">
+            <input style="width:100px" type="search" id="search" name="search">
             <button type="submit">Search</button>
         </form>
     </div>
