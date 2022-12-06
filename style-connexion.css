@@ -150,6 +150,8 @@ label {
 .input {
     border-radius: 500px;
     border: 2px solid var(--bleu);
+    width: 400px;
+    max-width: 400px;
     height: 50px;
     font-size: 25px;
     padding: 10px 20px 10px 20px;
@@ -189,13 +191,23 @@ form  input[type="checkbox"] {
     font-weight: bold;
 }
 
+#id_password {
+    padding-right: 50px;
+}
+
 @keyframes hover-submit{
     to {
         box-shadow: rgba(50, 50, 93, 0.25) 0px 13px 27px -5px, rgba(0, 0, 0, 0.3) 0px 8px 16px -8px
     }
 }
 
-@media (max-width: 425px) {
+@media (max-width: 600px) {
+    h1 {
+        font-size: 80px;
+    }
+}
+
+@media (max-width: 510px) {
     h1 {
         font-size: 50px;
     }
@@ -205,13 +217,7 @@ form  input[type="checkbox"] {
     }
 
     .input {
-        height: 30px;
-        font-size: 20px;
+        max-width: 250px;
     }
 }
 
-@media (max-width: 600px) {
-    h1 {
-        font-size: 80px;
-    }
-}
