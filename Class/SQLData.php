@@ -434,7 +434,7 @@ class SQLData
      */
     public static function getHistoriqueImpaye($db,$id,$dateDebut, $dateFin){
         $query = "SELECT UNIX_TIMESTAMP(CONCAT(YEAR(DateTraitement),'-',MONTH(DateTraitement),'-',01)) AS 'TimeStamp', SUM(Positif.MontantPositif) TotalPositif, SUM(Negatif.MontantNegatif) TotalNegatif FROM B_Remise JOIN (
-            SELECT B_Remise.NumRemise NumRemise, SUM(B_Transaction.Montant) MontantPositif FROM B_Remise NATURAL JOIN B_Transaction WHERE B_Transaction.Sens='+' GROUP BY NumRemise) Positif 
+            SELECT B_Remise.NumRemise NumRemise, SUM(B_Transaction.Montant) MontantPositif FROM B_Remise NATURAL JOIN B_Transaction GROUP BY NumRemise) Positif 
             ON B_Remise.NumRemise = Positif.NumRemise JOIN(
             SELECT B_Remise.NumRemise NumRemise, SUM(B_Transaction.Montant) MontantNegatif FROM B_Remise NATURAL JOIN B_Transaction WHERE B_Transaction.Sens='-' GROUP BY NumRemise) Negatif 
             ON B_Remise.NumRemise = Negatif.NumRemise
@@ -477,8 +477,7 @@ class SQLData
 
         $query = "SELECT C.NumSiren, C.RaisonSociale, SUM(T.Montant) MontantImpaye FROM B_Impaye I 
         JOIN B_Transaction T ON I.NumAutorisation=T.NumAutorisation 
-        JOIN B_Remise R ON R.NumRemise=T.NumRemise J
-        OIN B_Client C ON C.NumSiren = R.NumSiren 
+        JOIN B_Remise R ON R.NumRemise=T.NumRemise JOIN B_Client C ON C.NumSiren = R.NumSiren 
         GROUP By NumSiren";
         $query = $db->prepare($query);
         $query->execute();

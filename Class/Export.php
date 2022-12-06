@@ -43,6 +43,12 @@ if (isset($_POST['export-tresorerie']) && isset($_SESSION['data-tresorerie']) &&
 //
 }
 
+unset($_SESSION['data-tresorerie']);
+unset($_SESSION['data-remise']);
+unset($_SESSION['txt-remise']);
+unset($_SESSION['data-impaye']);
+unset($_SESSION['Detail']);
+
 /**
  * Classe qui s'occupe de faire les différentes exportations des tableaux
  */

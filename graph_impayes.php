@@ -152,8 +152,9 @@ $stats3 = SQLData::getHistoriqueImpaye($cnx, intval($sirenCo), $debut, $fin);
     <div class="title">
       <h2>Graphiques :</h2>
     </div>
-    <button id="button" onclick="changeGraph();" style="width: 150px; height: 25px;">Changer de Graph</button>
-    <?php if ($role="Commerçant"){
+    
+    <?php if ($role=="Commerçant"){
+      echo "<button id=\"button\" onclick=\"changeGraph();\" style=\"width: 150px; height: 25px;\">Changer de Graph</button>";
       echo "<div id=\"historique_impaye\" style=\"width: 95%; max-width: 1000px;min-height:600px;\"></div>";
     }
 
@@ -214,7 +215,7 @@ $stats3 = SQLData::getHistoriqueImpaye($cnx, intval($sirenCo), $debut, $fin);
             }
           },
           series: [{
-              name: 'Impayés par mois (€)',
+              name: 'Impayés du mois (€)',
               data: <?php
                     echo "[";
                     foreach ($stats3 as $stat) {
@@ -236,7 +237,7 @@ $stats3 = SQLData::getHistoriqueImpaye($cnx, intval($sirenCo), $debut, $fin);
               }
             },
             {
-              name: 'Payé (€)',
+              name: 'Total du mois (€)',
               data: <?php
                     echo "[";
                     foreach ($stats3 as $stat) {
