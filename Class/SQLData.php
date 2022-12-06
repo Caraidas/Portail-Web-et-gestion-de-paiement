@@ -326,7 +326,7 @@ class SQLData
      * @return void
      */
     public static function deleteUser($db, $Login){
-        $req2 = "DELETE FROM B_Login WHERE Login=$Login";
+        $req2 = "DELETE FROM B_Login WHERE Login=\"$Login\"";
         $db->query($req2);
     }
 
