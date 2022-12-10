@@ -42,18 +42,6 @@
             if ($_SESSION['role'] == 'Admin'){
                 $db = Database::getPDO();
 
-
-                //vérification que les champs pour la suppression d'un login est bien entré
-
-                if (isset($_POST['Login']) && !empty($_POST['Login'])) {
-                    if(isset($_POST['checkbox'])){
-                        SQLData::deleteUser($db, $_POST['Siren']);
-                        echo "<br>l'utilisateur " . $_POST['Siren'] . "a bien été supprimé<br>";
-                    }
-                    else
-                        echo"l'accord du PO n'a pas été accordé";
-                }
-
                 //vérification que les champs pour l'ajout d'un login sont bien entré
                 if (isset($_POST["AjoutMDP"]) && ($_POST["AjoutMDP"] === $_POST["ConfirmationMDP"]) && !empty($_POST["AjoutMDP"])) {
                     if (isset($_POST["AjoutLogin"]) && !empty($_POST["AjoutLogin"])){
