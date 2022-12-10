@@ -29,17 +29,21 @@
 <html lang="en">
 <head>
 	<meta charset="utf-8" />
-	<title>Table Style</title>
+	<title>Supprimer un compte</title>
 	<meta name="viewport" content="initial-scale=1.0; maximum-scale=1.0; width=device-width;">
-    <link rel="stylesheet" type="text/css" href="style.css">
+    <link rel="stylesheet" type="text/css" href="css/style.css">
 </head>
 <body> 
-    
+
+    <div class="retour">
+        <a href="index.php"><img src="images/fleche-gauche.png"></a>
+        <p>Retour</p>
+    </div>
     <div class="mytabs">
         <input type="radio" name="mytabs" id="tab-tresorerie" checked>
         <label class="label-first label-style" for="tab-tresorerie">Comptes</label>
         <div class="tab">
-        <p style="font-family:bold; font-size:25px"> Liste des comptes</p>
+        <p style="font-size:25px"> Liste des comptes</p>
         <table class="table-fill">
                 <thead>
                     <tr>

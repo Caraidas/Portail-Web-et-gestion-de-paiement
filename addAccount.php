@@ -29,14 +29,19 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel='stylesheet' href='style-connexion.css'>
+    <link rel='stylesheet' href='css/style-connexion.css'>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css">
-    <title>Document</title>
+    <title>Ajouter un compte</title>
 </head>
 <body>
 
+    <div class="retour">
+        <a href="index.php"><img src="images/fleche-gauche.png"></a>
+        <p>Retour</p>
+    </div>
+
     <?php
-        echo '<div class="container"><h1 id="title">Ajouter un utilisateur</h1>';
+        echo '<div class="container" style="justify-content:normal !important;"><h1 id="title">Ajouter un utilisateur</h1>';
         if (isset($_SESSION['id']) && isset($_SESSION['role'])){
             //vérification qu'il s'agit bien de l'admin
             if ($_SESSION['role'] == 'Admin'){

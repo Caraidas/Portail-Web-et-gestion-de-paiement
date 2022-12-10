@@ -1,0 +1,414 @@
+@import url(https://fonts.googleapis.com/css?family=Roboto:400,500,700,300,100);
+/* montserrat-regular - latin */
+@font-face {
+  font-family: 'Montserrat';
+  font-style: normal;
+  font-weight: 400;
+  src: url('../fonts/montserrat-v25-latin-regular.eot'); /* IE9 Compat Modes */
+  src: local(''),
+       url('../fonts/montserrat-v25-latin-regular.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+       url('../fonts/montserrat-v25-latin-regular.woff2') format('woff2'), /* Super Modern Browsers */
+       url('../fonts/montserrat-v25-latin-regular.woff') format('woff'), /* Modern Browsers */
+       url('../fonts/montserrat-v25-latin-regular.ttf') format('truetype'), /* Safari, Android, iOS */
+       url('../fonts/montserrat-v25-latin-regular.svg#Montserrat') format('svg'); /* Legacy iOS */
+}
+
+*{
+  left: 0;
+  /*outline: solid red 1px;*/
+}
+
+body {
+  font-family: Montserrat;
+  font-size: 16px;
+}
+
+table {
+  display: block;
+  overflow-x: auto;
+  white-space: nowrap;
+}
+
+
+/*** Table Styles **/
+
+.table-fill {
+  background: transparent;
+  border-radius:3px;
+  border-collapse: collapse;
+  height: auto;
+  margin: auto;
+  max-width: 1300px;
+  padding:5px;
+  width: 100%;
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+  border-radius: 20px 20px 0px 0px;
+  overflow-x:scroll;
+}
+
+thead{
+  background: linear-gradient(91.25deg, #3A6DD0 0%, #8A73E2 100%);
+  width: 100%;
+}
+
+th {
+  color:#D5DDE5;
+  font-size:18px;
+  font-weight: 400;
+  padding: 24px 0px 24px 0px;
+}
+
+th:first-child {
+  border-radius: 20px 0px 0px 0px;
+}
+ 
+th:last-child {
+  border-radius: 0px 20px 0px 0px;
+}
+  
+tr {
+  color:#303029;
+  font-size:16px;
+  font-weight:normal;
+}
+ 
+tr:hover td {
+  background:#abafd5;
+  color:#FFFFFF;
+}
+
+tr:hover td , .normal-tr { 
+  background:white;
+  color: black; 
+}
+ 
+tr:nth-child(odd) td {
+  background:#EBEBEB;
+}
+ 
+tr:nth-child(odd):hover td {
+  background:#abafd5;
+}
+
+tr:last-child td:first-child {
+  border-bottom-left-radius:3px;
+}
+ 
+tr:last-child td:last-child {
+  border-bottom-right-radius:3px;
+}
+ 
+td {
+  background:#FFFFFF;
+  padding: 20px 50px 20px 50px;
+  text-align: center;
+  vertical-align:middle;
+  font-weight:200;
+  font-size:16px;
+  text-shadow: -1px -1px 1px rgba(0, 0, 0, 0.1);
+}
+
+.text-tab{
+  padding:20px;
+  display:flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.left-text-tab{
+  width:65%;
+  padding-top: 25px;
+}
+
+.right-text-tab{
+  width:30%;
+}
+
+.buttons {
+  display: flex;
+  width: 100%;
+  max-width: 900px;
+  justify-content: space-between;
+}
+
+.buttons>a {
+  width: 60%;
+}
+
+.buttons>a>li {
+  list-style-type: none;
+  border: 2px solid #3F5071;
+  border-radius: 5000px;
+  padding: 2px 8px 2px 8px;
+  font-size: 18px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  background: white;
+  border: none;
+  box-shadow: rgba(50, 50, 93, 0.138) 0px 13px 27px -5px, rgba(0, 0, 0, 0.1) 0px 8px 16px -8px;
+}
+
+.buttons>a>li>img {
+  padding: 5px 5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 30%;
+  height: 80%;
+  max-width: 50px;
+  max-height: 50px;
+}
+
+.mytabs {
+  position: relative;
+  display: flex;
+  flex-wrap: wrap;
+  max-width: 1500px;
+  margin: 50px auto;
+  padding-left:5%
+}
+.mytabs input[type="radio"] {
+  display: none;
+}
+.mytabs .label-style {
+  padding: 25px;
+  background: #DCDCDC;
+  font-weight: bold;
+}
+
+.label-first{
+  border-radius: 20px 0px 0px 0px;
+}
+
+.label-last{
+  border-radius: 0px 20px 0px 0px;
+}
+
+.mytabs .tab {
+  width: 90%;
+  padding: 80px 50px 80px 50px;
+  background: #EEEEEE;
+  order: 1;
+  display: none;
+}
+.mytabs .tab h2 {
+  font-size: 3em;
+}
+
+.mytabs input[type='radio']:checked + .label-style + .tab {
+  display: block;
+}
+
+.mytabs input[type="radio"]:checked + .label-style {
+  background: #EEEEEE;
+  text-decoration: underline 5px #3A6DD0 ;
+  text-underline-offset: 5px;
+}
+
+.fixedContainer {
+  font-size: 17px;
+  position: absolute;
+  justify-content: space-between;
+  left: 50%;
+  padding:30px 20px 0px 20px;
+  top: auto;
+  transform: translateZ(0);
+}
+
+.export form{
+  display:flex;
+}
+.export form label{
+ padding-right: 10px;
+}
+
+.export form input[type="radio"]{
+  -webkit-appearance: radio;
+  display: block;
+}
+
+input[name="type"] {
+	accent-color: linear-gradient(91.25deg, #3A6DD0 0%, #8A73E2 100%);
+}
+
+.btn{
+  background-color: linear-gradient(91.25deg, #3A6DD0 0%, #8A73E2 100%) !important;
+  border-radius:15px
+}
+
+.show-radio{
+  display:flex
+}
+.show-radio input[type="radio"]{
+  display: block;
+  -webkit-appearance: radio;
+}
+/* .hide {
+  display: none;
+} */
+
+
+.classic-table{
+  width: 100%;
+}
+
+.classic-table, .classic-table thead, .classic-table td, .classic-table th, .classic-table tr, .classic-table tbody{
+  all: revert;
+  table-layout: fixed;
+  border-collapse: collapse;
+  padding:10px;
+  border: 2px solid rgb(0, 0, 0);
+  text-align: center;
+}
+
+.classic-table tr:hover td, tr:nth-child(odd):hover td{
+  background-color: transparent;
+  color:black
+}
+
+
+.box-flex{
+  display: flex;
+  justify-content:space-evenly;
+  margin:80px;
+}
+
+.box{
+  width:25vw;
+  height:25vw;
+  background: linear-gradient(91.25deg, #3A6DD0 0%, #8A73E2 100%) !important;
+  border-radius:10px;
+  padding:20px;
+}
+
+.box img{
+  margin-top:20%;
+  margin-bottom: 10%;
+  margin-left: auto;
+  margin-right: auto;
+  display: block;
+  width:35%;
+}
+
+.box p{
+  color: white;
+  text-align: center;
+  font-size:2vw;
+}
+
+.title-admin {
+  font-size: 40px;
+  text-align: center;
+  margin-top: 10vh;
+  margin-bottom: 15vh;
+  display: block;
+  background: -webkit-linear-gradient(#3A6DD0, #8A73E2);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.retour{
+  display: flex;
+  align-items: center;
+  gap: 30px;
+  margin: 5vw 5vw 0vw 5vw;
+}
+
+.retour p{
+  font-size:24px
+}
+
+@media only screen and (max-width : 800px) {
+
+.box-flex{
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.box{
+  margin-bottom: 10%;
+  width: 250px;
+  height: 250px;
+}
+
+.box p{
+  font-size:18px;
+}
+
+.title-admin {
+  font-size: 30px;
+}
+
+
+
+.mytabs .label-style {
+  margin-top:50px
+}
+
+.label-first{
+  border-radius: 0px 0px 0px 0px;
+}
+
+.label-last{
+  border-radius: 20px 0px 0px 0px;
+}
+
+
+.mytabs .tab {
+  width: 60%;
+  padding: 20px 50px 80px 50px;
+  background: #EEEEEE;
+  order: 0;
+  display:block;
+}
+.mytabs .tab h2 {
+  font-size: 3em;
+}
+
+.mytabs input[type='radio']:checked + .label-style + .tab {
+  display: block;
+}
+
+.mytabs input[type="radio"]:checked + .label-style {
+  background: #EEEEEE;
+  text-decoration: underline 5px #3A6DD0 ;
+  text-underline-offset: 5px;
+}
+
+
+.show-radio{
+  flex-direction: column;
+}
+
+.text-tab{
+  flex-direction: column;
+}
+
+.left-text-tab{
+  width:100%
+}
+
+.left-text-tab form{
+  padding:20px
+}
+
+.left-text-tab form label,input{
+  padding:5px
+}
+
+.right-text-tab{
+  width:100%
+}
+
+  .text-tab{
+    padding:0px;
+  }
+}
+
+
+
+
+
+

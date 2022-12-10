@@ -54,7 +54,7 @@
 	<meta charset="utf-8" />
 	<title>Acceuil</title>
 	<meta name="viewport" content="initial-scale=1.0; maximum-scale=1.0; width=device-width;">
-    <link rel="stylesheet" type="text/css" href="style.css">
+    <link rel="stylesheet" type="text/css" href="css/style.css">
   <script src="https://code.highcharts.com/highcharts.js"></script>
   <script src="https://code.highcharts.com/modules/exporting.js"></script>
   <script src="https://code.highcharts.com/modules/export-data.js"></script>
@@ -147,7 +147,7 @@
                     $_SESSION["data-tresorerie"]=$datasTresorerie;
                     echo "<input name='txtTresorerie' type='hidden' value='$txtTresorerie'>";
                 ?>
-                <input class='btn' type="submit" value="Submit">        
+                <input class='btn' type="submit" value="Exporter">        
             </form>
             <?php 
             $stats = SQLData::getTresorerieHistorique($db,$sirenCo);
@@ -232,7 +232,7 @@
                     <input type="radio" id="pdf" name="export-remise" value="2">
                     <label class="radio-btn" for="pdf">.pdf</label>
                     
-                    <input class='btn' type="submit" value="Submit">        
+                    <input class='btn' type="submit" value="Exporter">        
                 </form>
             </div>
         </div>
@@ -316,7 +316,7 @@
                     $_SESSION["data-impaye"]=$datasImpaye;
                     echo "<input name='txtImpaye' type='hidden' value='$txtImpaye'>";
                 ?>
-                    <input class='btn' type="submit" value="Submit">        
+                    <input class='btn' type="submit" value="Exporter">        
                 </form>
             </div>
     </div>
@@ -324,7 +324,7 @@
         <form action='index.php' method='post'>
             <label for="search">Rechercher</label>
             <input style="width:100px" type="search" id="search" name="search">
-            <button type="submit">Search</button>
+            <button type="submit">Rechercher</button>
         </form>
     </div>
     </div>
