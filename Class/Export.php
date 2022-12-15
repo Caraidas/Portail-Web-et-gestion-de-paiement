@@ -79,7 +79,8 @@ class Export{
         foreach($requestResult as $row) {
             $excel .= "$row[Siren]".$endCase."$row[RaisonSociale]".$endCase."$row[Devise]".$endCase."$row[NombreTransaction]".$endCase."$row[MontantTotal]$endLine";
         }
-        
+
+        $excel = str_replace(".",",",$excel);
         header("Content-type: application/$contentType");
         header("Content-disposition: attachment; filename=TRESORERIE-".date('y/m/d')."$fileName");
         print $excel;
@@ -111,7 +112,8 @@ class Export{
         foreach($requestResult as $row) {
             $excel .= "$row[Siren]".$endCase."$row[RaisonSociale]".$endCase."$row[Devise]".$endCase."$row[NumeroRemise]".$endCase."$row[DateTraitement]".$endCase."$row[Nombretransaction]".$endCase."$row[MontantTotal]".$endCase."$row[Sens]".$endLine;
         }
-        
+
+        $excel = str_replace(".",",",$excel);
         header("Content-type: application/$contentType");
         header("Content-disposition: attachment; filename=REMISES-".date('y/m/d')."$fileName");
         print $excel;
@@ -143,7 +145,8 @@ class Export{
         foreach($requestResult as $row) {
             $excel .= "$row[Siren]".$endCase."$row[DateVente]".$endCase."$row[NumeroCarte]".$endCase."$row[Reseau]".$endCase."$row[Montant]".$endCase."$row[Sens]".$endLine;
         }
-        
+
+        $excel = str_replace(".",",",$excel);
         header("Content-type: application/$contentType");
         header("Content-disposition: attachment; filename=REMISE-DETAILS".date('y/m/d')."$fileName");
         print $excel;
@@ -173,9 +176,10 @@ class Export{
         $excel = "";
         $excel .=  "Numero de Siren".$endCase."Date de Remise".$endCase."Date de Vente".$endCase."N° de Carte".$endCase."Réseau".$endCase."N° de Dossier".$endCase."Devise".$endCase."Montant".$endCase."Libelle Impaye".$endLine;
         foreach($requestResult as $row) {
-            $excel .= "$row[Siren]".$endCase."$row[DateRemise]".$endCase."$row[DateVente]".$endCase."$row[NumCarte]".$endCase."$row[Reseau]".$endCase."$row[NumeroDossier]".$endCase."$row[Devise]".$endCase."$row[Montant]".$endCase."$row[LibelleImpaye]".$endLine;
+            $excel .= "$row[Siren]".$endCase."$row[DateRemise]".$endCase."$row[DateVente]".$endCase."$row[NumCarte]"
+                .$endCase."$row[Reseau]".$endCase."$row[NumeroDossier]".$endCase."$row[Devise]".$endCase."-$row[Montant]".$endCase."$row[LibelleImpaye]".$endLine;
         }
-        
+        $excel = str_replace(".",",",$excel);
         header("Content-type: application/$contentType");
         header("Content-disposition: attachment; filename=IMPAYES-".date('y/m/d')."$fileName");
         print $excel;
