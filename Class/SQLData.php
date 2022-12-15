@@ -338,9 +338,11 @@ class SQLData
      * @param $mdp : mot de passe du futur utilisateur
      * @return void
      */
-    public static function addLogin($db, $login, $role, $mdp){
+    public static function addLogin($db, $login, $role, $mdp,$siren,$raison){
 
         $query = "INSERT INTO B_Login (Login, MotDePasse, Role) VALUES ('".$login."', md5('".$mdp."'), '".$role."')";
+        $db->query($query);
+        $query = "INSERT INTO B_Client (NumSiren,RaisonSociale,Login) VALUES ($siren,'$raison','$login')";
         $db->query($query);
     }
 

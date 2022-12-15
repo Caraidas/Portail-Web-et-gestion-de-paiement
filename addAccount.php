@@ -51,7 +51,8 @@
                 if (isset($_POST["AjoutMDP"]) && ($_POST["AjoutMDP"] === $_POST["ConfirmationMDP"]) && !empty($_POST["AjoutMDP"])) {
                     if (isset($_POST["AjoutLogin"]) && !empty($_POST["AjoutLogin"])){
                         if(isset($_POST['checkbox'])){
-                            SQLData::addLogin($db, $_POST["AjoutLogin"], $_POST["AjoutRole"], $_POST["AjoutMDP"]);
+                            SQLData::addLogin($db, $_POST["AjoutLogin"], $_POST["AjoutRole"], $_POST["AjoutMDP"],
+                                $_POST["Siren"],$_POST["Raison"]);
                             echo "<div class='success'><p>L'utilisateur " . $_POST['AjoutLogin'] . " a bien été ajouté</p></div>";
                         }
                     }
@@ -74,6 +75,14 @@
                             <option valeur="PO">Product Owner</option>
                             <option valeur="Commerçant">Commerçant</option>
                         </select>
+                    </div>
+                    <div>
+                        <label for="Siren">Numero Siren</label>
+                        <input class="input" id="Siren" name="Siren" type="text" placeholder="Entrez Numero Siren" required/>
+                    </div>
+                    <div>
+                        <label for="Raison">Raison Sociale</label>
+                        <input class="input" id="Raison" name="Raison" type="text" placeholder="Entrez Votre Raison Sociale" required/>
                     </div>
 
                     <div>
