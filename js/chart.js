@@ -1,6 +1,6 @@
 Highcharts.chart('column-chart', {
     chart: {
-        type: "column"
+        type: "pie"
     },
     title: {
         text: ''
